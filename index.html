@@ -44,7 +44,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   border-bottom: 1px solid var(--line);
 }
 .topbar-inner {
-  max-width: 1240px; margin: 0 auto;
+  max-width: 50px; margin: 0;
   display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
   padding: 1.1rem 2rem;
 }
@@ -227,7 +227,7 @@ footer p { margin: 0.3rem 0; }
   <!-- ... -->
   <div class="hero">
     <div class="hero-card">
-      <h1>Summation</h1>
+      <h1>...</h1>
       <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The response is called an impedance spectrum and it holds information about the structure of the tissue underneath.</p>
       <figure class="spectrum">
         <svg viewBox="0 0 620 260" role="img" aria-label="Illustration of an impedance spectrum: measured points along an arc, from low frequency on the right to high frequency on the left.">
@@ -264,9 +264,9 @@ footer p { margin: 0.3rem 0; }
       <p>Our goal is to build an accessible, low-cost hardware make reliable quantitative skin measurements. Our prototype is not a diagnostic tool but rather a proof of concept and a foundation for future work on affordable tissue assessment.</p>
     </div>
     <div class="facts">
-      <div class="fact"><strong>1–100 kHz</strong><span>Frequency range, at least 20 log-spaced steps</span></div>
-      <div class="fact"><strong>&le; 100 &micro;A</strong><span>Maximum current; 10 &micro;A below 10 kHz</span></div>
-      <div class="fact"><strong>~$180</strong><span>Planned parts cost, using a PYNQ-Z2 board</span></div>
+      <div class="fact"><strong>1–100 kHz</strong><span>Frequency range</span></div>
+      <div class="fact"><strong>&le; 100 &micro;A</strong><span>Maximum current</span></div>
+      <div class="fact"><strong>~$180</strong><span>Planned parts cost</span></div>
     </div>
   </section>
 
@@ -276,20 +276,18 @@ footer p { margin: 0.3rem 0; }
     <div class="pipeline" role="list" aria-label="Signal path">
       <div class="stage" role="listitem"><b>FPGA</b>Generates a digital sine wave</div>
       <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage hw" role="listitem"><b>DAC</b>Convert samples into AC voltage</div>
+      <div class="stage" role="listitem"><b>DAC</b>Convert samples into AC voltage</div>
       <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage hw" role="listitem"><b>Front end</b>Filters and limits current</div>
+      <div class="stage" role="listitem"><b>Front end</b>Filters and limits current</div>
       <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage hw" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
+      <div class="stage" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
       <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage hw" role="listitem"><b>ADC</b>Convert back to DC</div>
+      <div class="stage" role="listitem"><b>ADC</b>Convert to digital</div>
       <div class="arrow" aria-hidden="true">&rsaquo;</div>
       <div class="stage" role="listitem"><b>FPGA</b>I/Q Demodulation</div>
       <div class="arrow" aria-hidden="true">&rsaquo;</div>
       <div class="stage" role="listitem"><b>ARM + dashboard</b>Computes impedance and fits the model</div>
     </div>
-    <p class="legend"><i style="background:#E3EBF3"></i>Analog hardware &nbsp;&nbsp; <i style="background:#FBFCFD"></i>Digital processing on the PYNQ-Z2</p>
-
     <div class="rail">
       <div class="rail-item"><div class="panel">
         <h3>1. Generate the signal</h3>
@@ -316,7 +314,7 @@ footer p { margin: 0.3rem 0; }
 
   <!-- goals -->
   <section class="block" id="goals">
-    <h2>What we expect to complete</h2>
+    <h2>... things we want to acheive</h2>
     <div class="table-wrap">
       <table class="specs">
         <tr><th>Signal generation</th><td>At least 20 frequencies from 1 kHz to 100 kHz, each within 1% of its target, with current inside the safety limits at every step.</td></tr>
@@ -348,7 +346,7 @@ footer p { margin: 0.3rem 0; }
       </div>
     </div>
     <div class="note">
-      <p><strong>Safety first.</strong> Our current limits follow published skin-impedance work and sit at or below the IEC 60601-1 patient auxiliary current limits. Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact, and we test only on ourselves as healthy volunteers. The device is battery powered and is not a certified medical device.</p>
+      <p><strong>Safety:</strong> Our current limits follow published skin-impedance work and sit at or below the IEC 60601-1 patient auxiliary current limits. Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact, and we test only on ourselves as healthy volunteers. The device is battery powered and is not a certified medical device.</p>
     </div>
   </section>
 
