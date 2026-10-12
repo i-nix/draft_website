@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization | ESE 4970 Capstone</title>
+  <meta name="description" content="A low-cost FPGA system for quantitative, noninvasive assessment of the electrical properties of skin tissue. ESE 4970 capstone at Washington University in St. Louis.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --paper: #EEF1F4;      /* page background */
+  --bar: #E4E9EE;        /* top bar */
+  --band: #C9D8E6;       /* hero band */
+  --card: #FBFCFD;
+  --ink: #1C2A39;        /* headings */
+  --text: #3A4756;       /* body */
+  --muted: #6B7785;      /* meta text*/
+  --blue: #2F5D8A;      
+  --line: #B7C6D4;
+  --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--blue); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--bar);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+  padding: 1.1rem 2rem;
+}
+.brand {
+  font-family: var(--serif); font-weight: 700; font-size: 1.6rem;
+  color: var(--ink); text-decoration: none; letter-spacing: -0.01em;
+}
+.nav { display: flex; gap: 2.25rem; }
+.nav a {
+  color: var(--ink); text-decoration: none; font-size: 1.05rem; letter-spacing: 0.01em;
+}
+.nav a:hover { color: var(--blue); }
+.menu-btn {
+  display: none; background: none; border: 1px solid var(--line); border-radius: 6px;
+  font: inherit; color: var(--ink); padding: 0.35rem 0.8rem; cursor: pointer;
+}
+
+/* ---------- hero ---------- */
+.hero { background: var(--band); padding: 5rem 1.5rem 6rem; }
+.hero-card {
+  max-width: 900px; margin: 0 auto;
+  background: var(--card); border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12);
+  padding: 3.25rem 3.5rem 3rem; text-align: center;
+}
+.hero h1 {
+  font-family: var(--serif); color: var(--ink); font-weight: 700;
+  font-size: clamp(2.1rem, 4.5vw, 3.3rem); line-height: 1.15; margin: 0 0 1.25rem;
+}
+.hero .lede { max-width: 62ch; margin: 0 auto; font-size: 1.15rem; line-height: 1.85; }
+.hero .meta { color: var(--muted); margin: 1.75rem 0 0; font-size: 0.98rem; }
+
+.spectrum { margin: 2.25rem auto 0; max-width: 620px; }
+.spectrum svg { width: 100%; height: auto; overflow: visible; }
+.spectrum figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+.arc { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 2.4s ease-out 0.3s forwards; }
+.dot { opacity: 0; animation: appear 0.4s ease-out forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes appear { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .arc { animation: none; stroke-dashoffset: 0; }
+  .dot { animation: none; opacity: 1; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- sections ---------- */
+section.block { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 1rem; }
+section.block h2 {
+  font-family: var(--serif); color: var(--ink); font-weight: 700;
+  font-size: clamp(2rem, 4vw, 2.75rem); margin: 0 0 1.75rem; line-height: 1.2;
+}
+section.block h3 { font-family: var(--serif); color: var(--ink); font-size: 1.3rem; margin: 0 0 0.5rem; }
+.prose { max-width: 70ch; }
+.prose p { margin: 0 0 1.15rem; }
+
+.panel {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 2rem 2.25rem;
+}
+
+/* overview facts */
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.fact { border-left: 3px solid var(--blue); padding: 0.25rem 0 0.25rem 1.1rem; }
+.fact strong { display: block; font-family: var(--serif); color: var(--ink); font-size: 1.9rem; line-height: 1.2; }
+.fact span { color: var(--muted); font-size: 0.95rem; }
+
+/* pipeline */
+.pipeline { display: flex; align-items: stretch; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0 1rem; }
+.stage {
+  flex: 1 0 150px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 1rem; text-align: center; font-size: 0.95rem;
+}
+.stage b { display: block; color: var(--ink); font-size: 1rem; margin-bottom: 0.2rem; }
+.stage.hw { background: #E3EBF3; }
+.arrow { flex: 0 0 auto; align-self: center; color: var(--blue); font-size: 1.3rem; }
+.legend { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 2.5rem; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 0.35rem; border: 1px solid var(--line); }
+
+/* steps timeline */
+.rail { position: relative; padding-left: 3rem; }
+.rail::before {
+  content: ""; position: absolute; left: 13px; top: 0.75rem; bottom: 0.75rem;
+  width: 2px; background: var(--line);
+}
+.rail-item { position: relative; margin-bottom: 1.5rem; }
+.rail-item::before {
+  content: ""; position: absolute; left: -2.55rem; top: 1.7rem;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--card); border: 3px solid var(--blue);
+}
+.rail-item .panel { padding: 1.5rem 2rem; }
+.rail-item .when { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.25rem; }
+.rail-item p { margin: 0.25rem 0 0; max-width: 72ch; }
+.rail-item.done::before { background: var(--blue); }
+
+/* goals table */
+.specs { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+.specs th, .specs td { text-align: left; padding: 1rem 1.25rem; border-bottom: 1px solid #DCE4EC; vertical-align: top; }
+.specs th { font-family: var(--serif); color: var(--ink); font-size: 1.05rem; width: 32%; font-weight: 700; }
+.specs tr:last-child th, .specs tr:last-child td { border-bottom: 0; }
+.table-wrap { overflow-x: auto; }
+
+/* hardware */
+.two-col { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: start; }
+figure { margin: 0; }
+.schematic { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.75rem; }
+.placeholder {
+  aspect-ratio: 16 / 10; display: grid; place-items: center; text-align: center;
+  background: repeating-linear-gradient(45deg, #F3F6F9, #F3F6F9 10px, #EAF0F5 10px, #EAF0F5 20px);
+  color: var(--muted); border-radius: 8px; padding: 1rem; font-size: 0.95rem;
+}
+figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; }
+.parts { list-style: none; margin: 0; padding: 0; }
+.parts li { padding: 0.7rem 0; border-bottom: 1px solid #DCE4EC; }
+.parts li:last-child { border-bottom: 0; }
+.parts b { color: var(--ink); }
+
+/* safety */
+.note {
+  background: #E3EBF3; border-radius: 16px; padding: 1.75rem 2.25rem; margin-top: 2rem;
+  border-left: 4px solid var(--blue);
+}
+.note p { margin: 0; max-width: 75ch; }
+
+/* team */
+.team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.person .role { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.75rem; }
+.person p { margin: 0 0 0.75rem; font-size: 0.98rem; }
+
+/* footer */
+footer {
+  margin-top: 6rem; background: var(--ink); color: #C9D3DD;
+  padding: 2.5rem 2rem; text-align: center; font-size: 0.95rem;
+}
+footer a { color: #DCE6F0; }
+footer p { margin: 0.3rem 0; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .nav { gap: 1.25rem; }
+  .facts, .team { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .topbar-inner { padding: 0.9rem 1.25rem; flex-wrap: wrap; }
+  .menu-btn { display: block; }
+  .nav { display: none; width: 100%; flex-direction: column; gap: 0.6rem; padding-bottom: 0.5rem; }
+  .nav.open { display: flex; }
+  .hero { padding: 3rem 1rem 4rem; }
+  .hero-card { padding: 2.25rem 1.5rem; }
+  section.block { padding: 3.5rem 1.25rem 0.5rem; }
+  .panel, .rail-item .panel { padding: 1.4rem; }
+  .rail { padding-left: 2.25rem; }
+  .rail-item::before { left: -1.85rem; }
+  .specs th { width: auto; }
+  .specs th, .specs td { display: block; width: 100%; }
+  .specs th { border-bottom: 0; padding-bottom: 0.2rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">Capstone</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#how">How It Works</a>
+      <a href="#goals">Goals</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#team">Team</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ... -->
+  <div class="hero">
+    <div class="hero-card">
+      <h1>Summation</h1>
+      <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The response is called an impedance spectrum and it holds information about the structure of the tissue underneath.</p>
+      <figure class="spectrum">
+        <svg viewBox="0 0 620 260" role="img" aria-label="Illustration of an impedance spectrum: measured points along an arc, from low frequency on the right to high frequency on the left.">
+          <line x1="40" y1="210" x2="600" y2="210" stroke="#B7C6D4" stroke-width="1.5"/>
+          <line x1="40" y1="210" x2="40" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
+          <path class="arc" d="M 70 210 A 240 165 0 0 1 550 210" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
+            <circle class="dot" cx="72.3" cy="187.0" r="5" fill="#2F5D8A" style="animation-delay:0.4s"/>
+            <circle class="dot" cx="87.5" cy="148.2" r="5" fill="#2F5D8A" style="animation-delay:0.6s"/>
+            <circle class="dot" cx="120.9" cy="108.4" r="5" fill="#2F5D8A" style="animation-delay:0.8s"/>
+            <circle class="dot" cx="175.8" cy="73.2" r="5" fill="#2F5D8A" style="animation-delay:1.0s"/>
+            <circle class="dot" cx="251.9" cy="49.9" r="5" fill="#2F5D8A" style="animation-delay:1.2s"/>
+            <circle class="dot" cx="335.1" cy="45.9" r="5" fill="#2F5D8A" style="animation-delay:1.4s"/>
+            <circle class="dot" cx="415.2" cy="61.7" r="5" fill="#2F5D8A" style="animation-delay:1.6s"/>
+            <circle class="dot" cx="476.7" cy="91.3" r="5" fill="#2F5D8A" style="animation-delay:1.8s"/>
+            <circle class="dot" cx="517.8" cy="127.5" r="5" fill="#2F5D8A" style="animation-delay:2.0s"/>
+            <circle class="dot" cx="540.7" cy="164.5" r="5" fill="#2F5D8A" style="animation-delay:2.2s"/>
+          <text x="62" y="236" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">100 kHz</text>
+          <text x="522" y="236" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">1 kHz</text>
+          <text x="600" y="252" text-anchor="end" font-family="DM Sans, sans-serif" font-size="12" fill="#6B7785">Resistance</text>
+          <text x="48" y="30" font-family="DM Sans, sans-serif" font-size="12" fill="#6B7785">Reactance</text>
+        </svg>
+        <figcaption>Each point is one measurement frequency, the shape of the arc is what we fit to describe the tissue. (Illustration, not measured data.)</figcaption>
+      </figure>
+      <p class="meta">ESE 4970 Capstone Design, Washington University in St. Louis, Fall 2026</p>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <section class="block" id="overview">
+    <h2>Justification</h2>
+    <div class="prose">
+      <p>Currently, suspicious lesions are commonly evaluated through excision biopsy, which provides tissue for histological diagnosis. However, these procedures are invasive and can require extensive planning and post-procedure wound care to reduce risks such as bleeding and infection.</p>
+      <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99%. Also, existing systems are not commericially available and are very expensive.</p>
+      <p>Our goal is to build an accessible, low-cost hardware make reliable quantitative skin measurements. Our prototype is not a diagnostic tool but rather a proof of concept and a foundation for future work on affordable tissue assessment.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><strong>1–100 kHz</strong><span>Frequency range, at least 20 log-spaced steps</span></div>
+      <div class="fact"><strong>&le; 100 &micro;A</strong><span>Maximum current; 10 &micro;A below 10 kHz</span></div>
+      <div class="fact"><strong>~$180</strong><span>Planned parts cost, using a PYNQ-Z2 board</span></div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="block" id="how">
+    <h2>How it works</h2>
+    <div class="pipeline" role="list" aria-label="Signal path">
+      <div class="stage" role="listitem"><b>FPGA</b>Generates a digital sine wave</div>
+      <div class="arrow" aria-hidden="true">&rsaquo;</div>
+      <div class="stage hw" role="listitem"><b>DAC</b>Convert samples into AC voltage</div>
+      <div class="arrow" aria-hidden="true">&rsaquo;</div>
+      <div class="stage hw" role="listitem"><b>Front end</b>Filters and limits current</div>
+      <div class="arrow" aria-hidden="true">&rsaquo;</div>
+      <div class="stage hw" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
+      <div class="arrow" aria-hidden="true">&rsaquo;</div>
+      <div class="stage hw" role="listitem"><b>ADC</b>Convert back to DC</div>
+      <div class="arrow" aria-hidden="true">&rsaquo;</div>
+      <div class="stage" role="listitem"><b>FPGA</b>I/Q Demodulation</div>
+      <div class="arrow" aria-hidden="true">&rsaquo;</div>
+      <div class="stage" role="listitem"><b>ARM + dashboard</b>Computes impedance and fits the model</div>
+    </div>
+    <p class="legend"><i style="background:#E3EBF3"></i>Analog hardware &nbsp;&nbsp; <i style="background:#FBFCFD"></i>Digital processing on the PYNQ-Z2</p>
+
+    <div class="rail">
+      <div class="rail-item"><div class="panel">
+        <h3>1. Generate the signal</h3>
+        <p>The FPGA generates a digital wave and the samples go to a 12-bit DAC. During early testing, a bench function generator is used so we can verify the circuit first.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <h3>2. Apply it safely and measure the response</h3>
+        <p>A current-limiting resistor and a DC-blocking capacitor control the signal before it reaches the skin. Two electrodes inject current while the other two measure voltage. A precision reference resistor in the loop tells us how much current is flowing.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <h3>3. Find magnitude and phase on the FPGA</h3>
+        <p>The FPGA multiplies the digitized voltage and current by reference sine and cosine waves (I/Q demodulation). This pulls out how large each signal is and how far it is shifted in time.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <h3>4. Compute impedance and fit the model</h3>
+        <p>The ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model. The model reduces the whole spectrum to four numbers: low- and high-frequency resistance, a time constant, and a spread factor.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <h3>5. Show the results</h3>
+        <p>After each sweep, the board sends the spectrum and fitted parameters over Wi-Fi to a Flask dashboard in the browser.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- goals -->
+  <section class="block" id="goals">
+    <h2>What we expect to complete</h2>
+    <div class="table-wrap">
+      <table class="specs">
+        <tr><th>Signal generation</th><td>At least 20 frequencies from 1 kHz to 100 kHz, each within 1% of its target, with current inside the safety limits at every step.</td></tr>
+        <tr><th>Measurement accuracy</th><td>Impedance magnitude within 5% and phase within 3&deg; of a reference instrument on precision resistors.</td></tr>
+        <tr><th>Model fitting</th><td>Fitted Cole-Cole parameters.</td></tr>
+        <tr><th>Repeatability on skin</th><td>Repeated measurements at the same site agree within a 10% coefficient of variation, and the spectrum follows the trend reported in published skin studies.</td></tr>
+        <tr><th>Speed</th><td>A full sweep and dashboard update in fewer than 90 seconds.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- hardware -->
+  <section class="block" id="hardware">
+    <h2>Hardware</h2>
+    <div class="two-col">
+      <figure class="schematic">
+        <img src="images/schematic.png" alt="KiCad schematic of the bench-test analog front end" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'Add images/schematic.png (export from KiCad)'}))">
+        <figcaption>Bench-test analog front end in KiCad.</figcaption>
+      </figure>
+      <div class="panel">
+        <ul class="parts">
+          <li>PYNQ-Z2 board with a Zynq FPGA and ARM processor</li>
+          <li>Pmod DA2 12-bit DAC and Pmod AD1 12-bit, 1 MSPS ADC</li>
+          <li>Two INA128 instrumentation amplifiers, gain of about 10</li>
+          <li>OPA2134 buffering a 1.65 V midpoint so signals stay in the ADC range</li>
+          <li>BAT85 diodes clamping ADC inputs between 0 and 3.3 V</li>
+          <li>Two 9 V batteries for an isolated &plusmn;9 V supply</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note">
+      <p><strong>Safety first.</strong> Our current limits follow published skin-impedance work and sit at or below the IEC 60601-1 patient auxiliary current limits. Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact, and we test only on ourselves as healthy volunteers. The device is battery powered and is not a certified medical device.</p>
+    </div>
+  </section>
+
+  <!-- timeline -->
+  <section class="block" id="timeline">
+    <h2>Timeline</h2>
+    <div class="rail">
+      <div class="rail-item done"><div class="panel">
+        <p class="when">September 2026</p><h3>Proposal, schematic, and parts</h3>
+        <p>Formal proposal submitted, front-end schematic completed in KiCad, and components ordered and delivered.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <p class="when">October 2026</p><h3>Breadboard and FPGA signal output</h3>
+        <p>Build and test the front end; verify current limits, set up SPI to the Pmods, and generate sine waves with DDS.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <p class="when">Late October to mid November 2026</p><h3>Demodulation and software</h3>
+        <p>Capture ADC data and do demodulation on the FPGA, then build impedance calculation, Cole-Cole fitting, and the dashboard.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <p class="when">November 2026</p><h3>Integration and skin measurements</h3>
+        <p>Connect the full system, validate, then run tests on skin.</p>
+      </div></div>
+      <div class="rail-item"><div class="panel">
+        <p class="when">December 2026</p><h3>Final report and demo</h3>
+        <p>Final report, completed website, and a demonstration.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- team -->
+  <section class="block" id="team">
+    <h2>Team</h2>
+    <div class="team">
+       <div class="panel person">
+        <h3>Prof. Michael Hall</h3>
+        <p class="role">Advisor and client</p>
+        <p>Professor of Computer Science &amp; Engineering and Electrical &amp; Systems Engineering. Guides FPGA development and system integration on the PYNQ-Z2.</p>
+        <p><a href="mailto:mhall24@wustl.edu">mhall24@wustl.edu</a></p>
+      </div>
+      <div class="panel person">
+        <h3>Ines Nix</h3>
+        <p class="role">B.S. Computer Engineering, December 2026</p>
+        <p>Builds the analog circuit, Cole-Cole analysis, and the Flask dashboard. Background in embedded systems and computational biology research.</p>
+        <p><a href="mailto:i.n.nix@wustl.edu">i.n.nix@wustl.edu</a></p>
+      </div>
+      <div class="panel person">
+        <h3>Emily Seligson</h3>
+        <p class="role">B.S. Computer Engineering, December 2026</p>
+        <p>Leads FPGA programming, ARM processing, and project planning. Interested in embedded systems, microcontrollers, and assistive biotechnology.</p>
+        <p><a href="mailto:e.d.seligson@wustl.edu">e.d.seligson@wustl.edu</a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</p>
+  <p>ESE 4970 Capstone Design &middot; Department of Electrical and Systems Engineering &middot; Washington University in St. Louis</p>
+</footer>
+
+<script>
+  const btn = document.querySelector('.menu-btn');
+  const nav = document.getElementById('nav');
+  btn.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    nav.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+</body>
+</html>
