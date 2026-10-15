@@ -70,13 +70,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12);
   padding: 3.25rem 3.5rem 3rem; text-align: center;
 }
+.title-card {
+  max-width: 900px; margin: 0 auto 2.5rem;
+  background: var(--card); border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12);
+  padding: 2.75rem 3.5rem; text-align: center;
+}
 .hero h1 {
   font-family: var(--serif); color: var(--ink); font-weight: 700;
-  font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; margin: 0 0 0.75rem;
+  font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; margin: 0;
 }
 .hero .subtitle {
-  font-family: var(--serif); color: var(--blue); font-weight: 600;
-  font-size: clamp(1.15rem, 2.2vw, 1.4rem); margin: 0 0 1.5rem;
+  font-family: var(--serif); color: var(--blue); font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.4rem); line-height: 1.2; margin: 0 0 1.25rem;
 }
 .hero .lede { max-width: 62ch; margin: 0 auto; font-size: 1.15rem; line-height: 1.85; }
 .hero .meta { color: var(--muted); margin: 1.75rem 0 0; font-size: 0.98rem; }
@@ -207,6 +213,7 @@ footer p { margin: 0.3rem 0; }
   .nav.open { display: flex; }
   .hero { padding: 3rem 1rem 4rem; }
   .hero-card { padding: 2.25rem 1.5rem; }
+  .title-card { padding: 2rem 1.5rem; margin-bottom: 1.75rem; }
   section.block { padding: 3.5rem 1.25rem 0.5rem; }
   .panel, .rail-item .panel { padding: 1.4rem; }
   .rail { padding-left: 2.25rem; }
@@ -238,8 +245,10 @@ footer p { margin: 0.3rem 0; }
 <main id="top">
 
   <div class="hero">
-    <div class="hero-card">
+    <div class="title-card">
       <h1>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
+    </div>
+    <div class="hero-card">
       <p class="subtitle">Project Scope</p>
       <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The result is an impedance spectrum and it gives information about the structure of the tissue underneath.</p>
       <p class="hero-actions">
