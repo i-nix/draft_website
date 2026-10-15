@@ -72,7 +72,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
 }
 .hero h1 {
   font-family: var(--serif); color: var(--ink); font-weight: 700;
-  font-size: clamp(2.1rem, 4.5vw, 3.3rem); line-height: 1.15; margin: 0 0 1.25rem;
+  font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; margin: 0 0 0.75rem;
+}
+.hero .subtitle {
+  font-family: var(--serif); color: var(--blue); font-weight: 600;
+  font-size: clamp(1.15rem, 2.2vw, 1.4rem); margin: 0 0 1.5rem;
 }
 .hero .lede { max-width: 62ch; margin: 0 auto; font-size: 1.15rem; line-height: 1.85; }
 .hero .meta { color: var(--muted); margin: 1.75rem 0 0; font-size: 0.98rem; }
@@ -217,30 +221,28 @@ footer p { margin: 0.3rem 0; }
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#top">Capstone</a>
+    <a class="brand" href="#top">ESE 4970 Capstone</a>
     <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Sections">
-      <a href="#overview">Overview</a>
+      <a href="#justification">Justification</a>
       <a href="#how">How It Works</a>
-      <a href="#goals">Goals</a>
+      <a href="#aims">Aims</a>
       <a href="#hardware">Hardware</a>
       <a href="#timeline">Timeline</a>
       <a href="#team">Team</a>
-      <!-- Replace the placeholder URL with your Google Drive or OneDrive share link -->
-      <a href="https://drive.google.com/file/d/YOUR_FILE_ID/view" target="_blank" rel="noopener">Video</a>
+      <a href="https://docs.google.com/presentation/d/1ye_hNa-tk-xH9FpmI2SJxx5TpFwn-p_6rEtFGrFn39c/edit?usp=sharing" target="_blank" rel="noopener">Video</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
 
-  <!-- ... -->
   <div class="hero">
     <div class="hero-card">
-      <h1>Project Scope</h1>
+      <h1>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
+      <p class="subtitle">Project Scope</p>
       <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The result is an impedance spectrum and it gives information about the structure of the tissue underneath.</p>
       <p class="hero-actions">
-        <!-- Replace the placeholder URL with your Google Drive or OneDrive share link -->
         <a class="btn" href="https://docs.google.com/presentation/d/1ye_hNa-tk-xH9FpmI2SJxx5TpFwn-p_6rEtFGrFn39c/edit?usp=sharing" target="_blank" rel="noopener">&#9654; Project video</a>
       </p>
       <figure class="spectrum">
@@ -268,12 +270,12 @@ footer p { margin: 0.3rem 0; }
     </div>
   </div>
 
-  <!-- Overview -->
-  <section class="block" id="overview">
+  <!-- Justification -->
+  <section class="block" id="justification">
     <h2>Justification</h2>
     <div class="prose">
       <p>Currently, suspicious lesions are commonly evaluated through excision biopsy, which provides tissue for histological diagnosis. However, these procedures are invasive and can require extensive planning and post-procedure wound care to reduce risks such as bleeding and infection.</p>
-      <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99%. Also, existing systems are not commericially available and are very expensive.</p>
+      <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99%. Also, existing systems are not commercially available and are very expensive.</p>
       <p>Our goal is to build an accessible, low-cost hardware that makes reliable quantitative skin measurements. Our prototype is not a diagnostic tool but rather a proof of concept and a foundation for future work on affordable tissue assessment.</p>
     </div>
     <div class="facts">
@@ -325,8 +327,8 @@ footer p { margin: 0.3rem 0; }
     </div>
   </section>
 
-  <!-- goals -->
-  <section class="block" id="goals">
+  <!-- Aims -->
+  <section class="block" id="aims">
     <h2>Aims</h2>
     <div class="table-wrap">
       <table class="specs">
