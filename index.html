@@ -77,6 +77,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
 .hero .lede { max-width: 62ch; margin: 0 auto; font-size: 1.15rem; line-height: 1.85; }
 .hero .meta { color: var(--muted); margin: 1.75rem 0 0; font-size: 0.98rem; }
 
+.hero-actions { margin: 1.75rem 0 0; }
+.btn {
+  display: inline-block; background: var(--blue); color: #fff;
+  text-decoration: none; font-weight: 500; padding: 0.7rem 1.4rem;
+  border-radius: 999px; transition: background 0.2s;
+}
+.btn:hover { background: var(--ink); }
+
 .spectrum { margin: 2.25rem auto 0; max-width: 620px; }
 .spectrum svg { width: 100%; height: auto; overflow: visible; }
 .spectrum figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
@@ -218,6 +226,8 @@ footer p { margin: 0.3rem 0; }
       <a href="#hardware">Hardware</a>
       <a href="#timeline">Timeline</a>
       <a href="#team">Team</a>
+      <!-- Replace the placeholder URL with your Google Drive or OneDrive share link -->
+      <a href="https://drive.google.com/file/d/YOUR_FILE_ID/view" target="_blank" rel="noopener">Video</a>
     </nav>
   </div>
 </header>
@@ -227,8 +237,12 @@ footer p { margin: 0.3rem 0; }
   <!-- ... -->
   <div class="hero">
     <div class="hero-card">
-      <h1>...</h1>
+      <h1>Project Scope</h1>
       <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The result is an impedance spectrum and it gives information about the structure of the tissue underneath.</p>
+      <p class="hero-actions">
+        <!-- Replace the placeholder URL with your Google Drive or OneDrive share link -->
+        <a class="btn" href="https://docs.google.com/presentation/d/1ye_hNa-tk-xH9FpmI2SJxx5TpFwn-p_6rEtFGrFn39c/edit?usp=sharing" target="_blank" rel="noopener">&#9654; Project video</a>
+      </p>
       <figure class="spectrum">
         <svg viewBox="0 0 620 260" role="img" aria-label="Illustration of an impedance spectrum: measured points along an arc, from low frequency on the right to high frequency on the left.">
           <line x1="40" y1="210" x2="600" y2="210" stroke="#B7C6D4" stroke-width="1.5"/>
@@ -313,7 +327,7 @@ footer p { margin: 0.3rem 0; }
 
   <!-- goals -->
   <section class="block" id="goals">
-    <h2>... things we want to acheive</h2>
+    <h2>Aims</h2>
     <div class="table-wrap">
       <table class="specs">
         <tr><th>Signal generation</th><td>At least 20 frequencies from 1 kHz to 100 kHz, each within 1% of its target, with current inside the safety limits at every step.</td></tr>
