@@ -200,6 +200,13 @@ figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; 
 .video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 .video-link { color: var(--muted); font-size: 0.95rem; margin: 0.9rem 0 0; }
 
+/* citations + references */
+.cite { font-size: 0.8em; text-decoration: none; vertical-align: super; line-height: 0; }
+.cite:hover { text-decoration: underline; }
+.refs { margin: 0; padding-left: 1.75rem; max-width: 80ch; font-size: 0.95rem; }
+.refs li { margin-bottom: 0.9rem; padding-left: 0.25rem; overflow-wrap: anywhere; }
+.refs li:target { background: #E3EBF3; border-radius: 6px; }
+
 /* footer */
 footer {
   margin-top: 6rem; background: var(--ink); color: #C9D3DD;
@@ -288,8 +295,8 @@ footer p { margin: 0.3rem 0; }
   <section class="block" id="justification">
     <h2>Justification</h2>
     <div class="prose">
-      <p>Currently, suspicious lesions are commonly evaluated through excision biopsy, which provides tissue for histological diagnosis. However, these procedures are invasive and can require extensive planning and post-procedure wound care to reduce risks such as bleeding and infection.</p>
-      <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99%. Also, existing systems are not commercially available and are very expensive.</p>
+      <p>Currently, suspicious lesions are commonly evaluated through excision biopsy, which provides tissue for histological diagnosis <a class="cite" href="#ref1" aria-label="Reference 1">[1]</a>. However, these procedures are invasive and can require extensive planning and post-procedure wound care to reduce risks such as bleeding and infection <a class="cite" href="#ref2" aria-label="Reference 2">[2]</a>.</p>
+      <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99% <a class="cite" href="#ref3" aria-label="Reference 3">[3]</a>. Also, existing systems are not commercially available and are very expensive <a class="cite" href="#ref4" aria-label="Reference 4">[4]</a>.</p>
       <p>Our goal is to build an accessible, low-cost hardware that makes reliable quantitative skin measurements. Our prototype is not a diagnostic tool but rather a proof of concept and a foundation for future work on affordable tissue assessment.</p>
     </div>
     <div class="facts">
@@ -438,7 +445,18 @@ footer p { margin: 0.3rem 0; }
       <iframe src="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/preview"
         title="Project video" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
     </div>
-    <p class="video-link"><a href="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/view?usp=share_link" target="_blank" rel="noopener">Open it in Google Drive</a>.</p>
+    <p class="video-link">Video not loading? <a href="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/view?usp=share_link" target="_blank" rel="noopener">Open it in Google Drive</a>.</p>
+  </section>
+
+  <!-- references -->
+  <section class="block" id="references">
+    <h2>References</h2>
+    <ol class="refs">
+      <li id="ref1">K. S. Sharma, P. Lim, and M. T. Brotherston, &ldquo;Excision versus incision biopsy in the management of malignant melanoma,&rdquo; <i>The Journal of Dermatological Treatment</i>, vol. 27, no. 1, pp. 88&ndash;90, 2016, doi: <a href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener">10.3109/09546634.2015.1034083</a>.</li>
+      <li id="ref2">C. Beard and G. J. Schmieder, &ldquo;Excisional Biopsy,&rdquo; <i>NIH.gov</i>, Nov. 23, 2018. <a href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK534835/</a> (accessed Sept. 15, 2026).</li>
+      <li id="ref3">&ldquo;Melanoma Cancer,&rdquo; <i>Cancer Research Institute</i>, Apr. 29, 2025. <a href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener">https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer</a> (accessed Sept. 15, 2026).</li>
+      <li id="ref4">A. T. Young <i>et al.</i>, &ldquo;The role of technology in melanoma screening and diagnosis,&rdquo; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</li>
+    </ol>
   </section>
 
 </main>
