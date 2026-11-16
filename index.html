@@ -409,13 +409,6 @@ figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; 
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes appear { to { opacity: 1; } }
 
-/* secret screen */
-.secret { position: fixed; inset: 0; z-index: 100; background: #0B0B09; cursor: grab; touch-action: none;
-  clip-path: circle(0px at var(--ox, 50%) var(--oy, 0%)); transition: clip-path 0.9s cubic-bezier(0.6, 0, 0.3, 1); }
-.secret.on { clip-path: circle(150% at var(--ox, 50%) var(--oy, 0%)); }
-.secret:active { cursor: grabbing; }
-.secret canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.in { opacity: 1; transform: none; }
 section.block h2 { font-weight: 500; }
@@ -1078,7 +1071,7 @@ section.block h2 { font-weight: 500; }
     draw();
   })();
 
-  /* ---------- logo: outline board -> real PYNQ-Z2 on hover; five clicks = secret screen ---------- */
+  /* ---------- logo: outline board -> real PYNQ-Z2 on hover ---------- */
   (() => {
     const logo = document.querySelector('.logo');
     let s = '';
@@ -1135,17 +1128,6 @@ section.block h2 { font-weight: 500; }
     s += `<circle cx="608" cy="300" r="30" fill="#F7E64B"/>`;
     s += `<text x="472" y="98" font-family="Arial, sans-serif" font-size="11" fill="${SILK}">RASPBERRY PI (BOARD CONNECTS OUTWARD)</text>`;
     logo.querySelector('.color').innerHTML = s;
-    let clicks = 0, resetTimer = 0;
-    logo.addEventListener('click', () => {
-      clicks++;
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => clicks = 0, 2500);
-      if (clicks >= 5) {
-        clicks = 0;
-        const r = logo.getBoundingClientRect();
-        secretScreen(r.left + r.width / 2, r.top + r.height / 2);
-      }
-    });
   })();
 
   /* ---------- scroll reveal, re-run on every page change ---------- */
@@ -1255,131 +1237,6 @@ section.block h2 { font-weight: 500; }
     root.addEventListener('pointerout', e => { if (e.target.closest('.rm-bar')) tip.classList.remove('show'); });
   })();
 
-  /* ---------- secret screen (five logo clicks) ---------- */
-  let secretOpen = false;
-  function secretScreen(ox, oy) {
-    if (secretOpen) return;
-    secretOpen = true;
-    const el = document.createElement('div');
-    el.className = 'secret';
-    el.setAttribute('role', 'dialog');
-    el.setAttribute('aria-label', 'Secret screen');
-    el.style.setProperty('--ox', ox + 'px');
-    el.style.setProperty('--oy', oy + 'px');
-    el.innerHTML = `
-      <canvas aria-hidden="true"></canvas>`;
-    document.body.appendChild(el);
-
-    const cv = el.querySelector('canvas'), ctx = cv.getContext('2d');
-    const GOLD = '#F5C518';
-    let W = 0, H = 0, raf = 0, closed = false, t = 0;
-    let spin = 0, spinV = 0.006, pitch = 0.42, pitchT = 0.42;
-    let dragging = false, lastX = 0, lastY = 0, moved = 0;
-
-    function resize() {
-      const d = Math.min(window.devicePixelRatio || 1, 2);
-      W = el.clientWidth; H = el.clientHeight;
-      cv.width = W * d; cv.height = H * d;
-      ctx.setTransform(d, 0, 0, d, 0, 0);
-    }
-
-    const RINGS = 18, SEG = 96;
-    const wob = [];
-    for (let k = 0; k < 4; k++) wob.push({ f: 2 + k * 2 + Math.floor(Math.random() * 2), a: Math.random() * 6.28, m: 0.05 / (k + 1) });
-    function radiusAt(level, ang) {
-      let w = 0;
-      const rough = Math.pow(1 - level, 1.6);
-      for (const q of wob) w += q.m * Math.sin(q.f * ang + q.a + level * 3) * (0.4 + 1.6 * rough);
-      return Math.max(0.02, Math.pow(1 - level, 0.85)) * (1 + w);
-    }
-
-    function frame() {
-      t += 0.016;
-      if (!dragging) spinV += (0.006 - spinV) * 0.02;
-      spin += spinV;
-      pitch += (pitchT - pitch) * 0.1;
-      ctx.clearRect(0, 0, W, H);
-      const S = Math.min(W, H) * 0.4, cx = W / 2, cy = H * 0.66;
-      const peakH = S * 0.75;
-      const breathe = 1 + 0.03 * Math.sin(t * 1.3);
-      const cp = Math.cos(pitch), sp = Math.sin(pitch), cs = Math.cos(spin), ss = Math.sin(spin);
-      const project = (x, y, z) => {
-        const rx = x * cs - z * ss, rz = x * ss + z * cs;
-        return [cx + rx, cy - y * cp + rz * sp];
-      };
-
-      for (let g = 0; g < 3; g++) {
-        const scale = 1.35 + g * 0.3;
-        ctx.globalAlpha = 0.16 - g * 0.04;
-        ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
-        ctx.beginPath();
-        for (let i = 0; i <= SEG; i++) {
-          const a = (i / SEG) * Math.PI * 2, r = S * scale * radiusAt(0.02 * g, a + g);
-          const p = project(Math.cos(a) * r, 0, Math.sin(a) * r);
-          i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]);
-        }
-        ctx.stroke();
-      }
-
-      for (let k = 0; k < RINGS; k++) {
-        const level = k / RINGS;
-        const y = peakH * breathe * (1 - Math.pow(1 - level, 2.2));
-        ctx.globalAlpha = 0.45 + 0.55 * level;
-        ctx.lineWidth = k === 0 ? 2.2 : 1.4;
-        ctx.strokeStyle = GOLD;
-        ctx.beginPath();
-        for (let i = 0; i <= SEG; i++) {
-          const a = (i / SEG) * Math.PI * 2, r = S * radiusAt(level, a);
-          const p = project(Math.cos(a) * r, y, Math.sin(a) * r);
-          i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]);
-        }
-        ctx.stroke();
-      }
-
-      const top = project(0, peakH * breathe, 0);
-      const pinTop = Math.max(top[1] - S * 0.32, 110);
-      ctx.globalAlpha = 1; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(top[0], top[1] - 6); ctx.lineTo(top[0], pinTop); ctx.stroke();
-      ctx.fillStyle = GOLD;
-      ctx.beginPath(); ctx.arc(top[0], pinTop - 14, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.font = '600 15px "DM Sans", system-ui, sans-serif';
-      ctx.textAlign = 'center';
-      const deg = ((spin * 180 / Math.PI) % 360 + 360) % 360;
-      ctx.fillText(deg.toFixed(0).padStart(3, '0') + '°', top[0], pinTop - 28);
-
-      if (!closed) raf = requestAnimationFrame(frame);
-    }
-
-    function close() {
-      if (closed) return;
-      closed = true;
-      document.removeEventListener('keydown', onKey);
-      window.removeEventListener('resize', resize);
-      el.classList.remove('on');
-      setTimeout(() => { cancelAnimationFrame(raf); el.remove(); secretOpen = false; }, reduceMotion ? 0 : 900);
-    }
-    const onKey = e => { if (e.key === 'Escape') close(); };
-    document.addEventListener('keydown', onKey);
-    window.addEventListener('resize', resize);
-
-    el.addEventListener('pointerdown', e => { dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY; el.setPointerCapture(e.pointerId); });
-    el.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      const dx = e.clientX - lastX, dy = e.clientY - lastY;
-      moved += Math.abs(dx) + Math.abs(dy);
-      spinV = dx * 0.004;
-      pitchT = Math.max(0.1, Math.min(1.25, pitchT + dy * 0.004));
-      lastX = e.clientX; lastY = e.clientY;
-    });
-    el.addEventListener('pointerup', () => { dragging = false; if (moved < 6) close(); });
-
-    resize();
-    if (reduceMotion) { spinV = 0; el.classList.add('on'); frame(); return; }
-    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('on')));
-    frame();
-  }
-
-  
   route();
 </script>
 </body>
