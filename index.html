@@ -181,6 +181,45 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
 .to-top:hover { background: var(--sky); }
 @media (max-width: 900px) { .foot-info { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.4rem 3rem; } }
 
+/* ---------- team page (accordion list) ---------- */
+.team-wrap { display: grid; grid-template-columns: 1fr 1.25fr; gap: 6vw; padding: 9rem 6vw 7rem; align-items: start; }
+.team-intro { position: sticky; top: 6.5rem; }
+.tag-strong { font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.95rem; color: var(--ink); margin: 0 0 1.5rem; }
+.team-big { font-family: var(--serif); font-weight: 500; color: var(--ink); font-size: clamp(2.4rem, 4.2vw, 4rem); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 1.75rem; }
+.team-word { font-size: clamp(3.8rem, 9vw, 8.5rem); margin: 0 0 2.5rem; }
+.team-lead { font-size: 1.15rem; color: var(--ink); max-width: 36ch; margin: 0 0 2.2rem; }
+.team-filter { list-style: none; margin: 0; padding: 0; border-left: 1.5px solid var(--ink); }
+.team-filter a { display: block; padding: 0.55rem 0 0.55rem 1.1rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.92rem; color: var(--ink); text-decoration: none; position: relative; }
+.team-filter a.on { font-weight: 500; }
+.team-filter a.on::before { content: ""; position: absolute; left: -1.5px; top: 0; bottom: 0; width: 5px; background: var(--ink); }
+.team-filter a:hover { color: var(--blue); }
+.person-row { border-bottom: 1.5px solid var(--ink); }
+.person-head {
+  width: 100%; background: none; border: 0; cursor: pointer; text-align: left; color: var(--ink);
+  display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 2.2rem 0;
+  font: inherit;
+}
+.pname { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 3.4vw, 3.3rem); line-height: 1.1; letter-spacing: -0.01em; }
+.prole { display: block; margin-top: 0.7rem; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.92rem; }
+.plus {
+  flex: 0 0 auto; width: 96px; height: 96px; border: 1.5px solid var(--ink); border-radius: 50%; position: relative;
+  transition: background 0.3s, transform 0.4s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.plus::before, .plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 40px; height: 1.5px; background: var(--ink); transform: translate(-50%, -50%); }
+.plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+.person-head:hover .plus { background: var(--sky); }
+.person-head[aria-expanded="true"] .plus { transform: rotate(45deg); background: var(--sky); }
+.person-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s ease; }
+.person-body > div { overflow: hidden; }
+.person-body p { margin: 0 0 1rem; max-width: 52ch; font-size: 1.1rem; color: var(--ink); }
+.person-body p:last-child { margin-bottom: 2.2rem; font-family: var(--mono); font-size: 0.98rem; }
+.person-row.open .person-body { grid-template-rows: 1fr; }
+@media (max-width: 900px) {
+  .team-wrap { grid-template-columns: 1fr; padding-top: 7.5rem; }
+  .team-intro { position: static; }
+  .plus { width: 64px; height: 64px; } .plus::before, .plus::after { width: 26px; }
+}
+
 /* sections */
 section.block { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem 1rem; }
 section.block h2 { font-family: var(--serif); color: var(--ink); font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0 0 1.5rem; line-height: 1.2; }
@@ -712,21 +751,45 @@ section.block h2 { font-weight: 500; }
   </article>
 
   <article class="page" data-page="team" data-title="Team">
-    <header class="page-head band peach">
-      
-      <h1 class="big">Team</h1>
-    </header>
-    <section class="block">
-      <div class="team">
-        <div class="panel person"><h3>Prof. Michael Hall</h3><p class="role">Advisor and client</p>
-          <p>Professor of Computer Science &amp; Engineering and Electrical &amp; Systems Engineering. Guides FPGA development and system integration on the PYNQ-Z2.</p>
-          <p><a href="mailto:mhall24@wustl.edu">mhall24@wustl.edu</a></p></div>
-        <div class="panel person"><h3>Ines Nix</h3><p class="role">B.S. Computer Engineering, December 2026</p>
-          <p>Builds the analog circuit, Cole-Cole analysis, and the Flask dashboard. Background in embedded systems and computational biology research.</p>
-          <p><a href="mailto:i.n.nix@wustl.edu">i.n.nix@wustl.edu</a></p></div>
-        <div class="panel person"><h3>Emily Seligson</h3><p class="role">B.S. Computer Engineering, December 2026</p>
-          <p>Leads FPGA programming, ARM processing, and project planning. Interested in embedded systems, microcontrollers, and assistive biotechnology.</p>
-          <p><a href="mailto:e.d.seligson@wustl.edu">e.d.seligson@wustl.edu</a></p></div>
+    <section class="team-wrap">
+      <div class="team-intro">
+        <h1 class="big team-word">Team</h1>
+        <ul class="team-filter">
+          <li><a href="#/team" data-jump="advisor" class="on">Advisor</a></li>
+          <li><a href="#/team" data-jump="students">Students</a></li>
+        </ul>
+      </div>
+      <div class="people">
+        <div class="person-row" id="advisor">
+          <button class="person-head" aria-expanded="false">
+            <span><span class="pname">Prof. Michael Hall</span><span class="prole">Advisor and client</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="person-body"><div>
+            <p>Professor of Computer Science &amp; Engineering and Electrical &amp; Systems Engineering. Guides FPGA development and system integration on the PYNQ-Z2.</p>
+            <p><a href="mailto:mhall24@wustl.edu">mhall24@wustl.edu</a></p>
+          </div></div>
+        </div>
+        <div class="person-row" id="students">
+          <button class="person-head" aria-expanded="false">
+            <span><span class="pname">Ines Nix</span><span class="prole">B.S. Computer Engineering, December 2026</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="person-body"><div>
+            <p>Builds the analog circuit, Cole-Cole analysis, and the Flask dashboard. Background in embedded systems and computational biology research.</p>
+            <p><a href="mailto:i.n.nix@wustl.edu">i.n.nix@wustl.edu</a></p>
+          </div></div>
+        </div>
+        <div class="person-row">
+          <button class="person-head" aria-expanded="false">
+            <span><span class="pname">Emily Seligson</span><span class="prole">B.S. Computer Engineering, December 2026</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="person-body"><div>
+            <p>Leads FPGA programming, ARM processing, and project planning. Interested in embedded systems, microcontrollers, and assistive biotechnology.</p>
+            <p><a href="mailto:e.d.seligson@wustl.edu">e.d.seligson@wustl.edu</a></p>
+          </div></div>
+        </div>
       </div>
     </section>
   </article>
@@ -1036,6 +1099,20 @@ section.block h2 { font-weight: 500; }
     if (!io) { els.forEach(el => el.classList.add('in')); return; }
     els.forEach(el => { if (!el.classList.contains('in')) { if (!el.classList.contains('spectrum')) el.classList.add('reveal'); io.observe(el); } });
   }
+
+  /* ---------- team accordion ---------- */
+  document.querySelectorAll('.person-head').forEach(btn => btn.addEventListener('click', () => {
+    const row = btn.closest('.person-row'), open = !row.classList.contains('open');
+    row.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+  }));
+  document.querySelectorAll('.team-filter a').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.team-filter a').forEach(x => x.classList.toggle('on', x === a));
+    const row = document.getElementById(a.dataset.jump);
+    row.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    if (!row.classList.contains('open')) row.querySelector('.person-head').click();
+  }));
 
   /* ---------- secret screen (five logo clicks) ---------- */
   let secretOpen = false;
