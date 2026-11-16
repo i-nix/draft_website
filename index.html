@@ -84,7 +84,10 @@ body.menu-open .drawer { transform: none; visibility: visible; transition: trans
 }
 .drawer li a:hover { background: var(--hl, var(--sky)); color: var(--ink); }
 .drawer li a.active { font-style: italic; }
-.drawer ul.sub { margin: 0.2rem 0 0.8rem 0.9rem; border-left: 1.5px solid rgba(244, 241, 234, 0.25); padding-left: 0.6rem; }
+.drawer ul.sub { margin: 0 0 0 0.9rem; border-left: 1.5px solid rgba(244, 241, 234, 0.25); padding-left: 0.6rem;
+  max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; }
+.drawer li.has-sub:hover ul.sub, .drawer li.has-sub:focus-within ul.sub { max-height: 260px; opacity: 1; margin: 0.2rem 0 0.8rem 0.9rem; }
+@media (hover: none) { .drawer ul.sub { max-height: none; opacity: 1; margin: 0.2rem 0 0.8rem 0.9rem; } }
 .drawer ul.sub li a {
   font-family: var(--mono); font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 0.35rem 0.9rem; margin: 0; color: #C9D6E3;
@@ -220,11 +223,70 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
   .plus { width: 64px; height: 64px; } .plus::before, .plus::after { width: 26px; }
 }
 
+/* ---------- timeline roadmap ---------- */
+.tl-summary { display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; margin-bottom: 2.5rem; }
+.tl-stat strong { font-family: var(--serif); font-weight: 500; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 1; color: var(--ink); margin-right: 0.6rem; }
+.tl-stat span { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.9rem; color: var(--ink); }
+.tl-progress { height: 14px; border-radius: 999px; background: var(--soft); border: 1.5px solid var(--ink); overflow: hidden; }
+.tl-progress span { display: block; height: 100%; width: 0; background: var(--ink); border-radius: 999px; transition: width 1.2s ease; }
+.tl-legend { display: flex; flex-wrap: wrap; gap: 1.4rem; margin: 0.9rem 0 0; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.lg { display: inline-block; vertical-align: -2px; margin-right: 0.45rem; width: 22px; height: 12px; border-radius: 999px; }
+.lg.done { background: var(--ink); }
+.lg.open { background: var(--sky); border: 1.5px solid var(--ink); }
+.lg.dot { width: 12px; background: var(--ink); transform: rotate(45deg); border-radius: 2px; }
+.lg.today { width: 2px; height: 14px; border-radius: 0; background: #C2410C; }
+
+.roadmap-scroll { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--card); }
+.roadmap { min-width: 1000px; display: grid; grid-template-columns: 300px 1fr; position: relative; }
+.rm-axis-label, .rm-label { padding: 0 1.1rem; border-right: 1.5px solid var(--line); display: flex; align-items: center; gap: 0.6rem; }
+.rm-axis-label { font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 1.5px solid var(--ink); }
+.rm-axis { position: relative; height: 56px; border-bottom: 1.5px solid var(--ink); }
+.rm-month { position: absolute; top: 8px; font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); font-weight: 500; }
+.rm-week { position: absolute; bottom: 7px; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); transform: translateX(-50%); }
+.rm-group { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; padding: 1rem 1.1rem 0.4rem; background: var(--soft); border-top: 1.5px solid var(--line); }
+.rm-group h3 { margin: 0 !important; font-family: var(--serif); font-weight: 500; font-size: 1.25rem; color: var(--ink); }
+.rm-group span { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.rm-label { font-size: 0.95rem; color: var(--ink); min-height: 44px; line-height: 1.3; padding-top: 0.35rem; padding-bottom: 0.35rem; }
+.rm-label em { font-style: normal; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin-left: auto; }
+.rm-label .st { flex: 0 0 auto; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+.rm-label .st.done { background: var(--ink); }
+.rm-label .st.done::after { content: ""; width: 6px; height: 3px; border-left: 1.6px solid var(--cream); border-bottom: 1.6px solid var(--cream); transform: rotate(-45deg) translate(1px, -1px); }
+.rm-track { position: relative; min-height: 44px; border-bottom: 1px solid #E3E8EE; }
+.rm-grid { position: absolute; top: 0; bottom: 0; width: 1px; background: #E3E8EE; }
+.rm-bar {
+  position: absolute; top: 50%; height: 20px; transform: translateY(-50%); border-radius: 999px; cursor: default;
+  border: 1.5px solid var(--ink); background: var(--ink); transition: box-shadow 0.2s, transform 0.2s;
+}
+.rm-bar.open { background: var(--sky); }
+.rm-bar.ongoing { border-right: 0; border-radius: 999px 0 0 999px; background: linear-gradient(90deg, var(--sky) 60%, rgba(207, 230, 248, 0)); }
+.rm-bar.day { width: 16px !important; height: 16px; border-radius: 3px; transform: translate(-50%, -50%) rotate(45deg); }
+.rm-bar.day.open { background: var(--sky); }
+.rm-bar:hover { box-shadow: 0 0 0 4px rgba(47, 93, 138, 0.2); z-index: 3; }
+.rm-seg { font-family: var(--mono); font-size: 0.68rem; color: var(--cream); display: grid; place-items: center; }
+.rm-bar.open.rm-seg { color: var(--ink); }
+.rm-today { position: absolute; top: 0; bottom: 0; width: 2px; background: #C2410C; z-index: 4; pointer-events: none; }
+.rm-today::before { content: "Today"; position: absolute; top: 34px; left: 6px; font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #C2410C; background: var(--card); padding: 0 4px; }
+.rm-tip {
+  position: fixed; z-index: 60; pointer-events: none; background: var(--night); color: var(--cream); border-radius: 12px;
+  padding: 0.6rem 0.85rem; font-size: 0.88rem; line-height: 1.4; max-width: 280px; opacity: 0; transition: opacity 0.15s;
+}
+.rm-tip b { display: block; font-weight: 500; }
+.rm-tip span { font-family: var(--mono); font-size: 0.78rem; color: #B9C6D3; }
+.rm-tip.show { opacity: 1; }
+.tl-next { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; margin-top: 2rem; }
+.tl-next .tag { margin: 0; flex-basis: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.chip { border: 1.5px dashed var(--ink); border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.95rem; color: var(--ink); }
+.chip em { font-style: normal; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); margin-left: 0.3rem; }
+.tl-next .pill { margin-top: 0; }
+.rail-item.now::before { background: var(--sky); box-shadow: 0 0 0 6px rgba(207, 230, 248, 0.9); }
+@media (max-width: 900px) { .tl-summary { grid-template-columns: 1fr; gap: 1rem; } }
+
 /* sections */
-section.block { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem 1rem; }
+section.block { max-width: none; margin: 0; padding: 4.5rem 6vw 1rem; }
 section.block h2 { font-family: var(--serif); color: var(--ink); font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0 0 1.5rem; line-height: 1.2; }
 section.block h3 { font-family: var(--serif); color: var(--ink); font-size: 1.3rem; margin: 0 0 0.5rem; }
-.prose { max-width: 70ch; }
+.prose { max-width: 82ch; }
 .prose p { margin: 0 0 1.15rem; }
 .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 2rem 2.25rem; }
 
@@ -259,7 +321,7 @@ section.block h3 { font-family: var(--serif); color: var(--ink); font-size: 1.3r
 .rail-item::before { content: ""; position: absolute; left: -2.55rem; top: 1.7rem; width: 14px; height: 14px; border-radius: 50%; background: var(--card); border: 3px solid var(--blue); }
 .rail-item .panel { padding: 1.5rem 2rem; }
 .rail-item .when { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.25rem; }
-.rail-item p { margin: 0.25rem 0 0; max-width: 72ch; }
+.rail-item p { margin: 0.25rem 0 0; max-width: 90ch; }
 .rail-item.done::before { background: var(--blue); }
 
 /* playground */
@@ -305,7 +367,7 @@ figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; 
 .parts li:last-child { border-bottom: 0; }
 
 .note { background: var(--soft); border-radius: 16px; padding: 1.75rem 2.25rem; margin-top: 2rem; border-left: 4px solid var(--blue); }
-.note p { margin: 0; max-width: 75ch; }
+.note p { margin: 0; max-width: 95ch; }
 
 /* team */
 .team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -409,7 +471,7 @@ section.block h2 { font-weight: 500; }
 <div class="scrim"></div>
 <nav class="drawer" id="drawer" aria-label="Pages">
   <ul>
-    <li><a href="#/home" data-page="home" style="--hl:#CFE6F8">Home</a><ul class="sub"><li><a href="#/home?s=scope">Project Scope</a></li><li><a href="#/home?s=justification">Justification</a></li><li><a href="#/home?s=description">Project Description</a></li><li><a href="#/home?s=aims">Aims</a></li><li><a href="#/home?s=video">Interim Video Update</a></li></ul></li>
+    <li class="has-sub"><a href="#/home" data-page="home" style="--hl:#CFE6F8">Home</a><ul class="sub"><li><a href="#/home?s=scope">Project Scope</a></li><li><a href="#/home?s=justification">Justification</a></li><li><a href="#/home?s=description">Project Description</a></li><li><a href="#/home?s=aims">Aims</a></li><li><a href="#/home?s=video">Interim Video Update</a></li></ul></li>
     <li><a href="#/how" data-page="how" style="--hl:#CFE6F8">How It Works</a></li>
     <li><a href="#/design" data-page="design" style="--hl:#CFE6F8">Design</a></li>
     <li><a href="#/results" data-page="results" style="--hl:#CFE6F8">Results</a></li>
@@ -585,34 +647,6 @@ section.block h2 { font-weight: 500; }
         <figcaption>Why we sweep frequency: low-frequency current flows around cells, high-frequency current passes through them.</figcaption>
       </figure>
 
-      <div class="panel playground">
-        <h3>Try the Cole-Cole model</h3>
-        <p class="sub">Move the sliders to see how the four fitted parameters change the shape of the spectrum. 20 points from 1 kHz to 100 kHz, like our sweep. Hover a point to see its frequency. (Illustration, not measured data.)</p>
-        <div class="pg-grid">
-          <div class="pg-plot">
-            <svg id="pg-svg" viewBox="0 0 520 300" role="img" aria-label="Interactive Cole-Cole plot of reactance against resistance">
-              <line x1="50" y1="250" x2="510" y2="250" stroke="#B7C6D4" stroke-width="1.5"/>
-              <line x1="50" y1="250" x2="50" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
-              <text x="510" y="285" text-anchor="end" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">Resistance (&Omega;)</text>
-              <text x="58" y="30" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">&minus;Reactance (&Omega;)</text>
-              <g id="pg-ticks"></g>
-              <path id="pg-curve" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
-              <g id="pg-dots"></g>
-            </svg>
-            <p class="pg-readout" id="pg-readout" aria-live="polite">&nbsp;</p>
-          </div>
-          <div class="pg-controls">
-            <label>R<sub>0</sub>, low-frequency resistance <span id="o-r0"></span>
-              <input type="range" id="s-r0" min="300" max="3000" step="10" value="1500"></label>
-            <label>R<sub>&infin;</sub>, high-frequency resistance <span id="o-rinf"></span>
-              <input type="range" id="s-rinf" min="50" max="1000" step="10" value="300"></label>
-            <label>Characteristic frequency <span id="o-fc"></span>
-              <input type="range" id="s-fc" min="0" max="2" step="0.01" value="1.1"></label>
-            <label>&alpha;, spread factor <span id="o-a"></span>
-              <input type="range" id="s-a" min="0.4" max="1" step="0.01" value="0.75"></label>
-          </div>
-        </div>
-      </div>
     </section>
   </article>
 
@@ -733,16 +767,42 @@ section.block h2 { font-weight: 500; }
     <header class="page-head band sky">
       
       <h1 class="big">Timeline</h1>
+      <p class="intro">Our GitHub project roadmap, from the proposal to the final demo. Hover any bar for its dates.</p>
     </header>
     <section class="block">
+      <div class="tl-summary">
+        <div class="tl-stat"><strong id="tl-done">0</strong><span>of <b id="tl-total">0</b> tasks closed</span></div>
+        <div class="tl-bar-wrap">
+          <div class="tl-progress"><span id="tl-fill"></span></div>
+          <p class="tl-legend">
+            <span><i class="lg done"></i>Closed</span>
+            <span><i class="lg open"></i>Open</span>
+            <span><i class="lg dot"></i>One-day task</span>
+            <span><i class="lg today"></i>Today</span>
+          </p>
+        </div>
+      </div>
+      <div class="roadmap-scroll"><div class="roadmap" id="roadmap"></div></div>
+      <div class="tl-next">
+        <p class="tag">Not yet scheduled</p>
+        <div class="chips">
+          <span class="chip">Frequency sweep and display the impedance spectrum <em>#35</em></span>
+          <span class="chip">Compare to published skin impedance data <em>#36</em></span>
+        </div>
+        <a class="pill" href="https://github.com/users/emilyseligson/projects/2/views/1?layout=roadmap" target="_blank" rel="noopener">Full roadmap on GitHub &#8599;</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Milestones</h2>
       <div class="rail">
         <div class="rail-item done"><div class="panel"><p class="when">September 2026</p><h3>Proposal, schematic, and parts</h3>
           <p>Formal proposal submitted, front-end schematic completed in KiCad, and components ordered and delivered.</p></div></div>
-        <div class="rail-item"><div class="panel"><p class="when">October 2026</p><h3>Breadboard and FPGA signal output</h3>
+        <div class="rail-item done"><div class="panel"><p class="when">October 2026</p><h3>Breadboard and FPGA signal output</h3>
           <p>Build and test the front end; verify current limits, set up SPI to the Pmods, and generate sine waves with DDS.</p></div></div>
         <div class="rail-item"><div class="panel"><p class="when">Late October to mid November 2026</p><h3>Demodulation and software</h3>
           <p>Capture ADC data and do demodulation on the FPGA, then build impedance calculation, Cole-Cole fitting, and the dashboard.</p></div></div>
-        <div class="rail-item"><div class="panel"><p class="when">November 2026</p><h3>Integration and skin measurements</h3>
+        <div class="rail-item now"><div class="panel"><p class="when">November 2026 &middot; in progress</p><h3>Integration and skin measurements</h3>
           <p>Connect the full system, validate, then run tests on skin.</p></div></div>
         <div class="rail-item"><div class="panel"><p class="when">December 2026</p><h3>Final report and demo</h3>
           <p>Final report, completed website, and a demonstration.</p></div></div>
@@ -873,7 +933,7 @@ section.block h2 { font-weight: 500; }
       t += 1;
       mouse.x += (mouse.tx - mouse.x) * 0.08; mouse.y += (mouse.ty - mouse.y) * 0.08;
       mouse.a += (mouse.at - mouse.a) * 0.08;
-      for (let k = pulses.length - 1; k >= 0; k--) { const p = pulses[k]; p.r += 3.5; p.life *= 0.99; if (p.life < 0.03) pulses.splice(k, 1); }
+      for (let k = pulses.length - 1; k >= 0; k--) { const p = pulses[k]; p.r += 2; p.life *= 0.993; if (p.life < 0.03) pulses.splice(k, 1); }
 
       ctx.clearRect(0, 0, W, H);
       // faint monitor grid
@@ -897,13 +957,13 @@ section.block h2 { font-weight: 500; }
           }
           let y;
           if (tr.ecg) {
-            const period = 260, u = (((x + t * 0.45 * tr.sp + tr.ph * 40) % period) + period) % period / period;
+            const period = 260, u = (((x + t * 0.15 * tr.sp + tr.ph * 40) % period) + period) % period / period;
             y = tr.y - tr.amp * 1.3 * beat(u) * boost;
           } else {
-            const phase = 2 * Math.PI * (tr.f0 * x + tr.f0 * 3 * x * x / W) - t * 0.007 * tr.sp + tr.ph;
-            y = tr.y + tr.amp * Math.sin(phase) * boost * (0.55 + 0.45 * Math.sin(t * 0.0012 + tr.i));
+            const phase = 2 * Math.PI * (tr.f0 * x + tr.f0 * 3 * x * x / W) - t * 0.0022 * tr.sp + tr.ph;
+            y = tr.y + tr.amp * Math.sin(phase) * boost * (0.55 + 0.45 * Math.sin(t * 0.0004 + tr.i));
           }
-          y -= spike * tr.amp * 2.4 * Math.sin(x * 0.09 + t * 0.05);
+          y -= spike * tr.amp * 2.4 * Math.sin(x * 0.09 + t * 0.02);
           x ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
         }
         ctx.lineWidth = tr.ecg ? 1.6 : 1.3;
@@ -1114,6 +1174,87 @@ section.block h2 { font-weight: 500; }
     if (!row.classList.contains('open')) row.querySelector('.person-head').click();
   }));
 
+  /* ---------- timeline roadmap (from the GitHub project) ---------- */
+  (() => {
+    const root = document.getElementById('roadmap');
+    if (!root) return;
+    const START = new Date(2026, 8, 14), DAYS = 91;            // Sep 14 - Dec 13, 2026
+    const idx = (m, d) => Math.round((new Date(2026, m - 1, d) - START) / 864e5);
+    const pct = i => (i / DAYS * 100).toFixed(3) + '%';
+    const fmt = (m, d) => new Date(2026, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    // [title, issue, start [m,d], end [m,d] | null (one day) | 'ongoing', closed?]
+    const groups = [
+      ['Proposal & planning', [
+        ['Formal proposal', 4, [9, 14], [9, 18], 1],
+        ['Order parts', 5, [9, 14], [9, 23], 1],
+        ['Research what needs to be ordered', 1, [9, 20], null, 1],
+        ['Peer review comments', 7, [9, 21], [9, 23], 1]]],
+      ['Hardware', [
+        ['Research and finalize circuit design', 12, [9, 17], [9, 24], 1],
+        ['Build circuit, check with oscilloscope', 13, [9, 29], null, 1],
+        ['Verify FPGA signals with DAC + oscilloscope', 16, [10, 19], null, 0]]],
+      ['FPGA & software', [
+        ['Read into PYNQ and next steps', 3, [9, 22], null, 1],
+        ['Hello world in a Jupyter notebook', 6, [9, 22], [9, 23], 1],
+        ['Set up PYNQ with Wi-Fi', 2, [9, 23], null, 1],
+        ['Pseudocode for the FPGA', 18, [10, 1], null, 1],
+        ['Program the FPGA and ADC to extract the signal', 14, [10, 8], null, 1],
+        ['Program the FPGA to send out waves', 15, [11, 1], null, 1],
+        ['Program the ARM to do the math on the inputs', 17, [11, 2], 'ongoing', 0]]],
+      ['Final deliverables', [
+        ['Poster draft', 24, [11, 11], 'ongoing', 0],
+        ['Final webpage', 25, [11, 11], 'ongoing', 0],
+        ['Final report', 28, [11, 11], 'ongoing', 0]]]
+    ];
+    const reports = [[5, 8, [9, 21], [9, 25], 1], [6, 9, [9, 28], [10, 2], 1], [7, 10, [10, 3], [10, 9], 1], [8, 11, [10, 10], [10, 16], 0],
+      [9, 19, [10, 17], [10, 23], 0], [10, 20, [10, 24], [10, 30], 0], [11, 21, [10, 31], [11, 6], 0], [12, 22, [11, 7], [11, 13], 0], [13, 23, [11, 14], [11, 20], 0]];
+
+    let html = '<div class="rm-axis-label">Task</div><div class="rm-axis">';
+    [['September', 9, 14], ['October', 10, 1], ['November', 11, 1], ['December', 12, 1]].forEach(([n, m, d]) =>
+      html += `<span class="rm-month" style="left:calc(${pct(idx(m, d))} + 6px)">${n}</span>`);
+    for (let i = 0; i < DAYS; i += 7) { const dt = new Date(START.getTime() + i * 864e5); html += `<span class="rm-week" style="left:${pct(i + 0.5)}">${dt.getDate()}</span>`; }
+    html += '</div>';
+    const grid = () => { let g = ''; for (let i = 0; i < DAYS; i += 7) g += `<span class="rm-grid" style="left:${pct(i)}"></span>`; return g; };
+    const bar = (t, n, s, e, done, extra = '', inner = '') => {
+      const a = idx(...s);
+      if (e === null) return `<span class="rm-bar day ${done ? '' : 'open'}" style="left:${pct(a + 0.5)}" data-tip="${t}" data-when="${fmt(...s)}" data-st="${done}"></span>`;
+      const b = e === 'ongoing' ? DAYS : idx(...e) + 1;
+      const when = e === 'ongoing' ? `${fmt(...s)} onward` : `${fmt(...s)} – ${fmt(...e)}`;
+      return `<span class="rm-bar ${done ? '' : 'open'} ${e === 'ongoing' ? 'ongoing' : ''} ${extra}" style="left:${pct(a)};width:${pct(b - a)}" data-tip="${t}" data-when="${when}" data-st="${done}">${inner}</span>`;
+    };
+    let total = 0, closed = 0;
+    groups.forEach(([name, items]) => {
+      const c = items.filter(x => x[4]).length; total += items.length; closed += c;
+      html += `<div class="rm-group"><h3>${name}</h3><span>${c} / ${items.length} closed</span></div>`;
+      items.forEach(([t, n, s, e, done]) => {
+        html += `<div class="rm-label"><span class="st ${done ? 'done' : ''}"></span>${t}<em>#${n}</em></div>`;
+        html += `<div class="rm-track">${grid()}${bar(t, n, s, e, done)}</div>`;
+      });
+    });
+    const rc = reports.filter(r => r[4]).length; total += reports.length; closed += rc;
+    html += `<div class="rm-group"><h3>Weekly progress reports</h3><span>${rc} / ${reports.length} closed</span></div>`;
+    html += `<div class="rm-label"><span class="st ${rc === reports.length ? 'done' : ''}"></span>Progress reports 5–13<em>#8–#23</em></div><div class="rm-track">${grid()}`;
+    reports.forEach(([k, n, s, e, done]) => html += bar(`Progress report ${k}`, n, s, e, done, 'rm-seg', k));
+    html += '</div>';
+    const now = new Date(), ti = (now - START) / 864e5;
+    if (ti >= 0 && ti <= DAYS) html += `<span class="rm-today" style="left:calc(300px + (100% - 300px) * ${(ti / DAYS).toFixed(4)})"></span>`;
+    root.innerHTML = html;
+
+    document.getElementById('tl-done').textContent = closed;
+    document.getElementById('tl-total').textContent = total;
+    const fill = document.getElementById('tl-fill');
+    new IntersectionObserver(([en]) => { if (en.isIntersecting) fill.style.width = (closed / total * 100) + '%'; }).observe(fill);
+
+    const tip = document.createElement('div'); tip.className = 'rm-tip'; document.body.appendChild(tip);
+    root.addEventListener('pointerover', e => {
+      const b = e.target.closest('.rm-bar'); if (!b) return;
+      tip.innerHTML = `<b>${b.dataset.tip}</b><span>${b.dataset.when} · ${b.dataset.st === '1' ? 'closed' : 'open'}</span>`;
+      tip.classList.add('show');
+    });
+    root.addEventListener('pointermove', e => { tip.style.left = Math.min(e.clientX + 14, innerWidth - 300) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+    root.addEventListener('pointerout', e => { if (e.target.closest('.rm-bar')) tip.classList.remove('show'); });
+  })();
+
   /* ---------- secret screen (five logo clicks) ---------- */
   let secretOpen = false;
   function secretScreen(ox, oy) {
@@ -1239,74 +1380,6 @@ section.block h2 { font-weight: 500; }
   }
 
   
-  /* ---------- Cole-Cole playground ---------- */
-  (() => {
-    const $ = id => document.getElementById(id);
-    const NS = 'http://www.w3.org/2000/svg';
-    const X0 = 50, Y0 = 250, PW = 460, PH = 230;
-    const N = 20, FMIN = 1e3, FMAX = 1e5;
-    const freqs = Array.from({ length: N }, (_, k) => FMIN * Math.pow(FMAX / FMIN, k / (N - 1)));
-    const fmtHz = f => f >= 1000 ? (f / 1000).toFixed(f < 10000 ? 1 : 0) + ' kHz' : Math.round(f) + ' Hz';
-    const dots = [];
-    for (let k = 0; k < N; k++) {
-      const c = document.createElementNS(NS, 'circle');
-      c.setAttribute('r', 5); c.setAttribute('fill', '#2F5D8A'); c.setAttribute('class', 'pg-dot');
-      c.addEventListener('mouseenter', () => showPoint(k));
-      c.addEventListener('focus', () => showPoint(k));
-      c.setAttribute('tabindex', '0');
-      $('pg-dots').appendChild(c); dots.push(c);
-    }
-    let last = [];
-    function showPoint(k) {
-      const p = last[k];
-      $('pg-readout').textContent = `${fmtHz(freqs[k])}: R = ${Math.round(p.re)} Ω, −X = ${Math.round(p.im)} Ω, |Z| = ${Math.round(Math.hypot(p.re, p.im))} Ω`;
-    }
-    function niceMax(v) {
-      const p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p;
-      return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
-    }
-    function z(f, r0, rinf, fc, a) {
-      const x = Math.pow(f / fc, a), th = a * Math.PI / 2;
-      const dr = 1 + x * Math.cos(th), di = x * Math.sin(th), m = dr * dr + di * di;
-      return { re: rinf + (r0 - rinf) * dr / m, im: (r0 - rinf) * di / m };
-    }
-    function update() {
-      const r0 = +$('s-r0').value;
-      if (+$('s-rinf').value > r0 - 50) $('s-rinf').value = r0 - 50;
-      const rinf = +$('s-rinf').value;
-      const fc = 1e3 * Math.pow(10, +$('s-fc').value);
-      const a = +$('s-a').value;
-      $('o-r0').textContent = r0 + ' Ω';
-      $('o-rinf').textContent = rinf + ' Ω';
-      $('o-fc').textContent = fmtHz(fc);
-      $('o-a').textContent = a.toFixed(2);
-
-      const xmax = niceMax(r0 * 1.1), s = PW / xmax;
-      const ticks = $('pg-ticks'); ticks.innerHTML = '';
-      for (let k = 1; k <= 4; k++) {
-        const v = xmax * k / 4, tx = X0 + v * s;
-        const tk = document.createElementNS(NS, 'text');
-        tk.setAttribute('x', tx); tk.setAttribute('y', Y0 + 18); tk.setAttribute('text-anchor', 'middle');
-        tk.setAttribute('font-family', 'DM Sans, sans-serif'); tk.setAttribute('font-size', '12'); tk.setAttribute('fill', '#6B7785');
-        tk.textContent = Math.round(v); ticks.appendChild(tk);
-      }
-      let d = '';
-      for (let k = 0; k <= 120; k++) {
-        const f = 10 * Math.pow(1e7 / 10, k / 120), p = z(f, r0, rinf, fc, a);
-        d += (k ? 'L' : 'M') + (X0 + p.re * s).toFixed(1) + ' ' + Math.max(Y0 - p.im * s, Y0 - PH).toFixed(1);
-      }
-      $('pg-curve').setAttribute('d', d);
-      last = freqs.map(f => z(f, r0, rinf, fc, a));
-      last.forEach((p, k) => {
-        dots[k].setAttribute('cx', (X0 + p.re * s).toFixed(1));
-        dots[k].setAttribute('cy', (Y0 - p.im * s).toFixed(1));
-      });
-    }
-    ['s-r0', 's-rinf', 's-fc', 's-a'].forEach(id => $(id).addEventListener('input', update));
-    update();
-  })();
-
-
   route();
 </script>
 </body>
