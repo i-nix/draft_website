@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization | ESE 4970</title>
+<title>PYNQ-Z2-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization | ESE 4970</title>
 <meta name="description" content="A low-cost FPGA system for quantitative, noninvasive assessment of the electrical properties of skin tissue. ESE 4970 capstone at Washington University in St. Louis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -233,7 +233,6 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
 .lg { display: inline-block; vertical-align: -2px; margin-right: 0.45rem; width: 22px; height: 12px; border-radius: 999px; }
 .lg.done { background: var(--ink); }
 .lg.open { background: var(--sky); border: 1.5px solid var(--ink); }
-.lg.dot { width: 12px; background: var(--ink); transform: rotate(45deg); border-radius: 2px; }
 .lg.today { width: 2px; height: 14px; border-radius: 0; background: #C2410C; }
 
 .roadmap-scroll { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--card); }
@@ -259,8 +258,6 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
 }
 .rm-bar.open { background: var(--sky); }
 .rm-bar.ongoing { border-right: 0; border-radius: 999px 0 0 999px; background: linear-gradient(90deg, var(--sky) 60%, rgba(207, 230, 248, 0)); }
-.rm-bar.day { width: 16px !important; height: 16px; border-radius: 3px; transform: translate(-50%, -50%) rotate(45deg); }
-.rm-bar.day.open { background: var(--sky); }
 .rm-bar:hover { box-shadow: 0 0 0 4px rgba(47, 93, 138, 0.2); z-index: 3; }
 .rm-seg { font-family: var(--mono); font-size: 0.68rem; color: var(--cream); display: grid; place-items: center; }
 .rm-bar.open.rm-seg { color: var(--ink); }
@@ -487,7 +484,7 @@ section.block h2 { font-weight: 500; }
   <article class="page" data-page="home" data-title="Home">
     <section class="hero">
       <canvas id="signals" aria-hidden="true"></canvas>
-      <h1>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
+      <h1>PYNQ-Z2-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
     </section>
 
     <section class="band sky" id="scope">
@@ -783,7 +780,6 @@ section.block h2 { font-weight: 500; }
           <p class="tl-legend">
             <span><i class="lg done"></i>Closed</span>
             <span><i class="lg open"></i>Open</span>
-            <span><i class="lg dot"></i>One-day task</span>
             <span><i class="lg today"></i>Today</span>
           </p>
         </div>
@@ -802,15 +798,17 @@ section.block h2 { font-weight: 500; }
     <section class="block">
       <h2>Milestones</h2>
       <div class="rail">
-        <div class="rail-item done"><div class="panel"><p class="when">September 2026</p><h3>Proposal, schematic, and parts</h3>
+        <div class="rail-item done"><div class="panel"><p class="when">September 2026 &middot; written proposal Sep 20, revision Oct 2</p><h3>Proposal, schematic, and parts</h3>
           <p>Formal proposal submitted, front-end schematic completed in KiCad, and components ordered and delivered.</p></div></div>
-        <div class="rail-item done"><div class="panel"><p class="when">October 2026</p><h3>Breadboard and FPGA signal output</h3>
-          <p>Build and test the front end; verify current limits, set up SPI to the Pmods, and generate sine waves with DDS.</p></div></div>
+        <div class="rail-item done"><div class="panel"><p class="when">Late September to October 2026</p><h3>Breadboard and FPGA signal output</h3>
+          <p>Build and test the front end; verify current limits and FPGA signals with the DAC and oscilloscope, set up SPI to the Pmods, and generate sine waves with DDS.</p></div></div>
+        <div class="rail-item done"><div class="panel"><p class="when">October 16, 2026 &middot; peer review the following week</p><h3>Draft website and video update</h3>
+          <p>Draft project website and recorded week 8 video update submitted, then peer reviewed.</p></div></div>
         <div class="rail-item"><div class="panel"><p class="when">Late October to mid November 2026</p><h3>Demodulation and software</h3>
           <p>Capture ADC data and do demodulation on the FPGA, then build impedance calculation, Cole-Cole fitting, and the dashboard.</p></div></div>
-        <div class="rail-item now"><div class="panel"><p class="when">November 2026 &middot; in progress</p><h3>Integration and skin measurements</h3>
+        <div class="rail-item now"><div class="panel"><p class="when">November 2026 &middot; in progress &middot; poster draft due Nov 30</p><h3>Integration and skin measurements</h3>
           <p>Connect the full system, validate, then run tests on skin.</p></div></div>
-        <div class="rail-item"><div class="panel"><p class="when">December 2026</p><h3>Final report and demo</h3>
+        <div class="rail-item"><div class="panel"><p class="when">December 2026 &middot; poster to printing Dec 1, demo Dec 4, website and report Dec 11</p><h3>Final report and demo</h3>
           <p>Final report, completed website, and a demonstration.</p></div></div>
       </div>
     </section>
@@ -1024,7 +1022,7 @@ section.block h2 { font-weight: 500; }
     pages.forEach(p => p.classList.toggle('current', p.dataset.page === id));
     document.querySelectorAll('.drawer a[data-page]').forEach(a => a.classList.toggle('active', a.dataset.page === id));
     const cur = pages.find(p => p.dataset.page === id);
-    document.title = (id === 'home' ? '' : cur.dataset.title + ' | ') + 'FPGA-Based EIS for Skin Tissue | ESE 4970';
+    document.title = (id === 'home' ? '' : cur.dataset.title + ' | ') + 'PYNQ-Z2-Based EIS for Skin Tissue | ESE 4970';
     if (id === 'home') { sig.resize(); sig.start(); } else sig.stop();
     const section = id === 'home' && query ? document.getElementById(new URLSearchParams(query).get('s')) : null;
     if (section) setTimeout(() => section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }), 60);
@@ -1180,29 +1178,36 @@ section.block h2 { font-weight: 500; }
     // [title, issue, start [m,d], end [m,d] | null (one day) | 'ongoing', closed?]
     const groups = [
       ['Proposal & planning', [
-        ['Formal proposal', 4, [9, 14], [9, 18], 1],
+        ['Formal proposal', 4, [9, 14], [9, 20], 1],
         ['Order parts', 5, [9, 14], [9, 23], 1],
         ['Research what needs to be ordered', 1, [9, 20], null, 1],
-        ['Peer review comments', 7, [9, 21], [9, 23], 1]]],
+        ['Peer review comments', 7, [9, 21], [9, 23], 1],
+        ['Revision of written proposal', null, [9, 28], [10, 2], 1]]],
       ['Hardware', [
         ['Research and finalize circuit design', 12, [9, 17], [9, 24], 1],
-        ['Build circuit, check with oscilloscope', 13, [9, 29], null, 1],
-        ['Verify FPGA signals with DAC + oscilloscope', 16, [10, 19], null, 0]]],
+        ['Build circuit, check with oscilloscope', 13, [9, 29], [10, 2], 1],
+        ['Verify FPGA signals with DAC + oscilloscope', 16, [9, 29], [10, 2], 1]]],
       ['FPGA & software', [
         ['Read into PYNQ and next steps', 3, [9, 22], null, 1],
         ['Hello world in a Jupyter notebook', 6, [9, 22], [9, 23], 1],
-        ['Set up PYNQ with Wi-Fi', 2, [9, 23], null, 1],
+        ['Set up PYNQ over Ethernet', 2, [9, 23], null, 1],
         ['Pseudocode for the FPGA', 18, [10, 1], null, 1],
         ['Program the FPGA and ADC to extract the signal', 14, [10, 8], null, 1],
         ['Program the FPGA to send out waves', 15, [11, 1], null, 1],
         ['Program the ARM to do the math on the inputs', 17, [11, 2], 'ongoing', 0]]],
+      ['Website & video update', [
+        ['Draft project website', null, [10, 5], [10, 16], 1],
+        ['Recorded video update (week 8)', null, [10, 12], [10, 16], 1],
+        ['Peer review of website and video', null, [10, 19], [10, 23], 1]]],
       ['Final deliverables', [
-        ['Poster draft', 24, [11, 11], 'ongoing', 0],
-        ['Final webpage', 25, [11, 11], 'ongoing', 0],
-        ['Final report', 28, [11, 11], 'ongoing', 0]]]
+        ['Poster draft (progress report 14)', 24, [11, 11], [11, 30], 0],
+        ['Demo day', null, [12, 4], null, 0],
+        ['Final webpage', 25, [11, 11], [12, 11], 0],
+        ['Final report', 28, [11, 11], [12, 11], 0]]]
     ];
-    const reports = [[5, 8, [9, 21], [9, 25], 1], [6, 9, [9, 28], [10, 2], 1], [7, 10, [10, 3], [10, 9], 1], [8, 11, [10, 10], [10, 16], 0],
-      [9, 19, [10, 17], [10, 23], 0], [10, 20, [10, 24], [10, 30], 0], [11, 21, [10, 31], [11, 6], 0], [12, 22, [11, 7], [11, 13], 0], [13, 23, [11, 14], [11, 20], 0]];
+    // progress reports: each bar runs the week leading up to its Friday due date
+    const reports = [[5, 8, [9, 19], [9, 25], 1], [6, 9, [9, 26], [10, 2], 1], [7, 10, [10, 3], [10, 9], 1], [8, 11, [10, 10], [10, 16], 1],
+      [9, 19, [10, 17], [10, 23], 1], [10, 20, [10, 24], [10, 30], 1], [11, 21, [10, 31], [11, 6], 1], [12, 22, [11, 7], [11, 13], 1], [13, 23, [11, 14], [11, 20], 0]];
 
     let html = '<div class="rm-axis-label">Task</div><div class="rm-axis">';
     [['September', 9, 14], ['October', 10, 1], ['November', 11, 1], ['December', 12, 1]].forEach(([n, m, d]) =>
@@ -1212,23 +1217,23 @@ section.block h2 { font-weight: 500; }
     const grid = () => { let g = ''; for (let i = 0; i < DAYS; i += 7) g += `<span class="rm-grid" style="left:${pct(i)}"></span>`; return g; };
     const bar = (t, n, s, e, done, extra = '', inner = '') => {
       const a = idx(...s);
-      if (e === null) return `<span class="rm-bar day ${done ? '' : 'open'}" style="left:${pct(a + 0.5)}" data-tip="${t}" data-when="${fmt(...s)}" data-st="${done}"></span>`;
+      if (e === null) return `<span class="rm-bar ${done ? '' : 'open'}" style="left:${pct(a)};width:max(34px, ${pct(1)})" data-tip="${t}" data-when="${fmt(...s)}" data-st="${done}"></span>`;
       const b = e === 'ongoing' ? DAYS : idx(...e) + 1;
       const when = e === 'ongoing' ? `${fmt(...s)} onward` : `${fmt(...s)} – ${fmt(...e)}`;
-      return `<span class="rm-bar ${done ? '' : 'open'} ${e === 'ongoing' ? 'ongoing' : ''} ${extra}" style="left:${pct(a)};width:${pct(b - a)}" data-tip="${t}" data-when="${when}" data-st="${done}">${inner}</span>`;
+      return `<span class="rm-bar ${done ? '' : 'open'} ${e === 'ongoing' ? 'ongoing' : ''} ${extra}" style="left:${pct(a)};width:max(34px, ${pct(b - a)})" data-tip="${t}" data-when="${when}" data-st="${done}">${inner}</span>`;
     };
     let total = 0, closed = 0;
     groups.forEach(([name, items]) => {
       const c = items.filter(x => x[4]).length; total += items.length; closed += c;
       html += `<div class="rm-group"><h3>${name}</h3><span>${c} / ${items.length} closed</span></div>`;
       items.forEach(([t, n, s, e, done]) => {
-        html += `<div class="rm-label"><span class="st ${done ? 'done' : ''}"></span>${t}<em>#${n}</em></div>`;
+        html += `<div class="rm-label"><span class="st ${done ? 'done' : ''}"></span>${t}</div>`;
         html += `<div class="rm-track">${grid()}${bar(t, n, s, e, done)}</div>`;
       });
     });
     const rc = reports.filter(r => r[4]).length; total += reports.length; closed += rc;
     html += `<div class="rm-group"><h3>Weekly progress reports</h3><span>${rc} / ${reports.length} closed</span></div>`;
-    html += `<div class="rm-label"><span class="st ${rc === reports.length ? 'done' : ''}"></span>Progress reports 5–13<em>#8–#23</em></div><div class="rm-track">${grid()}`;
+    html += `<div class="rm-label"><span class="st ${rc === reports.length ? 'done' : ''}"></span>Progress reports 5–13</div><div class="rm-track">${grid()}`;
     reports.forEach(([k, n, s, e, done]) => html += bar(`Progress report ${k}`, n, s, e, done, 'rm-seg', k));
     html += '</div>';
     const now = new Date(), ti = (now - START) / 864e5;
