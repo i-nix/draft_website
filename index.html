@@ -722,7 +722,7 @@ footer p { margin: 0.3rem 0; }
     const kick = () => { if (!raf) raf = requestAnimationFrame(draw); };
 
     states.forEach(s => {
-      s.a.addEventListener('mouseenter', () => { if (!s.a.classList.contains('tuned')) { s.ampT = 1; } s.revealT = 1; kick(); });
+      s.a.addEventListener('mouseenter', () => { if (s.a.classList.contains('tuned')) return; s.ampT = 1; s.revealT = 1; kick(); });
       s.a.addEventListener('mouseleave', () => {
         if (s.a.classList.contains('tuned')) { s.ampT = 0; s.revealT = 1; }
         else { s.ampT = 0; s.revealT = 0; }
@@ -736,10 +736,16 @@ footer p { margin: 0.3rem 0; }
         s.a.classList.add('tuned');
         s.ampT = 0; s.revealT = 1;
         kick();
+        clearTimeout(s.clearTimer);
         setTimeout(() => {
           target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
           history.replaceState(null, '', s.a.getAttribute('href'));
         }, reduceMotion ? 0 : 420);
+        s.clearTimer = setTimeout(() => {
+          s.a.classList.remove('tuned');
+          s.ampT = 0; s.revealT = 0;
+          kick();
+        }, reduceMotion ? 300 : 1400);
       });
     });
   })();
