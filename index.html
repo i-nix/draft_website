@@ -10,15 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
 :root {
-  --paper: #EEF1F4;      /* page background */
-  --bar: #E4E9EE;        /* top bar */
-  --band: #C9D8E6;       /* hero band */
+  --paper: #EEF1F4;
+  --bar: #E4E9EE;
+  --band: #C9D8E6;
   --card: #FBFCFD;
-  --ink: #1C2A39;        /* headings */
-  --text: #3A4756;       /* body */
-  --muted: #6B7785;      /* meta text*/
-  --blue: #2F5D8A;      
+  --ink: #1C2A39;
+  --text: #3A4756;
+  --muted: #6B7785;
+  --blue: #2F5D8A;
   --line: #B7C6D4;
+  --soft: #E3EBF3;
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 }
@@ -26,56 +27,73 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  margin: 0; background: var(--paper); color: var(--text);
+  font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
 }
 img { max-width: 100%; display: block; }
 a { color: var(--blue); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
 
 /* ---------- top bar ---------- */
-.topbar {
-  position: sticky; top: 0; z-index: 10;
-  background: var(--bar);
-  border-bottom: 1px solid var(--line);
-}
-.topbar-inner {
-  max-width: none; margin: 0;
-  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
-  padding: 1.1rem 2rem;
-}
+.topbar { position: sticky; top: 0; z-index: 20; background: var(--bar); border-bottom: 1px solid var(--line); }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0.9rem 2rem; }
 .brand {
   font-family: var(--serif); font-weight: 700; font-size: 1.6rem;
   color: var(--ink); text-decoration: none; letter-spacing: -0.01em;
+  perspective: 700px; display: inline-block;
 }
-.nav { display: flex; gap: 2.25rem; }
-.nav a {
-  color: var(--ink); text-decoration: none; font-size: 1.05rem; letter-spacing: 0.01em;
-}
-.nav a:hover { color: var(--blue); }
-.menu-btn {
-  display: none; background: none; border: 1px solid var(--line); border-radius: 6px;
-  font: inherit; color: var(--ink); padding: 0.35rem 0.8rem; cursor: pointer;
-}
-
-/* ---------- logo flip ---------- */
-.brand { perspective: 700px; display: inline-block; }
 .flip { display: inline-grid; transform-style: preserve-3d; transition: transform 0.75s cubic-bezier(0.3, 1.35, 0.5, 1); }
 .face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; }
 .back { transform: rotateY(180deg); }
 .brand.flipped .flip { transform: rotateY(180deg); }
-.chip .pin { fill: #B7C6D4; animation: blink 0.9s steps(1) infinite; }
-@keyframes blink { 50% { fill: #2F5D8A; } }
 
-/* ---------- nav: scope underline + frequency tags ---------- */
-.nav a { position: relative; }
-.nav a .scope { position: absolute; left: 0; bottom: -7px; width: 100%; height: 10px; overflow: visible; pointer-events: none; }
+/* PYNQ-Z2 board (back of the logo) */
+.board .led { animation: led 1.1s steps(1) infinite; }
+.board { filter: drop-shadow(0 1px 1.5px rgba(28, 42, 57, 0.35)); }
+.board .pin { fill: #D4AF37; animation: pinblink 0.9s steps(1) infinite; }
+@keyframes led { 50% { fill: #7A1424; } }
+@keyframes pinblink { 50% { fill: #5A4712; } }
+
+.right { display: flex; align-items: center; gap: 1.75rem; }
+.nav { display: flex; gap: 1.9rem; }
+.nav a, .drawer a { color: var(--ink); text-decoration: none; position: relative; }
+.nav a { font-size: 1.02rem; letter-spacing: 0.01em; }
+.nav a:hover, .nav a.active { color: var(--blue); }
+.nav a.active { font-weight: 700; }
+.scope { position: absolute; left: 0; bottom: -7px; width: 100%; height: 10px; overflow: visible; pointer-events: none; }
 .scope path { fill: none; stroke: var(--blue); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-/* ---------- secret screen ---------- */
+
+/* three-line menu button that turns into sine waves */
+.menu-toggle {
+  background: none; border: 0; border-radius: 8px; cursor: pointer;
+  width: 52px; height: 42px; padding: 0; display: grid; place-items: center; color: var(--ink);
+}
+.menu-toggle:hover { color: var(--blue); }
+.menu-toggle svg { width: 32px; height: 24px; overflow: visible; }
+.menu-toggle path { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+
+/* slide-out page menu */
+.scrim { position: fixed; inset: 0; background: rgba(28, 42, 57, 0.35); z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 88vw); z-index: 31;
+  background: var(--card); border-left: 1px solid var(--line); box-shadow: -18px 0 50px rgba(28, 42, 57, 0.15);
+  transform: translateX(100%); visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.4, 1), visibility 0s linear 0.4s;
+  padding: 1.5rem 2rem 2rem; overflow-y: auto;
+}
+body.menu-open .scrim { opacity: 1; pointer-events: auto; }
+body.menu-open .drawer { transform: none; visibility: visible; transition: transform 0.4s cubic-bezier(0.3, 1, 0.4, 1), visibility 0s; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.drawer-head span { font-family: var(--serif); font-weight: 700; font-size: 1.4rem; color: var(--ink); }
+.drawer-close { background: none; border: 0; font-size: 1.8rem; line-height: 1; color: var(--muted); cursor: pointer; }
+.drawer ol { list-style: none; margin: 0; padding: 0; counter-reset: pg; }
+.drawer li { counter-increment: pg; border-bottom: 1px solid #DCE4EC; }
+.drawer li a { display: flex; gap: 1rem; align-items: baseline; padding: 0.95rem 0; font-size: 1.15rem; }
+.drawer li a .lbl { position: relative; }
+.drawer li a.active { color: var(--blue); font-weight: 700; }
+.drawer .scope { bottom: -6px; }
+
+/* secret screen */
 .secret {
   position: fixed; inset: 0; z-index: 100; background: #0B0B09; cursor: grab; touch-action: none;
   clip-path: circle(0px at var(--ox, 50%) var(--oy, 0%));
@@ -85,86 +103,87 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
 .secret:active { cursor: grabbing; }
 .secret canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
+/* ---------- pages ---------- */
+.page { display: none; }
+.page.current { display: block; animation: pagein 0.45s ease; }
+@keyframes pagein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-/* ---------- hero ---------- */
+/* home hero */
 .hero { background: var(--band); padding: 5rem 1.5rem 6rem; position: relative; overflow: hidden; }
 .hero > *:not(#topo) { position: relative; z-index: 1; }
 #topo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; cursor: crosshair; }
-.hero-card {
-  max-width: 900px; margin: 0 auto;
-  background: var(--card); border-radius: 22px;
-  box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12);
-  padding: 3.25rem 3.5rem 3rem; text-align: center;
+.hero-card, .title-card {
+  max-width: 900px; margin: 0 auto; background: var(--card); border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12); text-align: center;
 }
-.title-card {
-  max-width: 900px; margin: 0 auto 2.5rem;
-  background: var(--card); border-radius: 22px;
-  box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12);
-  padding: 2.75rem 3.5rem; text-align: center;
-}
-.hero h1 {
-  font-family: var(--serif); color: var(--ink); font-weight: 700;
-  font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; margin: 0;
-}
-.hero .subtitle {
-  font-family: var(--serif); color: var(--blue); font-weight: 700;
-  font-size: clamp(1.75rem, 3.5vw, 2.4rem); line-height: 1.2; margin: 0 0 1.25rem;
-}
+.title-card { margin-bottom: 2.5rem; padding: 2.75rem 3.5rem; }
+.hero-card { padding: 3.25rem 3.5rem 3rem; }
+.hero h1 { font-family: var(--serif); color: var(--ink); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; margin: 0; }
+.hero .names { color: var(--muted); margin: 1rem 0 0; font-size: 1rem; }
+.hero .subtitle { font-family: var(--serif); color: var(--blue); font-weight: 700; font-size: clamp(1.75rem, 3.5vw, 2.4rem); line-height: 1.2; margin: 0 0 1.25rem; }
 .hero .lede { max-width: 62ch; margin: 0 auto; font-size: 1.15rem; line-height: 1.85; }
-.hero .meta { color: var(--muted); margin: 1.75rem 0 0; font-size: 0.98rem; }
-
-.hero-actions { margin: 1.75rem 0 0; }
-.btn {
-  display: inline-block; background: var(--blue); color: #fff;
-  text-decoration: none; font-weight: 500; padding: 0.7rem 1.4rem;
-  border-radius: 999px; transition: background 0.2s;
-}
-.btn:hover { background: var(--ink); }
-
 .spectrum { margin: 2.25rem auto 0; max-width: 620px; }
 .spectrum svg { width: 100%; height: auto; overflow: visible; }
 .spectrum figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
-.arc { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 2.4s ease-out 0.3s forwards; }
-.dot { opacity: 0; animation: appear 0.4s ease-out forwards; }
+.arc { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+.dot { opacity: 0; }
+.page.current .arc { animation: draw 2.4s ease-out 0.3s forwards; }
+.page.current .dot { animation: appear 0.4s ease-out forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes appear { to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) {
-  .arc { animation: none; stroke-dashoffset: 0; }
-  .dot { animation: none; opacity: 1; }
-  html { scroll-behavior: auto; }
-}
 
-/* ---------- sections ---------- */
-section.block { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 1rem; }
-section.block h2 {
-  font-family: var(--serif); color: var(--ink); font-weight: 700;
-  font-size: clamp(2rem, 4vw, 2.75rem); margin: 0 0 1.75rem; line-height: 1.2;
-}
+/* inner page header */
+.page-head { background: var(--band); padding: 3.5rem 2rem 3rem; position: relative; overflow: hidden; }
+.page-head .wave { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 70px; opacity: 0.5; }
+.page-head .wave path { fill: none; stroke: var(--blue); stroke-width: 1.4; }
+.page-head-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+.kicker { color: var(--blue); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.82rem; margin: 0 0 0.4rem; }
+.page-head h1 { font-family: var(--serif); color: var(--ink); font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.15; margin: 0; }
+.page-head p.intro { max-width: 62ch; margin: 0.9rem 0 0; font-size: 1.12rem; }
+
+/* sections */
+section.block { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem 1rem; }
+section.block h2 { font-family: var(--serif); color: var(--ink); font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0 0 1.5rem; line-height: 1.2; }
 section.block h3 { font-family: var(--serif); color: var(--ink); font-size: 1.3rem; margin: 0 0 0.5rem; }
 .prose { max-width: 70ch; }
 .prose p { margin: 0 0 1.15rem; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 2rem 2.25rem; }
 
-.panel {
-  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 2rem 2.25rem;
-}
-
-/* overview facts */
 .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
 .fact { border-left: 3px solid var(--blue); padding: 0.25rem 0 0.25rem 1.1rem; }
 .fact strong { display: block; font-family: var(--serif); color: var(--ink); font-size: 1.9rem; line-height: 1.2; }
 .fact span { color: var(--muted); font-size: 0.95rem; }
 
-/* pipeline */
-.pipeline { display: flex; align-items: stretch; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0 1rem; }
-.stage {
-  flex: 1 0 150px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-  padding: 1rem; text-align: center; font-size: 0.95rem;
+/* home: explore cards */
+.cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.trio .panel p { margin: 0; font-size: 0.98rem; }
+.card {
+  display: block; text-decoration: none; color: var(--text); background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; padding: 1.5rem 1.6rem 1.4rem;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
+.card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(28, 42, 57, 0.1); border-color: var(--blue); }
+.card .num { color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.card h3 { margin: 0.2rem 0 0.35rem !important; }
+.card p { margin: 0; font-size: 0.97rem; }
+.card .go { display: inline-block; margin-top: 0.8rem; color: var(--blue); font-weight: 500; font-size: 0.95rem; }
+
+/* pipeline + rail */
+.pipeline { display: flex; align-items: stretch; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0 1rem; }
+.stage { flex: 1 0 150px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; text-align: center; font-size: 0.95rem; }
 .stage b { display: block; color: var(--ink); font-size: 1rem; margin-bottom: 0.2rem; }
-.stage.hw { background: #E3EBF3; }
 .arrow { flex: 0 0 auto; align-self: center; color: var(--blue); font-size: 1.3rem; }
-/* cole-cole playground */
+.rail { position: relative; padding-left: 3rem; margin-top: 2rem; }
+.rail::before { content: ""; position: absolute; left: 13px; top: 0.75rem; bottom: 0.75rem; width: 2px; background: var(--line); }
+.rail-item { position: relative; margin-bottom: 1.5rem; }
+.rail-item::before { content: ""; position: absolute; left: -2.55rem; top: 1.7rem; width: 14px; height: 14px; border-radius: 50%; background: var(--card); border: 3px solid var(--blue); }
+.rail-item .panel { padding: 1.5rem 2rem; }
+.rail-item .when { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.25rem; }
+.rail-item p { margin: 0.25rem 0 0; max-width: 72ch; }
+.rail-item.done::before { background: var(--blue); }
+
+/* playground */
 .playground { margin-top: 3rem; }
 .playground h3 { margin-bottom: 0.25rem; }
 .playground .sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.98rem; }
@@ -177,41 +196,25 @@ section.block h3 { font-family: var(--serif); color: var(--ink); font-size: 1.3r
 .pg-dot { cursor: pointer; transition: r 0.15s; }
 .pg-dot:hover { r: 7; }
 
-/* scroll reveal (only applied when JS runs and motion is allowed) */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.in { opacity: 1; transform: none; }
-
-.legend { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 2.5rem; }
-.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 0.35rem; border: 1px solid var(--line); }
-
-/* steps timeline */
-.rail { position: relative; padding-left: 3rem; }
-.rail::before {
-  content: ""; position: absolute; left: 13px; top: 0.75rem; bottom: 0.75rem;
-  width: 2px; background: var(--line);
-}
-.rail-item { position: relative; margin-bottom: 1.5rem; }
-.rail-item::before {
-  content: ""; position: absolute; left: -2.55rem; top: 1.7rem;
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--card); border: 3px solid var(--blue);
-}
-.rail-item .panel { padding: 1.5rem 2rem; }
-.rail-item .when { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.25rem; }
-.rail-item p { margin: 0.25rem 0 0; max-width: 72ch; }
-.rail-item.done::before { background: var(--blue); }
-
-/* goals table */
+/* tables */
 .specs { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
 .specs th, .specs td { text-align: left; padding: 1rem 1.25rem; border-bottom: 1px solid #DCE4EC; vertical-align: top; }
 .specs th { font-family: var(--serif); color: var(--ink); font-size: 1.05rem; width: 32%; font-weight: 700; }
+.specs thead th { font-family: var(--sans); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: var(--soft); width: auto; }
 .specs tr:last-child th, .specs tr:last-child td { border-bottom: 0; }
 .table-wrap { overflow-x: auto; }
+.pill { display: inline-block; padding: 0.15rem 0.7rem; border-radius: 999px; font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+.pill.pending { background: #EEF1F4; color: var(--muted); border: 1px dashed var(--line); }
+.pill.met { background: #DDF1E4; color: #1F6B3A; }
+.pill.partial { background: #FCEBD7; color: #9A5A12; }
 
-/* hardware */
+/* figures */
 .two-col { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: start; }
+.fig-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.fig-grid.three { grid-template-columns: repeat(3, 1fr); }
 figure { margin: 0; }
-.schematic { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.75rem; }
+.frame { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.75rem; }
+.frame img { border-radius: 8px; width: 100%; }
 .placeholder {
   aspect-ratio: 16 / 10; display: grid; place-items: center; text-align: center;
   background: repeating-linear-gradient(45deg, #F3F6F9, #F3F6F9 10px, #EAF0F5 10px, #EAF0F5 20px);
@@ -221,13 +224,8 @@ figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; 
 .parts { list-style: none; margin: 0; padding: 0; }
 .parts li { padding: 0.7rem 0; border-bottom: 1px solid #DCE4EC; }
 .parts li:last-child { border-bottom: 0; }
-.parts b { color: var(--ink); }
 
-/* safety */
-.note {
-  background: #E3EBF3; border-radius: 16px; padding: 1.75rem 2.25rem; margin-top: 2rem;
-  border-left: 4px solid var(--blue);
-}
+.note { background: var(--soft); border-radius: 16px; padding: 1.75rem 2.25rem; margin-top: 2rem; border-left: 4px solid var(--blue); }
 .note p { margin: 0; max-width: 75ch; }
 
 /* team */
@@ -236,94 +234,128 @@ figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; 
 .person p { margin: 0 0 0.75rem; font-size: 0.98rem; }
 
 /* video */
-.video-frame {
-  aspect-ratio: 16 / 9; background: #000; border-radius: 16px; overflow: hidden;
-  border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12);
-}
+.video-frame { aspect-ratio: 16 / 9; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(28, 42, 57, 0.12); }
 .video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 .video-link { color: var(--muted); font-size: 0.95rem; margin: 0.9rem 0 0; }
+
+/* paper */
+.paper-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: start; }
+.doc-frame { aspect-ratio: 8.5 / 11; background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.doc-frame object, .doc-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.doc-frame .placeholder { aspect-ratio: auto; height: 100%; border-radius: 0; }
+.btn { display: inline-block; background: var(--blue); color: #fff; text-decoration: none; font-weight: 500; padding: 0.7rem 1.4rem; border-radius: 999px; transition: background 0.2s; margin: 0.4rem 0.5rem 0 0; }
+.btn:hover { background: var(--ink); }
+.btn.ghost { background: transparent; color: var(--blue); border: 1px solid var(--blue); }
+.btn.ghost:hover { background: var(--soft); }
 
 /* citations + references */
 .cite { font-size: 0.8em; text-decoration: none; vertical-align: super; line-height: 0; }
 .cite:hover { text-decoration: underline; }
 .refs { margin: 0; padding-left: 1.75rem; max-width: 80ch; font-size: 0.95rem; }
-.refs li { margin-bottom: 0.9rem; padding-left: 0.25rem; overflow-wrap: anywhere; }
-.refs li:target { background: #E3EBF3; border-radius: 6px; }
+.refs li { margin-bottom: 0.9rem; padding: 0.2rem 0.4rem; overflow-wrap: anywhere; border-radius: 6px; transition: background 0.6s; }
+.refs li.hl { background: var(--soft); }
 
-/* footer */
-footer {
-  margin-top: 6rem; background: var(--ink); color: #C9D3DD;
-  padding: 2.5rem 2rem; text-align: center; font-size: 0.95rem;
-}
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.legend { color: var(--muted); font-size: 0.9rem; }
+
+footer { margin-top: 5rem; background: var(--ink); color: #C9D3DD; padding: 2.5rem 2rem; text-align: center; font-size: 0.95rem; }
 footer a { color: #DCE6F0; }
 footer p { margin: 0.3rem 0; }
 
-/* ---------- responsive ---------- */
+@media (max-width: 1180px) { .nav { display: none; } }
 @media (max-width: 900px) {
-  .nav { gap: 1.25rem; }
-  .facts, .team { grid-template-columns: 1fr; }
-  .pg-grid { grid-template-columns: 1fr; }
-  .two-col { grid-template-columns: 1fr; }
+  .facts, .team, .cards, .trio, .fig-grid, .fig-grid.three { grid-template-columns: 1fr; }
+  .pg-grid, .two-col, .paper-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
-  .topbar-inner { padding: 0.9rem 1.25rem; flex-wrap: wrap; }
-  .menu-btn { display: block; }
-  .nav { display: none; width: 100%; flex-direction: column; gap: 0.6rem; padding-bottom: 0.5rem; }
-  .nav.open { display: flex; }
-  .nav a .scope { display: none; }
+  .topbar-inner { padding: 0.8rem 1.25rem; }
   .hero { padding: 3rem 1rem 4rem; }
   .hero-card { padding: 2.25rem 1.5rem; }
   .title-card { padding: 2rem 1.5rem; margin-bottom: 1.75rem; }
-  section.block { padding: 3.5rem 1.25rem 0.5rem; }
+  section.block { padding: 3rem 1.25rem 0.5rem; }
   .panel, .rail-item .panel { padding: 1.4rem; }
   .rail { padding-left: 2.25rem; }
   .rail-item::before { left: -1.85rem; }
   .specs th { width: auto; }
-  .specs th, .specs td { display: block; width: 100%; }
-  .specs th { border-bottom: 0; padding-bottom: 0.2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page.current .arc { animation: none; stroke-dashoffset: 0; }
+  .page.current .dot { animation: none; opacity: 1; }
+  .page.current { animation: none; }
+  html { scroll-behavior: auto; }
 }
 </style>
 </head>
 <body>
+<script>
+  /* swap a missing image for a labeled placeholder box */
+  function ph(img) {
+    const d = document.createElement('div');
+    d.className = 'placeholder';
+    d.textContent = img.dataset.ph || img.alt;
+    img.replaceWith(d);
+  }
+</script>
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#top" aria-label="ESE 4970 Capstone, back to top">
+    <a class="brand" href="#/home" aria-label="ESE 4970 Capstone, home">
       <span class="flip">
         <span class="face front">ESE 4970 Capstone</span>
         <span class="face back" aria-hidden="true">
-          <svg class="chip" viewBox="0 0 160 40" width="160" height="40"></svg>
+          <svg class="board" viewBox="0 0 836 544" width="78" height="51"></svg>
         </span>
       </span>
     </a>
-    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav class="nav" id="nav" aria-label="Sections">
-      <a href="#justification">Justification</a>
-      <a href="#how">How It Works</a>
-      <a href="#aims">Aims</a>
-      <a href="#hardware">Hardware</a>
-      <a href="#timeline">Timeline</a>
-      <a href="#team">Team</a>
-      <a href="#video">Video</a>
-    </nav>
+    <div class="right">
+      <nav class="nav" aria-label="Pages">
+        <a href="#/home" data-page="home">Home</a>
+        <a href="#/how" data-page="how">How It Works</a>
+        <a href="#/design" data-page="design">Design</a>
+        <a href="#/results" data-page="results">Results</a>
+        <a href="#/team" data-page="team">Team</a>
+      </nav>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="drawer" aria-label="Open page menu">
+        <svg viewBox="0 0 32 24" aria-hidden="true"><path/><path/><path/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
+<div class="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="All pages">
+  <div class="drawer-head"><span></span><button class="drawer-close" aria-label="Close menu">&times;</button></div>
+  <ol>
+    <li><a href="#/home" data-page="home"><span class="lbl">Home</span></a></li>
+    <li><a href="#/how" data-page="how"><span class="lbl">How It Works</span></a></li>
+    <li><a href="#/design" data-page="design"><span class="lbl">Design</span></a></li>
+    <li><a href="#/results" data-page="results"><span class="lbl">Results</span></a></li>
+    <li><a href="#/gallery" data-page="gallery"><span class="lbl">Gallery</span></a></li>
+    <li><a href="#/timeline" data-page="timeline"><span class="lbl">Timeline</span></a></li>
+    <li><a href="#/team" data-page="team"><span class="lbl">Team</span></a></li>
+    <li><a href="#/references" data-page="references"><span class="lbl">References</span></a></li>
+  </ol>
+</aside>
+
 <main id="top">
 
-  <div class="hero">
-    <canvas id="topo" aria-hidden="true"></canvas>
-    <div class="title-card">
-      <h1>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
-    </div>
-    <div class="hero-card">
-      <p class="subtitle">Project Scope</p>
-      <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The result is an impedance spectrum and it gives information about the structure of the tissue underneath.</p>
-      <figure class="spectrum">
-        <svg viewBox="0 0 620 260" role="img" aria-label="Illustration of an impedance spectrum: measured points along an arc, from low frequency on the right to high frequency on the left.">
-          <line x1="40" y1="210" x2="600" y2="210" stroke="#B7C6D4" stroke-width="1.5"/>
-          <line x1="40" y1="210" x2="40" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
-          <path class="arc" d="M 70 210 A 240 165 0 0 1 550 210" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- ================= HOME ================= -->
+  <article class="page" data-page="home" data-title="Home">
+    <div class="hero">
+      <canvas id="topo" aria-hidden="true"></canvas>
+      <div class="title-card">
+        <h1>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
+      </div>
+      <div class="hero-card">
+        <p class="subtitle">Project Scope</p>
+        <p class="lede">We are building a system that sends a current through the skin and extracts the response at several frequencies. The result is an impedance spectrum and it gives information about the structure of the tissue underneath.</p>
+        <figure class="spectrum">
+          <svg viewBox="0 0 620 260" role="img" aria-label="Illustration of an impedance spectrum: measured points along an arc, from low frequency on the right to high frequency on the left.">
+            <line x1="40" y1="210" x2="600" y2="210" stroke="#B7C6D4" stroke-width="1.5"/>
+            <line x1="40" y1="210" x2="40" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
+            <path class="arc" d="M 70 210 A 240 165 0 0 1 550 210" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
             <circle class="dot" cx="72.3" cy="187.0" r="5" fill="#2F5D8A" style="animation-delay:0.4s"/>
             <circle class="dot" cx="87.5" cy="148.2" r="5" fill="#2F5D8A" style="animation-delay:0.6s"/>
             <circle class="dot" cx="120.9" cy="108.4" r="5" fill="#2F5D8A" style="animation-delay:0.8s"/>
@@ -334,212 +366,319 @@ footer p { margin: 0.3rem 0; }
             <circle class="dot" cx="476.7" cy="91.3" r="5" fill="#2F5D8A" style="animation-delay:1.8s"/>
             <circle class="dot" cx="517.8" cy="127.5" r="5" fill="#2F5D8A" style="animation-delay:2.0s"/>
             <circle class="dot" cx="540.7" cy="164.5" r="5" fill="#2F5D8A" style="animation-delay:2.2s"/>
-          <text x="62" y="236" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">100 kHz</text>
-          <text x="522" y="236" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">1 kHz</text>
-          <text x="600" y="252" text-anchor="end" font-family="DM Sans, sans-serif" font-size="12" fill="#6B7785">Resistance</text>
-          <text x="48" y="30" font-family="DM Sans, sans-serif" font-size="12" fill="#6B7785">Reactance</text>
-        </svg>
-        <figcaption>Each point is one measurement frequency, the shape of the arc is what we fit to describe the tissue. (Illustration, not measured data.)</figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <!-- Justification -->
-  <section class="block" id="justification">
-    <h2>Justification</h2>
-    <div class="prose">
-      <p>Currently, suspicious lesions are commonly evaluated through excision biopsy, which provides tissue for histological diagnosis <a class="cite" href="#ref1" aria-label="Reference 1">[1]</a>. However, these procedures are invasive and can require extensive planning and post-procedure wound care to reduce risks such as bleeding and infection <a class="cite" href="#ref2" aria-label="Reference 2">[2]</a>.</p>
-      <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99% <a class="cite" href="#ref3" aria-label="Reference 3">[3]</a>. Also, existing systems are not commercially available and are very expensive <a class="cite" href="#ref4" aria-label="Reference 4">[4]</a>.</p>
-      <p>Our goal is to build an accessible, low-cost hardware that makes reliable quantitative skin measurements. Our prototype is not a diagnostic tool but rather a proof of concept and a foundation for future work on affordable tissue assessment.</p>
-    </div>
-    <div class="facts">
-      <div class="fact"><strong>1–100 kHz</strong><span>Frequency range</span></div>
-      <div class="fact"><strong>&le; 100 &micro;A</strong><span>Maximum current</span></div>
-      <div class="fact"><strong>~$180</strong><span>Planned parts cost</span></div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="block" id="how">
-    <h2>How it works</h2>
-    <div class="pipeline" role="list" aria-label="Signal path">
-      <div class="stage" role="listitem"><b>FPGA</b>Generates a digital sine wave</div>
-      <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage" role="listitem"><b>DAC</b>Convert samples into AC voltage</div>
-      <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage" role="listitem"><b>Front end</b>Filters and limits current</div>
-      <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
-      <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage" role="listitem"><b>ADC</b>Convert to digital</div>
-      <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage" role="listitem"><b>FPGA</b>I/Q Demodulation</div>
-      <div class="arrow" aria-hidden="true">&rsaquo;</div>
-      <div class="stage" role="listitem"><b>ARM + dashboard</b>Computes impedance and fits the model</div>
-    </div>
-    <div class="rail">
-      <div class="rail-item"><div class="panel">
-        <h3>1. Generate the signal</h3>
-        <p>The FPGA generates a digital wave and the samples go to a 12-bit DAC. During early testing, a bench function generator is used so we can verify the circuit first.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <h3>2. Apply it safely and measure the response</h3>
-        <p>A current-limiting resistor and a DC-blocking capacitor control the signal before it reaches the skin. Two electrodes inject current while the other two measure voltage. A precision reference resistor in the loop tells us how much current is flowing.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <h3>3. Find magnitude and phase on the FPGA</h3>
-        <p>The FPGA multiplies the digitized voltage and current by reference sine and cosine waves (I/Q demodulation). This pulls out how large each signal is and how far it is shifted in time.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <h3>4. Compute impedance and fit the model</h3>
-        <p>The ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model. The model reduces the whole spectrum to four numbers: low- and high-frequency resistance, a time constant, and a spread factor.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <h3>5. Show the results</h3>
-        <p>After each sweep, the board sends the spectrum and fitted parameters to a Flask dashboard in the browser.</p>
-      </div></div>
-    </div>
-
-    <div class="panel playground">
-      <h3>Try the Cole-Cole model</h3>
-      <p class="sub">Move the sliders to see how the four fitted parameters change the shape of the spectrum. 20 points from 1 kHz to 100 kHz, like our sweep. Hover a point to see its frequency. (Illustration, not measured data.)</p>
-      <div class="pg-grid">
-        <div class="pg-plot">
-          <svg id="pg-svg" viewBox="0 0 520 300" role="img" aria-label="Interactive Cole-Cole plot of reactance against resistance">
-            <line x1="50" y1="250" x2="510" y2="250" stroke="#B7C6D4" stroke-width="1.5"/>
-            <line x1="50" y1="250" x2="50" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
-            <text x="510" y="285" text-anchor="end" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">Resistance (&Omega;)</text>
-            <text x="58" y="30" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">&minus;Reactance (&Omega;)</text>
-            <g id="pg-ticks"></g>
-            <path id="pg-curve" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
-            <g id="pg-dots"></g>
+            <text x="62" y="236" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">100 kHz</text>
+            <text x="522" y="236" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">1 kHz</text>
+            <text x="600" y="252" text-anchor="end" font-family="DM Sans, sans-serif" font-size="12" fill="#6B7785">Resistance</text>
+            <text x="48" y="30" font-family="DM Sans, sans-serif" font-size="12" fill="#6B7785">Reactance</text>
           </svg>
-          <p class="pg-readout" id="pg-readout" aria-live="polite">&nbsp;</p>
-        </div>
-        <div class="pg-controls">
-          <label>R<sub>0</sub>, low-frequency resistance <span id="o-r0"></span>
-            <input type="range" id="s-r0" min="300" max="3000" step="10" value="1500"></label>
-          <label>R<sub>&infin;</sub>, high-frequency resistance <span id="o-rinf"></span>
-            <input type="range" id="s-rinf" min="50" max="1000" step="10" value="300"></label>
-          <label>Characteristic frequency <span id="o-fc"></span>
-            <input type="range" id="s-fc" min="0" max="2" step="0.01" value="1.1"></label>
-          <label>&alpha;, spread factor <span id="o-a"></span>
-            <input type="range" id="s-a" min="0.4" max="1" step="0.01" value="0.75"></label>
-        </div>
+          <figcaption>Each point is one measurement frequency, the shape of the arc is what we fit to describe the tissue. (Illustration, not measured data.)</figcaption>
+        </figure>
       </div>
     </div>
-  </section>
 
-  <!-- Aims -->
-  <section class="block" id="aims">
-    <h2>Aims</h2>
-    <div class="table-wrap">
-      <table class="specs">
-        <tr><th>Signal generation</th><td>At least 20 frequencies from 1 kHz to 100 kHz, each within 1% of its target, with current inside the safety limits at every step.</td></tr>
-        <tr><th>Measurement accuracy</th><td>Impedance magnitude within 5% and phase within 3&deg; of a reference instrument on precision resistors.</td></tr>
-        <tr><th>Model fitting</th><td>Fitted Cole-Cole parameters.</td></tr>
-        <tr><th>Repeatability on skin</th><td>Repeated measurements at the same site agree within a 10% coefficient of variation, and the spectrum follows the trend reported in published skin studies.</td></tr>
-        <tr><th>Speed</th><td>A full sweep and dashboard update in fewer than 90 seconds.</td></tr>
-      </table>
-    </div>
-  </section>
+    <section class="block">
+      <h2 id="justification">Justification</h2>
+      <div class="prose">
+        <p>Currently, suspicious lesions are commonly evaluated through excision biopsy, which provides tissue for histological diagnosis <a class="cite" href="#/references?r=1" aria-label="Reference 1">[1]</a>. However, these procedures are invasive and can require extensive planning and post-procedure wound care to reduce risks such as bleeding and infection <a class="cite" href="#/references?r=2" aria-label="Reference 2">[2]</a>.</p>
+        <p>EIS provides a noninvasive method for quantitatively evaluating tissue electrical properties and could provide additional information when evaluating potentially abnormal lesions. This is particularly significant for melanoma because when detected early, the five-year survival rate is more than 99% <a class="cite" href="#/references?r=3" aria-label="Reference 3">[3]</a>. Also, existing systems are not commercially available and are very expensive <a class="cite" href="#/references?r=4" aria-label="Reference 4">[4]</a>.</p>
+        <p>Our goal is to build an accessible, low-cost hardware that makes reliable quantitative skin measurements. Our prototype is not a diagnostic tool but rather a proof of concept and a foundation for future work on affordable tissue assessment.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><strong>&gt;99%</strong><span>Five-year melanoma survival when caught early</span></div>
+        <div class="fact"><strong>~$7,500</strong><span>Reported provider cost of the one commercial EIS system</span></div>
+        <div class="fact"><strong>~$180</strong><span>Our planned parts cost</span></div>
+      </div>
+    </section>
 
-  <!-- hardware -->
-  <section class="block" id="hardware">
-    <h2>Hardware</h2>
-    <div class="two-col">
-      <figure class="schematic">
-        <img src="images/schematic.png" alt="KiCad schematic of the bench-test analog front end" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'Add'}))">
-        <figcaption>Bench-test analog front end in KiCad.</figcaption>
+    <section class="block">
+      <h2 id="description">Project Description</h2>
+      <div class="prose">
+        <p>Our system uses the FPGA on a PYNQ-Z2 board to generate sine waves at 20 or more frequencies between 1 kHz and 100 kHz. A 12-bit DAC turns each wave into a small AC signal, and a front-end circuit limits the current before it reaches the skin. Four electrodes are placed on the skin: the outer two inject the current and the inner two measure the resulting voltage.</p>
+        <p>The response is digitized and sent back to the FPGA, which uses I/Q demodulation to find how large the signal is and how far it is shifted in time. The ARM processor on the same chip turns those numbers into a complex impedance at each frequency, corrects for circuit effects, and fits the Cole-Cole tissue model. The resulting spectrum and four fitted parameters appear on a dashboard in the browser after every sweep.</p>
+        <p><a href="#/how">See the full walkthrough on How It Works &rsaquo;</a></p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 id="aims">Aims</h2>
+      <div class="table-wrap">
+        <table class="specs">
+          <tr><th>Signal generation</th><td>At least 20 frequencies from 1 kHz to 100 kHz, each within 1% of its target, with current inside the safety limits at every step.</td></tr>
+          <tr><th>Measurement accuracy</th><td>Impedance magnitude within 5% and phase within 3&deg; of a reference instrument on precision resistors.</td></tr>
+          <tr><th>Model fitting</th><td>Fitted Cole-Cole parameters.</td></tr>
+          <tr><th>Repeatability on skin</th><td>Repeated measurements at the same site agree within a 10% coefficient of variation, and the spectrum follows the trend reported in published skin studies.</td></tr>
+          <tr><th>Speed</th><td>A full sweep and dashboard update in fewer than 90 seconds.</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 id="video">Interim Video Update</h2>
+      <div class="video-frame">
+        <iframe src="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/preview"
+          title="Project video" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <p class="video-link"><a href="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/view?usp=share_link" target="_blank" rel="noopener">Open it in Google Drive</a>.</p>
+    </section>
+
+    <section class="block">
+      <div class="cards">
+        <a class="card" href="#/how"><h3>How It Works</h3><p>The signal path, step by step, plus an interactive Cole-Cole model.</p></a>
+        <a class="card" href="#/design"><h3>Design</h3><p>The hardware, the software, and how we keep it safe.</p></a>
+        <a class="card" href="#/results"><h3>Results</h3><p>Measured spectra, accuracy against a reference, and fitted parameters.</p></a>
+        <a class="card" href="#/team"><h3>Team</h3><p>Who built it, and how to reach us.</p></a>
+      </div>
+    </section>
+  </article>
+
+  <!-- ================= BACKGROUND ================= -->
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <article class="page" data-page="how" data-title="How It Works">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>How it works</h1>
+      <p class="intro">From a digital sine wave on the FPGA to a fitted tissue model in the browser.</p></div>
+    </header>
+    <section class="block">
+      <div class="facts" style="margin:0 0 2.5rem">
+        <div class="fact"><strong>1&ndash;100 kHz</strong><span>Frequency range</span></div>
+        <div class="fact"><strong>&le; 100 &micro;A</strong><span>Maximum current</span></div>
+        <div class="fact"><strong>4 electrodes</strong><span>Two inject, two sense</span></div>
+      </div>
+      <div class="pipeline" role="list" aria-label="Signal path">
+        <div class="stage" role="listitem"><b>FPGA</b>Generates a digital sine wave</div>
+        <div class="arrow" aria-hidden="true">&rsaquo;</div>
+        <div class="stage" role="listitem"><b>DAC</b>Convert samples into AC voltage</div>
+        <div class="arrow" aria-hidden="true">&rsaquo;</div>
+        <div class="stage" role="listitem"><b>Front end</b>Filters and limits current</div>
+        <div class="arrow" aria-hidden="true">&rsaquo;</div>
+        <div class="stage" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
+        <div class="arrow" aria-hidden="true">&rsaquo;</div>
+        <div class="stage" role="listitem"><b>ADC</b>Convert to digital</div>
+        <div class="arrow" aria-hidden="true">&rsaquo;</div>
+        <div class="stage" role="listitem"><b>FPGA</b>I/Q Demodulation</div>
+        <div class="arrow" aria-hidden="true">&rsaquo;</div>
+        <div class="stage" role="listitem"><b>ARM + dashboard</b>Computes impedance and fits the model</div>
+      </div>
+      <div class="rail">
+        <div class="rail-item"><div class="panel"><h3>1. Generate the signal</h3>
+          <p>The FPGA generates a digital wave and the samples go to a 12-bit DAC. During early testing, a bench function generator is used so we can verify the circuit first.</p></div></div>
+        <div class="rail-item"><div class="panel"><h3>2. Apply it safely and measure the response</h3>
+          <p>A current-limiting resistor and a DC-blocking capacitor control the signal before it reaches the skin. Two electrodes inject current while the other two measure voltage. A precision reference resistor in the loop tells us how much current is flowing.</p></div></div>
+        <div class="rail-item"><div class="panel"><h3>3. Find magnitude and phase on the FPGA</h3>
+          <p>The FPGA multiplies the digitized voltage and current by reference sine and cosine waves (I/Q demodulation). This pulls out how large each signal is and how far it is shifted in time.</p></div></div>
+        <div class="rail-item"><div class="panel"><h3>4. Compute impedance and fit the model</h3>
+          <p>The ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model. The model reduces the whole spectrum to four numbers: low- and high-frequency resistance, a time constant, and a spread factor.</p></div></div>
+        <div class="rail-item"><div class="panel"><h3>5. Show the results</h3>
+          <p>After each sweep, the board sends the spectrum and fitted parameters to a Flask dashboard in the browser.</p></div></div>
+      </div>
+
+      <figure class="frame" style="max-width:760px;margin-top:3rem">
+        <img src="images/current-paths.png" alt="Diagram of current paths through skin" data-ph="Add a diagram: low-frequency current flows around cells, high-frequency current passes through cell membranes" onerror="ph(this)">
+        <figcaption>Why we sweep frequency: low-frequency current flows around cells, high-frequency current passes through them.</figcaption>
       </figure>
-      <div class="panel">
-        <ul class="parts">
-          <li>PYNQ-Z2 board with a Zynq FPGA and ARM processor</li>
-          <li>Pmod DA2 12-bit DAC and Pmod AD1 12-bit, 1 MSPS ADC</li>
-          <li>Two INA128 instrumentation amplifiers, gain of about 10</li>
-          <li>OPA2134 buffering a 1.65 V midpoint so signals stay in the ADC range</li>
-          <li>BAT85 diodes clamping ADC inputs between 0 and 3.3 V</li>
-          <li>Two 9 V batteries for an isolated &plusmn;9 V supply</li>
-        </ul>
-      </div>
-    </div>
-    <div class="note">
-      <p><strong>Safety:</strong> Our current limits follow published skin-impedance work and sit at or below the IEC 60601-1 patient auxiliary current limits. Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact, and we test only on ourselves as healthy volunteers. The device is battery powered and is not a certified medical device.</p>
-    </div>
-  </section>
 
-  <!-- timeline -->
-  <section class="block" id="timeline">
-    <h2>Timeline</h2>
-    <div class="rail">
-      <div class="rail-item done"><div class="panel">
-        <p class="when">September 2026</p><h3>Proposal, schematic, and parts</h3>
-        <p>Formal proposal submitted, front-end schematic completed in KiCad, and components ordered and delivered.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <p class="when">October 2026</p><h3>Breadboard and FPGA signal output</h3>
-        <p>Build and test the front end; verify current limits, set up SPI to the Pmods, and generate sine waves with DDS.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <p class="when">Late October to mid November 2026</p><h3>Demodulation and software</h3>
-        <p>Capture ADC data and do demodulation on the FPGA, then build impedance calculation, Cole-Cole fitting, and the dashboard.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <p class="when">November 2026</p><h3>Integration and skin measurements</h3>
-        <p>Connect the full system, validate, then run tests on skin.</p>
-      </div></div>
-      <div class="rail-item"><div class="panel">
-        <p class="when">December 2026</p><h3>Final report and demo</h3>
-        <p>Final report, completed website, and a demonstration.</p>
-      </div></div>
-    </div>
-  </section>
-
-  <!-- team -->
-  <section class="block" id="team">
-    <h2>Team</h2>
-    <div class="team">
-       <div class="panel person">
-        <h3>Prof. Michael Hall</h3>
-        <p class="role">Advisor and client</p>
-        <p>Professor of Computer Science &amp; Engineering and Electrical &amp; Systems Engineering. Guides FPGA development and system integration on the PYNQ-Z2.</p>
-        <p><a href="mailto:mhall24@wustl.edu">mhall24@wustl.edu</a></p>
+      <div class="panel playground">
+        <h3>Try the Cole-Cole model</h3>
+        <p class="sub">Move the sliders to see how the four fitted parameters change the shape of the spectrum. 20 points from 1 kHz to 100 kHz, like our sweep. Hover a point to see its frequency. (Illustration, not measured data.)</p>
+        <div class="pg-grid">
+          <div class="pg-plot">
+            <svg id="pg-svg" viewBox="0 0 520 300" role="img" aria-label="Interactive Cole-Cole plot of reactance against resistance">
+              <line x1="50" y1="250" x2="510" y2="250" stroke="#B7C6D4" stroke-width="1.5"/>
+              <line x1="50" y1="250" x2="50" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
+              <text x="510" y="285" text-anchor="end" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">Resistance (&Omega;)</text>
+              <text x="58" y="30" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">&minus;Reactance (&Omega;)</text>
+              <g id="pg-ticks"></g>
+              <path id="pg-curve" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
+              <g id="pg-dots"></g>
+            </svg>
+            <p class="pg-readout" id="pg-readout" aria-live="polite">&nbsp;</p>
+          </div>
+          <div class="pg-controls">
+            <label>R<sub>0</sub>, low-frequency resistance <span id="o-r0"></span>
+              <input type="range" id="s-r0" min="300" max="3000" step="10" value="1500"></label>
+            <label>R<sub>&infin;</sub>, high-frequency resistance <span id="o-rinf"></span>
+              <input type="range" id="s-rinf" min="50" max="1000" step="10" value="300"></label>
+            <label>Characteristic frequency <span id="o-fc"></span>
+              <input type="range" id="s-fc" min="0" max="2" step="0.01" value="1.1"></label>
+            <label>&alpha;, spread factor <span id="o-a"></span>
+              <input type="range" id="s-a" min="0.4" max="1" step="0.01" value="0.75"></label>
+          </div>
+        </div>
       </div>
-      <div class="panel person">
-        <h3>Ines Nix</h3>
-        <p class="role">B.S. Computer Engineering, December 2026</p>
-        <p>Builds the analog circuit, Cole-Cole analysis, and the Flask dashboard. Background in embedded systems and computational biology research.</p>
-        <p><a href="mailto:i.n.nix@wustl.edu">i.n.nix@wustl.edu</a></p>
-      </div>
-      <div class="panel person">
-        <h3>Emily Seligson</h3>
-        <p class="role">B.S. Computer Engineering, December 2026</p>
-        <p>Leads FPGA programming, ARM processing, and project planning. Interested in embedded systems, microcontrollers, and assistive biotechnology.</p>
-        <p><a href="mailto:e.d.seligson@wustl.edu">e.d.seligson@wustl.edu</a></p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </article>
 
-  <!-- video -->
-  <section class="block" id="video">
-    <h2>Project Video</h2>
-    <div class="video-frame">
-      <iframe src="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/preview"
-        title="Project video" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
-    </div>
-    <p class="video-link"><a href="https://drive.google.com/file/d/1-Ab6vnzBT8ohUhOKshS1TeRsffRf0fDj/view?usp=share_link" target="_blank" rel="noopener">Open it in Google Drive</a>.</p>
-  </section>
+  <!-- ================= AIMS ================= -->
+  <!-- ================= HARDWARE ================= -->
+  <article class="page" data-page="design" data-title="Design">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>Design</h1>
+      <p class="intro">The whole system laid out: the hardware that touches the skin, the software that turns signals into numbers, and the limits that keep it safe.</p></div>
+    </header>
+    <section class="block">
+      <h2>Hardware</h2>
+      <div class="two-col">
+        <figure class="frame">
+          <img src="images/schematic.png" alt="KiCad schematic of the bench-test analog front end" data-ph="Add: KiCad schematic" onerror="ph(this)">
+          <figcaption>Bench-test analog front end in KiCad.</figcaption>
+        </figure>
+        <div class="panel">
+          <ul class="parts">
+            <li>PYNQ-Z2 board with a Zynq FPGA and ARM processor</li>
+            <li>Pmod DA2 12-bit DAC and Pmod AD1 12-bit, 1 MSPS ADC</li>
+            <li>Two INA128 instrumentation amplifiers, gain of about 10</li>
+            <li>OPA2134 buffering a 1.65 V midpoint so signals stay in the ADC range</li>
+            <li>BAT85 diodes clamping ADC inputs between 0 and 3.3 V</li>
+            <li>Two 9 V batteries for an isolated &plusmn;9 V supply</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fig-grid" style="margin-top:1.5rem">
+        <figure class="frame"><img src="images/setup.jpg" alt="Full measurement setup" data-ph="Add: photo of the full setup (board, front end, electrodes) with labels" onerror="ph(this)"><figcaption>The full measurement setup.</figcaption></figure>
+        <figure class="frame"><img src="images/electrodes.jpg" alt="Four-electrode placement on the forearm" data-ph="Add: close-up of the four electrodes on skin" onerror="ph(this)"><figcaption>Four-electrode placement: outer pair injects, inner pair senses.</figcaption></figure>
+      </div>
+    </section>
+    <section class="block">
+      <h2>Software</h2>
+      <div class="trio">
+        <div class="panel"><h3>FPGA logic</h3>
+          <p>A DDS sine generator sets each sweep frequency and streams samples to the Pmod DA2 over SPI. On the way back, it reads the Pmod AD1 and runs I/Q demodulation, multiplying the signals by reference sine and cosine waves to get magnitude and phase.</p></div>
+        <div class="panel"><h3>ARM processing</h3>
+          <p>Python on the PYNQ-Z2&rsquo;s ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model to the full spectrum.</p></div>
+        <div class="panel"><h3>Dashboard</h3>
+          <p>After each sweep, the board sends the spectrum and fitted parameters to a Flask dashboard in the browser, so results can be seen right away.</p></div>
+      </div>
+      <figure class="frame" style="margin-top:1.5rem;max-width:760px"><img src="images/software.png" alt="Software block diagram" data-ph="Add: software block diagram or code structure (FPGA blocks, Python, Flask)" onerror="ph(this)"><figcaption>How the software pieces connect.</figcaption></figure>
+    </section>
+    <section class="block">
+      <h2>Safety</h2>
+      <div class="note">
+        <p>Our current limits follow published skin-impedance work and sit at or below the IEC 60601-1 patient auxiliary current limits. Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact, and we test only on ourselves as healthy volunteers. The device is battery powered and is not a certified medical device.</p>
+      </div>
+    </section>
+  </article>
 
-  <!-- references -->
-  <section class="block" id="references">
-    <h2>References</h2>
-    <ol class="refs">
-      <li id="ref1">K. S. Sharma, P. Lim, and M. T. Brotherston, &ldquo;Excision versus incision biopsy in the management of malignant melanoma,&rdquo; <i>The Journal of Dermatological Treatment</i>, vol. 27, no. 1, pp. 88&ndash;90, 2016, doi: <a href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener">10.3109/09546634.2015.1034083</a>.</li>
-      <li id="ref2">C. Beard and G. J. Schmieder, &ldquo;Excisional Biopsy,&rdquo; <i>NIH.gov</i>, Nov. 23, 2018. <a href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK534835/</a> (accessed Sept. 15, 2026).</li>
-      <li id="ref3">&ldquo;Melanoma Cancer,&rdquo; <i>Cancer Research Institute</i>, Apr. 29, 2025. <a href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener">https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer</a> (accessed Sept. 15, 2026).</li>
-      <li id="ref4">A. T. Young <i>et al.</i>, &ldquo;The role of technology in melanoma screening and diagnosis,&rdquo; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</li>
-    </ol>
-  </section>
+  <!-- ================= RESULTS ================= -->
+  <article class="page" data-page="results" data-title="Results">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>Results</h1>
+      <p class="intro">How the finished system performed against each aim. Results will be added as testing is completed.</p></div>
+    </header>
+    <section class="block">
+      <h2>At a glance</h2>
+      <div class="table-wrap">
+        <table class="specs">
+          <thead><tr><th>Aim</th><th>Target</th><th>Measured</th><th>Status</th></tr></thead>
+          <tr><th>Signal generation</th><td>&ge; 20 frequencies, 1&ndash;100 kHz, within 1%</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
+          <tr><th>Magnitude accuracy</th><td>Within 5% of reference</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
+          <tr><th>Phase accuracy</th><td>Within 3&deg; of reference</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
+          <tr><th>Repeatability</th><td>Coefficient of variation &le; 10%</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
+          <tr><th>Speed</th><td>Sweep + display &lt; 90 s</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
+        </table>
+      </div>
+      <p class="legend" style="margin-top:0.8rem">Status labels: <span class="pill met">Met</span> <span class="pill partial">Partly met</span> <span class="pill pending">Pending</span></p>
+    </section>
+    <section class="block">
+      <h2>Validation on known loads</h2>
+      <div class="fig-grid">
+        <figure class="frame"><img src="images/resistor-validation.png" alt="Measured vs reference impedance on precision resistors" data-ph="Add: measured vs. reference |Z| and phase on precision resistors" onerror="ph(this)"><figcaption>Magnitude and phase error across the sweep on precision resistors.</figcaption></figure>
+        <figure class="frame"><img src="images/phantom-fit.png" alt="Cole-Cole fit on the RC tissue phantom" data-ph="Add: Cole-Cole fit on the RC tissue phantom" onerror="ph(this)"><figcaption>Fitted vs. predicted Cole-Cole parameters for the RC phantom.</figcaption></figure>
+      </div>
+    </section>
+    <section class="block">
+      <h2>Measurements on skin</h2>
+      <div class="two-col">
+        <figure class="frame"><img src="images/skin-spectrum.png" alt="Measured skin impedance spectrum" data-ph="Add: measured skin spectrum with Cole-Cole fit" onerror="ph(this)"><figcaption>Impedance spectrum measured on the forearm, with the fitted Cole-Cole curve.</figcaption></figure>
+        <div class="panel">
+          <h3>Fitted parameters</h3>
+          <ul class="parts">
+            <li>R<sub>0</sub> (low-frequency resistance): &mdash;</li>
+            <li>R<sub>&infin;</sub> (high-frequency resistance): &mdash;</li>
+            <li>Characteristic frequency: &mdash;</li>
+            <li>&alpha; (spread factor): &mdash;</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="frame" style="margin-top:1.5rem"><img src="images/dashboard.png" alt="Screenshot of the Flask dashboard" data-ph="Add: screenshot of the live dashboard after a sweep" onerror="ph(this)"><figcaption>The dashboard after a sweep.</figcaption></figure>
+    </section>
+  </article>
+
+  <!-- ================= GALLERY ================= -->
+  <article class="page" data-page="gallery" data-title="Gallery">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>Gallery</h1>
+      <p class="intro">The build, from breadboard to final measurements.</p></div>
+    </header>
+    <section class="block">
+      <div class="fig-grid three">
+        <figure class="frame"><img src="images/g1.jpg" alt="Breadboard front end" data-ph="Breadboard front end" onerror="ph(this)"><figcaption>First breadboard of the front end.</figcaption></figure>
+        <figure class="frame"><img src="images/g2.jpg" alt="Oscilloscope test" data-ph="Oscilloscope check on the 100 &#937; load" onerror="ph(this)"><figcaption>Checking current on the 100 &Omega; test load.</figcaption></figure>
+        <figure class="frame"><img src="images/g3.jpg" alt="PYNQ-Z2 with Pmods" data-ph="PYNQ-Z2 with Pmod DAC and ADC" onerror="ph(this)"><figcaption>PYNQ-Z2 with the Pmod DAC and ADC.</figcaption></figure>
+        <figure class="frame"><img src="images/g4.jpg" alt="Electrodes on forearm" data-ph="Electrodes on the forearm" onerror="ph(this)"><figcaption>Four-electrode measurement.</figcaption></figure>
+        <figure class="frame"><img src="images/g5.jpg" alt="Dashboard" data-ph="Dashboard in the browser" onerror="ph(this)"><figcaption>Live dashboard.</figcaption></figure>
+        <figure class="frame"><img src="images/g6.jpg" alt="Team at work" data-ph="Team at work / demo day" onerror="ph(this)"><figcaption>Demo day.</figcaption></figure>
+      </div>
+    </section>
+  </article>
+
+  <!-- ================= PAPER ================= -->
+
+  <!-- ================= TIMELINE ================= -->
+  <article class="page" data-page="timeline" data-title="Timeline">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>Timeline</h1></div>
+    </header>
+    <section class="block">
+      <div class="rail">
+        <div class="rail-item done"><div class="panel"><p class="when">September 2026</p><h3>Proposal, schematic, and parts</h3>
+          <p>Formal proposal submitted, front-end schematic completed in KiCad, and components ordered and delivered.</p></div></div>
+        <div class="rail-item"><div class="panel"><p class="when">October 2026</p><h3>Breadboard and FPGA signal output</h3>
+          <p>Build and test the front end; verify current limits, set up SPI to the Pmods, and generate sine waves with DDS.</p></div></div>
+        <div class="rail-item"><div class="panel"><p class="when">Late October to mid November 2026</p><h3>Demodulation and software</h3>
+          <p>Capture ADC data and do demodulation on the FPGA, then build impedance calculation, Cole-Cole fitting, and the dashboard.</p></div></div>
+        <div class="rail-item"><div class="panel"><p class="when">November 2026</p><h3>Integration and skin measurements</h3>
+          <p>Connect the full system, validate, then run tests on skin.</p></div></div>
+        <div class="rail-item"><div class="panel"><p class="when">December 2026</p><h3>Final report and demo</h3>
+          <p>Final report, completed website, and a demonstration.</p></div></div>
+      </div>
+    </section>
+  </article>
+
+  <!-- ================= TEAM ================= -->
+  <article class="page" data-page="team" data-title="Team">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>Team</h1></div>
+    </header>
+    <section class="block">
+      <div class="team">
+        <div class="panel person"><h3>Prof. Michael Hall</h3><p class="role">Advisor and client</p>
+          <p>Professor of Computer Science &amp; Engineering and Electrical &amp; Systems Engineering. Guides FPGA development and system integration on the PYNQ-Z2.</p>
+          <p><a href="mailto:mhall24@wustl.edu">mhall24@wustl.edu</a></p></div>
+        <div class="panel person"><h3>Ines Nix</h3><p class="role">B.S. Computer Engineering, December 2026</p>
+          <p>Builds the analog circuit, Cole-Cole analysis, and the Flask dashboard. Background in embedded systems and computational biology research.</p>
+          <p><a href="mailto:i.n.nix@wustl.edu">i.n.nix@wustl.edu</a></p></div>
+        <div class="panel person"><h3>Emily Seligson</h3><p class="role">B.S. Computer Engineering, December 2026</p>
+          <p>Leads FPGA programming, ARM processing, and project planning. Interested in embedded systems, microcontrollers, and assistive biotechnology.</p>
+          <p><a href="mailto:e.d.seligson@wustl.edu">e.d.seligson@wustl.edu</a></p></div>
+      </div>
+    </section>
+  </article>
+
+  <!-- ================= REFERENCES ================= -->
+  <article class="page" data-page="references" data-title="References">
+    <header class="page-head"><svg class="wave" preserveAspectRatio="none" aria-hidden="true"><path/></svg>
+      <div class="page-head-inner"><h1>References</h1></div>
+    </header>
+    <section class="block">
+      <ol class="refs">
+        <li id="ref1">K. S. Sharma, P. Lim, and M. T. Brotherston, &ldquo;Excision versus incision biopsy in the management of malignant melanoma,&rdquo; <i>The Journal of Dermatological Treatment</i>, vol. 27, no. 1, pp. 88&ndash;90, 2016, doi: <a href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener">10.3109/09546634.2015.1034083</a>.</li>
+        <li id="ref2">C. Beard and G. J. Schmieder, &ldquo;Excisional Biopsy,&rdquo; <i>NIH.gov</i>, Nov. 23, 2018. <a href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK534835/</a> (accessed Sept. 15, 2026).</li>
+        <li id="ref3">&ldquo;Melanoma Cancer,&rdquo; <i>Cancer Research Institute</i>, Apr. 29, 2025. <a href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener">https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer</a> (accessed Sept. 15, 2026).</li>
+        <li id="ref4">A. T. Young <i>et al.</i>, &ldquo;The role of technology in melanoma screening and diagnosis,&rdquo; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</li>
+      </ol>
+    </section>
+  </article>
 
 </main>
 
@@ -549,19 +688,9 @@ footer p { margin: 0.3rem 0; }
 </footer>
 
 <script>
-  const btn = document.querySelector('.menu-btn');
-  const nav = document.getElementById('nav');
-  btn.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open);
-  });
-  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    nav.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
-  }));
-
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- contour field (used by the hero) ---------- */
+    /* ---------- contour field (used by the hero) ---------- */
   function createTopo(host, cv, opts = {}) {
     const ctx = cv.getContext('2d');
     const G = opts.grid || 8, LEVELS = opts.levels || 14, ALPHA = opts.alpha || 1;
@@ -662,11 +791,11 @@ footer p { margin: 0.3rem 0; }
     };
   }
 
+
   /* ---------- hero background ---------- */
   const hero = document.querySelector('.hero');
   const heroTopo = (() => {
     const topo = createTopo(hero, document.getElementById('topo'));
-    let visible = true;
     hero.addEventListener('pointermove', e => {
       const r = hero.getBoundingClientRect();
       topo.pointer(e.clientX - r.left, e.clientY - r.top);
@@ -677,26 +806,109 @@ footer p { margin: 0.3rem 0; }
       const r = hero.getBoundingClientRect();
       topo.pulse(e.clientX - r.left, e.clientY - r.top);
     });
-    new IntersectionObserver(([en]) => { visible = en.isIntersecting; visible ? topo.start() : topo.stop(); }).observe(hero);
-    document.addEventListener('visibilitychange', () => document.hidden ? topo.stop() : visible && topo.start());
     window.addEventListener('resize', topo.resize);
-    topo.resize();
-    topo.start();
     return topo;
   })();
 
-  /* ---------- nav: oscilloscope underline ---------- */
+  /* ---------- static sine wave under each inner page title ---------- */
+  document.querySelectorAll('.page-head .wave').forEach((svg, n) => {
+    svg.setAttribute('viewBox', '0 0 1000 70');
+    let d = '';
+    for (let k = 0; k <= 200; k++) {
+      const x = k * 5, f = 2 + (k / 200) * 10;
+      const y = 40 + 16 * Math.sin((k / 200) * f * Math.PI * 2 + n);
+      d += (k ? 'L' : 'M') + x + ' ' + y.toFixed(1);
+    }
+    svg.querySelector('path').setAttribute('d', d);
+  });
+
+  /* ---------- page router (#/page) ---------- */
+  const pages = [...document.querySelectorAll('.page')];
+  const order = pages.map(p => p.dataset.page);
+
+  function route() {
+    const raw = location.hash.replace(/^#\/?/, '');
+    const [name, query] = raw.split('?');
+    const id = order.includes(name) ? name : 'home';
+    pages.forEach(p => p.classList.toggle('current', p.dataset.page === id));
+    document.querySelectorAll('[data-page]').forEach(a => {
+      if (a.tagName === 'A') a.classList.toggle('active', a.dataset.page === id);
+    });
+    const cur = pages.find(p => p.dataset.page === id);
+    document.title = (id === 'home' ? '' : cur.dataset.title.replace('&amp;', '&') + ' | ') + 'FPGA-Based EIS for Skin Tissue | ESE 4970';
+
+    // only animate the contour field while home is showing
+    if (id === 'home') { heroTopo.resize(); heroTopo.start(); } else heroTopo.stop();
+
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    revealIn(cur);
+    closeMenu();
+
+    // citation links: #/references?r=2 highlights reference 2
+    if (id === 'references' && query) {
+      const n = new URLSearchParams(query).get('r');
+      const li = document.getElementById('ref' + n);
+      if (li) {
+        document.querySelectorAll('.refs li').forEach(x => x.classList.remove('hl'));
+        li.classList.add('hl');
+        setTimeout(() => li.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }), 200);
+      }
+    }
+  }
+  window.addEventListener('hashchange', route);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) heroTopo.stop();
+    else if (document.querySelector('.page.current')?.dataset.page === 'home') heroTopo.start();
+  });
+
+  /* ---------- menu drawer ---------- */
+  const toggle = document.querySelector('.menu-toggle');
+  function openMenu() { document.body.classList.add('menu-open'); toggle.setAttribute('aria-expanded', 'true'); }
+  function closeMenu() { document.body.classList.remove('menu-open'); toggle.setAttribute('aria-expanded', 'false'); }
+  toggle.addEventListener('click', () => document.body.classList.contains('menu-open') ? closeMenu() : openMenu());
+  document.querySelector('.drawer-close').addEventListener('click', closeMenu);
+  document.querySelector('.scrim').addEventListener('click', closeMenu);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  /* ---------- three menu lines become sine waves on hover ---------- */
+  (() => {
+    const paths = [...toggle.querySelectorAll('path')];
+    let amp = 0, ampT = 0, phase = 0, raf = 0;
+    function draw() {
+      amp += (ampT - amp) * 0.15;
+      phase += 0.2;
+      paths.forEach((p, j) => {
+        const y0 = 4 + j * 8, cycles = 1.5 + j * 0.5;
+        let d = '';
+        for (let k = 0; k <= 32; k++) {
+          const x = k, y = y0 + 2.6 * amp * Math.sin((k / 32) * cycles * Math.PI * 2 - phase - j);
+          d += (k ? 'L' : 'M') + x + ' ' + y.toFixed(2);
+        }
+        p.setAttribute('d', d);
+      });
+      raf = (Math.abs(ampT - amp) > 0.005 || amp > 0.01) ? requestAnimationFrame(draw) : 0;
+    }
+    const kick = () => { if (!raf) raf = requestAnimationFrame(draw); };
+    toggle.addEventListener('mouseenter', () => { ampT = 1; kick(); });
+    toggle.addEventListener('mouseleave', () => { ampT = 0; kick(); });
+    toggle.addEventListener('focus', () => { ampT = 1; kick(); });
+    toggle.addEventListener('blur', () => { ampT = 0; kick(); });
+    amp = 0; draw();
+  })();
+
+  /* ---------- oscilloscope underline on nav + menu links ---------- */
   (() => {
     const NS = 'http://www.w3.org/2000/svg';
-    const links = [...document.querySelectorAll('.nav a')];
-    const states = links.map((a, i) => {
+    const hosts = [...document.querySelectorAll('.nav a'), ...document.querySelectorAll('.drawer a .lbl')];
+    const states = hosts.map((host, i) => {
+      const link = host.closest('a');
       const svg = document.createElementNS(NS, 'svg');
       svg.setAttribute('class', 'scope'); svg.setAttribute('aria-hidden', 'true');
       svg.setAttribute('viewBox', '0 0 100 10'); svg.setAttribute('preserveAspectRatio', 'none');
       const path = document.createElementNS(NS, 'path');
       path.setAttribute('vector-effect', 'non-scaling-stroke');
-      svg.appendChild(path); a.appendChild(svg);
-      return { a, path, i, amp: 0, ampT: 0, reveal: 0, revealT: 0, phase: 0, cycles: 2 + i * 0.5 };
+      svg.appendChild(path); host.appendChild(svg);
+      return { link, path, amp: 0, ampT: 0, reveal: 0, revealT: 0, phase: 0, cycles: 2 + (i % 7) * 0.5 };
     });
 
     let raf = 0;
@@ -722,60 +934,88 @@ footer p { margin: 0.3rem 0; }
     const kick = () => { if (!raf) raf = requestAnimationFrame(draw); };
 
     states.forEach(s => {
-      s.a.addEventListener('mouseenter', () => { if (s.a.classList.contains('tuned')) return; s.ampT = 1; s.revealT = 1; kick(); });
-      s.a.addEventListener('mouseleave', () => {
-        if (s.a.classList.contains('tuned')) { s.ampT = 0; s.revealT = 1; }
-        else { s.ampT = 0; s.revealT = 0; }
-        kick();
-      });
-      s.a.addEventListener('click', e => {
-        const target = document.querySelector(s.a.getAttribute('href'));
-        if (!target) return;
+      s.link.addEventListener('mouseenter', () => { s.ampT = 1; s.revealT = 1; kick(); });
+      s.link.addEventListener('mouseleave', () => { s.ampT = 0; s.revealT = 0; kick(); });
+      // on click: the wave settles flat, then the page changes
+      s.link.addEventListener('click', e => {
         e.preventDefault();
-        states.forEach(o => { if (o !== s) { o.a.classList.remove('tuned'); o.ampT = 0; o.revealT = 0; } });
-        s.a.classList.add('tuned');
-        s.ampT = 0; s.revealT = 1;
-        kick();
-        clearTimeout(s.clearTimer);
+        s.ampT = 0; s.revealT = 1; kick();
+        const href = s.link.getAttribute('href');
         setTimeout(() => {
-          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
-          history.replaceState(null, '', s.a.getAttribute('href'));
-        }, reduceMotion ? 0 : 420);
-        s.clearTimer = setTimeout(() => {
-          s.a.classList.remove('tuned');
-          s.ampT = 0; s.revealT = 0;
-          kick();
-        }, reduceMotion ? 300 : 1400);
+          if (location.hash === href) route(); else location.hash = href;
+          s.revealT = 0; kick();
+        }, reduceMotion ? 0 : 320);
       });
     });
   })();
 
-  /* ---------- logo: flip to FPGA chip, five clicks = secret screen ---------- */
+  /* ---------- logo: flips to a PYNQ-Z2 board, five clicks = secret screen ---------- */
   (() => {
     const brand = document.querySelector('.brand');
-    const chip = brand.querySelector('.chip');
-    let pins = '';
-    for (let k = 0; k < 12; k++) {
-      const x = 32 + k * 8;
-      pins += `<rect class="pin" x="${x}" y="1" width="4" height="6" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
-      pins += `<rect class="pin" x="${x}" y="33" width="4" height="6" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
-    }
-    for (let k = 0; k < 2; k++) {
-      pins += `<rect class="pin" x="20" y="${13 + k * 9}" width="8" height="4" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
-      pins += `<rect class="pin" x="132" y="${13 + k * 9}" width="8" height="4" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
-    }
-    chip.innerHTML = pins +
-      `<rect x="27" y="6" width="106" height="28" rx="3" fill="#1C2A39"/>` +
-      `<circle cx="34" cy="13" r="2" fill="#6B7785"/>` +
-      `<text x="80" y="24" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#EEF1F4" letter-spacing="1">ZYNQ-7020</text>`;
+    const b = brand.querySelector('.board');
+    const rnd = () => (Math.random() * 0.9).toFixed(2);
+    let s = '';
+    // drawn in the photo's own coordinates (836 x 544)
+    const RED = '#D9263B', SILK = '#F4F1EA', BLK = '#141414', MET = '#C9CDD2', METD = '#8F969E', GOLD = '#D4AF37';
+    const r = (x, y, w, h, f, extra = '') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" ${extra}/>`;
+    // PCB
+    s += r(20, 18, 796, 508, RED, 'rx="14"');
+    // gold mounting holes
+    [[72, 45], [795, 45], [72, 490], [793, 486]].forEach(([x, y]) => s += `<circle cx="${x}" cy="${y}" r="17" fill="${GOLD}"/><circle cx="${x}" cy="${y}" r="9" fill="#2B1A0E"/>`);
+    // top edge: audio jack, USB-A, HDMI
+    s += r(112, 22, 42, 92, BLK, 'rx="4"');
+    s += r(242, 24, 80, 80, MET, `rx="3" stroke="${METD}" stroke-width="3"`) + r(256, 38, 52, 26, '#E8EBEE');
+    s += r(350, 24, 88, 70, MET, `rx="3" stroke="${METD}" stroke-width="3"`) + r(364, 40, 60, 22, '#55595E', 'rx="4"');
+    // Raspberry Pi 2x20 header
+    s += r(474, 32, 296, 40, BLK, 'rx="3"');
+    for (let k = 0; k < 20; k++) for (let j = 0; j < 2; j++) s += r(482 + k * 14.5, 40 + j * 16, 7, 7, GOLD);
+    // left edge: line-in jack, Ethernet, micro USB, power switch, DC jack
+    s += r(18, 112, 88, 58, BLK, 'rx="5"');
+    s += r(36, 186, 130, 96, MET, `rx="4" stroke="${METD}" stroke-width="3"`);
+    for (let k = 0; k < 5; k++) s += r(46, 196 + k * 16, 110, 6, '#B3B9C0');
+    s += r(40, 304, 44, 34, MET, 'rx="5"');
+    s += r(54, 368, 70, 36, '#2E2E2E', 'rx="4"') + r(64, 376, 24, 20, MET);
+    s += r(48, 412, 76, 58, MET, `rx="4" stroke="${METD}" stroke-width="3"`);
+    // right edge: HDMI, JTAG, two Pmods (pins blink)
+    s += r(752, 88, 66, 84, MET, `rx="3" stroke="${METD}" stroke-width="3"`) + r(766, 104, 26, 52, '#55595E', 'rx="4"');
+    s += r(748, 184, 58, 44, BLK, 'rx="3"');
+    [236, 366].forEach(y => {
+      s += r(740, y, 76, 90, BLK, 'rx="4"');
+      for (let k = 0; k < 6; k++) for (let j = 0; j < 2; j++)
+        s += `<rect class="pin" x="${752 + j * 16}" y="${y + 10 + k * 13}" width="8" height="8" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
+    });
+    // Arduino / ChipKit headers
+    s += r(430, 120, 280, 26, BLK, 'rx="3"') + r(486, 404, 116, 24, BLK, 'rx="3"') + r(612, 404, 106, 24, BLK, 'rx="3"');
+    for (let k = 0; k < 18; k++) s += r(438 + k * 15.5, 129, 6, 6, GOLD);
+    for (let k = 0; k < 15; k++) s += r(494 + k * 15, 412, 6, 6, GOLD);
+    // Zynq with heatsink, DDR, other chips
+    s += `<text x="296" y="196" font-family="Arial, sans-serif" font-size="20" font-style="italic" font-weight="700" fill="${BLK}">Zynq 7020</text>`;
+    s += r(292, 204, 120, 112, BLK, 'rx="3"');
+    for (let k = 0; k < 13; k++) s += r(300 + k * 8.6, 210, 4, 100, '#2F2F2F');
+    s += r(494, 224, 56, 80, BLK, 'rx="2"');
+    s += r(160, 330, 56, 54, BLK, 'rx="2"') + r(372, 404, 46, 46, BLK, 'rx="2"') + r(156, 134, 30, 30, BLK);
+    // inductors
+    [[322, 384], [322, 428], [442, 368], [442, 406]].forEach(([x, y]) => s += r(x, y, 32, 30, '#3A3A3A', 'rx="6"'));
+    // slide switches + push buttons + LEDs
+    [228, 270].forEach(x => s += r(x, 436, 34, 70, BLK, 'rx="3"') + r(x + 9, 452, 16, 22, MET));
+    [338, 396, 560, 618, 676, 734].forEach(x => s += r(x - 16, 476, 32, 32, MET, 'rx="3"') + `<circle cx="${x}" cy="492" r="9" fill="${BLK}"/>`);
+    [560, 618, 676, 734].forEach((x, k) => s += `<rect class="led" x="${x - 8}" y="452" width="16" height="10" rx="2" fill="#4ADE80" style="animation-delay:${(k * 0.27).toFixed(2)}s"/>`);
+    // SD card slot
+    s += r(456, 506, 76, 20, '#2E2E2E');
+    // silkscreen
+    s += `<text x="580" y="196" font-family="Arial, sans-serif" font-size="30" fill="${BLK}">PYNQ-Z2</text>`;
+    s += `<text x="584" y="356" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="${BLK}">XILINX</text>`;
+    s += `<circle cx="608" cy="300" r="30" fill="#F7E64B"/>`;
+    s += `<text x="472" y="98" font-family="Arial, sans-serif" font-size="11" fill="${SILK}">RASPBERRY PI (BOARD CONNECTS OUTWARD)</text>`;
+    b.innerHTML = s;
 
     let clicks = 0, resetTimer = 0, flipTimer = 0;
     brand.addEventListener('click', e => {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      if (location.hash !== '#/home' && location.hash !== '') location.hash = '#/home';
       brand.classList.add('flipped');
       clearTimeout(flipTimer);
-      flipTimer = setTimeout(() => brand.classList.remove('flipped'), 1100);
+      flipTimer = setTimeout(() => brand.classList.remove('flipped'), 1300);
       clicks++;
       clearTimeout(resetTimer);
       resetTimer = setTimeout(() => clicks = 0, 2500);
@@ -787,7 +1027,19 @@ footer p { margin: 0.3rem 0; }
     });
   })();
 
-  /* ---------- secret screen (five logo clicks) ---------- */
+  /* ---------- gentle scroll reveal, re-run on every page change ---------- */
+  const io = ('IntersectionObserver' in window && !reduceMotion)
+    ? new IntersectionObserver(entries => entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
+    : null;
+  function revealIn(page) {
+    if (!io) return;
+    page.querySelectorAll('section.block h2, .prose, .facts, .cards, .trio, .pipeline, .rail-item, .playground, .specs, .two-col, .fig-grid, .note, .person, .video-frame, .paper-grid, .refs')
+      .forEach(el => { if (!el.classList.contains('in')) { el.classList.add('reveal'); io.observe(el); } });
+  }
+
+    /* ---------- secret screen (five logo clicks) ---------- */
   let secretOpen = false;
   function secretScreen(ox, oy) {
     if (secretOpen) return;
@@ -911,7 +1163,7 @@ footer p { margin: 0.3rem 0; }
     frame();
   }
 
-  /* ---------- Cole-Cole playground ---------- */
+    /* ---------- Cole-Cole playground ---------- */
   (() => {
     const $ = id => document.getElementById(id);
     const NS = 'http://www.w3.org/2000/svg';
@@ -978,15 +1230,7 @@ footer p { margin: 0.3rem 0; }
     update();
   })();
 
-  /* ---------- gentle scroll reveal ---------- */
-  (() => {
-    if (reduceMotion || !('IntersectionObserver' in window)) return;
-    const els = document.querySelectorAll('section.block h2, .prose, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .note, .person, .video-frame');
-    const io = new IntersectionObserver(entries => entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(el => { el.classList.add('reveal'); io.observe(el); });
-  })();
+  route();
 </script>
 </body>
 </html>
