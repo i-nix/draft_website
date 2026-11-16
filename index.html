@@ -62,8 +62,34 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
   font: inherit; color: var(--ink); padding: 0.35rem 0.8rem; cursor: pointer;
 }
 
+/* ---------- logo flip ---------- */
+.brand { perspective: 700px; display: inline-block; }
+.flip { display: inline-grid; transform-style: preserve-3d; transition: transform 0.75s cubic-bezier(0.3, 1.35, 0.5, 1); }
+.face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; }
+.back { transform: rotateY(180deg); }
+.brand.flipped .flip { transform: rotateY(180deg); }
+.chip .pin { fill: #B7C6D4; animation: blink 0.9s steps(1) infinite; }
+@keyframes blink { 50% { fill: #2F5D8A; } }
+
+/* ---------- nav: scope underline + frequency tags ---------- */
+.nav a { position: relative; }
+.nav a .scope { position: absolute; left: 0; bottom: -7px; width: 100%; height: 10px; overflow: visible; pointer-events: none; }
+.scope path { fill: none; stroke: var(--blue); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+/* ---------- secret screen ---------- */
+.secret {
+  position: fixed; inset: 0; z-index: 100; background: #0B0B09; cursor: grab; touch-action: none;
+  clip-path: circle(0px at var(--ox, 50%) var(--oy, 0%));
+  transition: clip-path 0.9s cubic-bezier(0.6, 0, 0.3, 1);
+}
+.secret.on { clip-path: circle(150% at var(--ox, 50%) var(--oy, 0%)); }
+.secret:active { cursor: grabbing; }
+.secret canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+
 /* ---------- hero ---------- */
-.hero { background: var(--band); padding: 5rem 1.5rem 6rem; }
+.hero { background: var(--band); padding: 5rem 1.5rem 6rem; position: relative; overflow: hidden; }
+.hero > *:not(#topo) { position: relative; z-index: 1; }
+#topo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; cursor: crosshair; }
 .hero-card {
   max-width: 900px; margin: 0 auto;
   background: var(--card); border-radius: 22px;
@@ -138,6 +164,23 @@ section.block h3 { font-family: var(--serif); color: var(--ink); font-size: 1.3r
 .stage b { display: block; color: var(--ink); font-size: 1rem; margin-bottom: 0.2rem; }
 .stage.hw { background: #E3EBF3; }
 .arrow { flex: 0 0 auto; align-self: center; color: var(--blue); font-size: 1.3rem; }
+/* cole-cole playground */
+.playground { margin-top: 3rem; }
+.playground h3 { margin-bottom: 0.25rem; }
+.playground .sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.98rem; }
+.pg-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: center; }
+.pg-plot svg { width: 100%; height: auto; overflow: visible; }
+.pg-controls label { display: block; font-size: 0.95rem; color: var(--ink); margin-bottom: 1rem; }
+.pg-controls label span { float: right; color: var(--blue); font-variant-numeric: tabular-nums; }
+.pg-controls input[type=range] { width: 100%; accent-color: var(--blue); margin-top: 0.35rem; }
+.pg-readout { font-size: 0.9rem; color: var(--muted); min-height: 1.5em; margin: 0.5rem 0 0; }
+.pg-dot { cursor: pointer; transition: r 0.15s; }
+.pg-dot:hover { r: 7; }
+
+/* scroll reveal (only applied when JS runs and motion is allowed) */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
 .legend { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 2.5rem; }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 0.35rem; border: 1px solid var(--line); }
 
@@ -219,6 +262,7 @@ footer p { margin: 0.3rem 0; }
 @media (max-width: 900px) {
   .nav { gap: 1.25rem; }
   .facts, .team { grid-template-columns: 1fr; }
+  .pg-grid { grid-template-columns: 1fr; }
   .two-col { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
@@ -226,6 +270,7 @@ footer p { margin: 0.3rem 0; }
   .menu-btn { display: block; }
   .nav { display: none; width: 100%; flex-direction: column; gap: 0.6rem; padding-bottom: 0.5rem; }
   .nav.open { display: flex; }
+  .nav a .scope { display: none; }
   .hero { padding: 3rem 1rem 4rem; }
   .hero-card { padding: 2.25rem 1.5rem; }
   .title-card { padding: 2rem 1.5rem; margin-bottom: 1.75rem; }
@@ -243,7 +288,14 @@ footer p { margin: 0.3rem 0; }
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#top">ESE 4970 Capstone</a>
+    <a class="brand" href="#top" aria-label="ESE 4970 Capstone, back to top">
+      <span class="flip">
+        <span class="face front">ESE 4970 Capstone</span>
+        <span class="face back" aria-hidden="true">
+          <svg class="chip" viewBox="0 0 160 40" width="160" height="40"></svg>
+        </span>
+      </span>
+    </a>
     <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Sections">
       <a href="#justification">Justification</a>
@@ -260,6 +312,7 @@ footer p { margin: 0.3rem 0; }
 <main id="top">
 
   <div class="hero">
+    <canvas id="topo" aria-hidden="true"></canvas>
     <div class="title-card">
       <h1>FPGA-Based Electrical Impedance Spectroscopy for Skin Tissue Characterization</h1>
     </div>
@@ -345,6 +398,35 @@ footer p { margin: 0.3rem 0; }
         <h3>5. Show the results</h3>
         <p>After each sweep, the board sends the spectrum and fitted parameters to a Flask dashboard in the browser.</p>
       </div></div>
+    </div>
+
+    <div class="panel playground">
+      <h3>Try the Cole-Cole model</h3>
+      <p class="sub">Move the sliders to see how the four fitted parameters change the shape of the spectrum. 20 points from 1 kHz to 100 kHz, like our sweep. Hover a point to see its frequency. (Illustration, not measured data.)</p>
+      <div class="pg-grid">
+        <div class="pg-plot">
+          <svg id="pg-svg" viewBox="0 0 520 300" role="img" aria-label="Interactive Cole-Cole plot of reactance against resistance">
+            <line x1="50" y1="250" x2="510" y2="250" stroke="#B7C6D4" stroke-width="1.5"/>
+            <line x1="50" y1="250" x2="50" y2="20" stroke="#B7C6D4" stroke-width="1.5"/>
+            <text x="510" y="285" text-anchor="end" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">Resistance (&Omega;)</text>
+            <text x="58" y="30" font-family="DM Sans, sans-serif" font-size="13" fill="#6B7785">&minus;Reactance (&Omega;)</text>
+            <g id="pg-ticks"></g>
+            <path id="pg-curve" fill="none" stroke="#7FA2C4" stroke-width="2.5" stroke-linecap="round"/>
+            <g id="pg-dots"></g>
+          </svg>
+          <p class="pg-readout" id="pg-readout" aria-live="polite">&nbsp;</p>
+        </div>
+        <div class="pg-controls">
+          <label>R<sub>0</sub>, low-frequency resistance <span id="o-r0"></span>
+            <input type="range" id="s-r0" min="300" max="3000" step="10" value="1500"></label>
+          <label>R<sub>&infin;</sub>, high-frequency resistance <span id="o-rinf"></span>
+            <input type="range" id="s-rinf" min="50" max="1000" step="10" value="300"></label>
+          <label>Characteristic frequency <span id="o-fc"></span>
+            <input type="range" id="s-fc" min="0" max="2" step="0.01" value="1.1"></label>
+          <label>&alpha;, spread factor <span id="o-a"></span>
+            <input type="range" id="s-a" min="0.4" max="1" step="0.01" value="0.75"></label>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -476,6 +558,429 @@ footer p { margin: 0.3rem 0; }
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     nav.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
   }));
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- contour field (used by the hero) ---------- */
+  function createTopo(host, cv, opts = {}) {
+    const ctx = cv.getContext('2d');
+    const G = opts.grid || 8, LEVELS = opts.levels || 14, ALPHA = opts.alpha || 1;
+    let W = 0, H = 0, t = 0, running = false;
+    const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, amp: 0, target: 0 };
+    const pulses = [];
+    const peak = opts.peak || null;
+
+    const P = new Float32Array(1024);
+    for (let i = 0; i < P.length; i++) P[i] = Math.random();
+    const hash = (x, y) => P[((x * 73856093) ^ (y * 19349663)) & 1023];
+    const ease = a => a * a * (3 - 2 * a);
+    function noise(x, y) {
+      const xi = Math.floor(x), yi = Math.floor(y), xf = ease(x - xi), yf = ease(y - yi);
+      const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+      return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf;
+    }
+    function field(x, y) {
+      let v = noise(x * 0.006 + t * 0.3, y * 0.006) * 0.6
+            + noise(x * 0.016, y * 0.016 - t * 0.2) * 0.3
+            + noise(x * 0.04 + t, y * 0.04) * 0.1;
+      const dx = x - mouse.x, dy = y - mouse.y;
+      v += 0.5 * mouse.amp * Math.exp(-(dx * dx + dy * dy) / 12000);
+      if (peak && peak.amp > 0.001) {
+        const px = x - W * peak.fx, py = y - H * peak.fy, sp = Math.pow(Math.min(W, H) * 0.32, 2);
+        v += peak.amp * Math.exp(-(px * px + py * py) / sp);
+      }
+      for (const p of pulses) {
+        const ex = x - p.x, ey = y - p.y, d = Math.sqrt(ex * ex + ey * ey) - p.r;
+        v += 0.22 * p.life * Math.exp(-(d * d) / 900);
+      }
+      return v;
+    }
+
+    const edges = {1:[3,2],2:[2,1],3:[3,1],4:[0,1],5:[3,0,2,1],6:[0,2],7:[3,0],8:[3,0],9:[0,2],10:[0,1,3,2],11:[0,1],12:[3,1],13:[2,1],14:[3,2]};
+    let vals = new Float32Array(0);
+    const pt = [[0,0],[0,0],[0,0],[0,0]];
+
+    function frame() {
+      t += 0.0035;
+      mouse.x += (mouse.tx - mouse.x) * 0.12;
+      mouse.y += (mouse.ty - mouse.y) * 0.12;
+      mouse.amp += (mouse.target - mouse.amp) * 0.06;
+      if (peak) peak.amp += ((peak.target || 0) - peak.amp) * 0.04;
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i]; p.r += 4; p.life *= 0.975;
+        if (p.life < 0.02) pulses.splice(i, 1);
+      }
+      const cols = Math.ceil(W / G) + 1, rows = Math.ceil(H / G) + 1;
+      if (vals.length !== cols * rows) vals = new Float32Array(cols * rows);
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) vals[j * cols + i] = field(i * G, j * G);
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.strokeStyle = '#2F5D8A';
+      ctx.lineWidth = 1;
+      for (let k = 1; k <= LEVELS; k++) {
+        const L = 0.12 + (k / LEVELS) * 0.95 * (peak ? 1.5 : 1);
+        ctx.globalAlpha = Math.min(1, (0.07 + 0.28 * (k / LEVELS)) * ALPHA);
+        ctx.beginPath();
+        for (let j = 0; j < rows - 1; j++) for (let i = 0; i < cols - 1; i++) {
+          const a = vals[j * cols + i], b = vals[j * cols + i + 1];
+          const c = vals[(j + 1) * cols + i + 1], d = vals[(j + 1) * cols + i];
+          const s = (a > L ? 8 : 0) | (b > L ? 4 : 0) | (c > L ? 2 : 0) | (d > L ? 1 : 0);
+          if (s === 0 || s === 15) continue;
+          const x = i * G, y = j * G;
+          pt[0][0] = x + G * (L - a) / (b - a); pt[0][1] = y;
+          pt[1][0] = x + G;                     pt[1][1] = y + G * (L - b) / (c - b);
+          pt[2][0] = x + G * (L - d) / (c - d); pt[2][1] = y + G;
+          pt[3][0] = x;                         pt[3][1] = y + G * (L - a) / (d - a);
+          const e = edges[s];
+          for (let m = 0; m < e.length; m += 2) {
+            ctx.moveTo(pt[e[m]][0], pt[e[m]][1]);
+            ctx.lineTo(pt[e[m + 1]][0], pt[e[m + 1]][1]);
+          }
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      if (running) requestAnimationFrame(frame);
+    }
+
+    function resize() {
+      const d = Math.min(window.devicePixelRatio || 1, 2);
+      W = host.clientWidth; H = host.clientHeight;
+      cv.width = W * d; cv.height = H * d;
+      ctx.setTransform(d, 0, 0, d, 0, 0);
+      if (!running) frame();
+    }
+
+    return {
+      resize,
+      start() { if (!running && !reduceMotion) { running = true; requestAnimationFrame(frame); } },
+      stop() { running = false; },
+      pulse(x, y) { pulses.push({ x, y, r: 0, life: 1 }); if (pulses.length > 8) pulses.shift(); },
+      pointer(x, y) { mouse.tx = x; mouse.ty = y; if (mouse.target === 0) { mouse.x = x; mouse.y = y; } mouse.target = 1; },
+      leave() { mouse.target = 0; },
+      size: () => [W, H]
+    };
+  }
+
+  /* ---------- hero background ---------- */
+  const hero = document.querySelector('.hero');
+  const heroTopo = (() => {
+    const topo = createTopo(hero, document.getElementById('topo'));
+    let visible = true;
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect();
+      topo.pointer(e.clientX - r.left, e.clientY - r.top);
+    });
+    hero.addEventListener('pointerleave', () => topo.leave());
+    hero.addEventListener('click', e => {
+      if (e.target.closest('a, button, input')) return;
+      const r = hero.getBoundingClientRect();
+      topo.pulse(e.clientX - r.left, e.clientY - r.top);
+    });
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; visible ? topo.start() : topo.stop(); }).observe(hero);
+    document.addEventListener('visibilitychange', () => document.hidden ? topo.stop() : visible && topo.start());
+    window.addEventListener('resize', topo.resize);
+    topo.resize();
+    topo.start();
+    return topo;
+  })();
+
+  /* ---------- nav: oscilloscope underline ---------- */
+  (() => {
+    const NS = 'http://www.w3.org/2000/svg';
+    const links = [...document.querySelectorAll('.nav a')];
+    const states = links.map((a, i) => {
+      const svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('class', 'scope'); svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('viewBox', '0 0 100 10'); svg.setAttribute('preserveAspectRatio', 'none');
+      const path = document.createElementNS(NS, 'path');
+      path.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(path); a.appendChild(svg);
+      return { a, path, i, amp: 0, ampT: 0, reveal: 0, revealT: 0, phase: 0, cycles: 2 + i * 0.5 };
+    });
+
+    let raf = 0;
+    function draw() {
+      let busy = false;
+      for (const s of states) {
+        s.amp += (s.ampT - s.amp) * 0.15;
+        s.reveal += (s.revealT - s.reveal) * 0.14;
+        s.phase += 0.18;
+        if (Math.abs(s.ampT - s.amp) > 0.005 || Math.abs(s.revealT - s.reveal) > 0.005 || s.amp > 0.01) busy = true;
+        if (s.reveal < 0.01) { s.path.setAttribute('d', ''); continue; }
+        const N = 60, end = Math.round(N * Math.min(1, s.reveal));
+        let d = '';
+        for (let k = 0; k <= end; k++) {
+          const x = (k / N) * 100;
+          const y = 5 - 3.6 * s.amp * Math.sin((k / N) * s.cycles * Math.PI * 2 - s.phase);
+          d += (k ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(2);
+        }
+        s.path.setAttribute('d', d);
+      }
+      raf = busy ? requestAnimationFrame(draw) : 0;
+    }
+    const kick = () => { if (!raf) raf = requestAnimationFrame(draw); };
+
+    states.forEach(s => {
+      s.a.addEventListener('mouseenter', () => { if (!s.a.classList.contains('tuned')) { s.ampT = 1; } s.revealT = 1; kick(); });
+      s.a.addEventListener('mouseleave', () => {
+        if (s.a.classList.contains('tuned')) { s.ampT = 0; s.revealT = 1; }
+        else { s.ampT = 0; s.revealT = 0; }
+        kick();
+      });
+      s.a.addEventListener('click', e => {
+        const target = document.querySelector(s.a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        states.forEach(o => { if (o !== s) { o.a.classList.remove('tuned'); o.ampT = 0; o.revealT = 0; } });
+        s.a.classList.add('tuned');
+        s.ampT = 0; s.revealT = 1;
+        kick();
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+          history.replaceState(null, '', s.a.getAttribute('href'));
+        }, reduceMotion ? 0 : 420);
+      });
+    });
+  })();
+
+  /* ---------- logo: flip to FPGA chip, five clicks = secret screen ---------- */
+  (() => {
+    const brand = document.querySelector('.brand');
+    const chip = brand.querySelector('.chip');
+    let pins = '';
+    for (let k = 0; k < 12; k++) {
+      const x = 32 + k * 8;
+      pins += `<rect class="pin" x="${x}" y="1" width="4" height="6" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
+      pins += `<rect class="pin" x="${x}" y="33" width="4" height="6" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
+    }
+    for (let k = 0; k < 2; k++) {
+      pins += `<rect class="pin" x="20" y="${13 + k * 9}" width="8" height="4" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
+      pins += `<rect class="pin" x="132" y="${13 + k * 9}" width="8" height="4" rx="1" style="animation-delay:${(Math.random() * 0.9).toFixed(2)}s"/>`;
+    }
+    chip.innerHTML = pins +
+      `<rect x="27" y="6" width="106" height="28" rx="3" fill="#1C2A39"/>` +
+      `<circle cx="34" cy="13" r="2" fill="#6B7785"/>` +
+      `<text x="80" y="24" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#EEF1F4" letter-spacing="1">ZYNQ-7020</text>`;
+
+    let clicks = 0, resetTimer = 0, flipTimer = 0;
+    brand.addEventListener('click', e => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      brand.classList.add('flipped');
+      clearTimeout(flipTimer);
+      flipTimer = setTimeout(() => brand.classList.remove('flipped'), 1100);
+      clicks++;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => clicks = 0, 2500);
+      if (clicks >= 5) {
+        clicks = 0;
+        const r = brand.getBoundingClientRect();
+        secretScreen(r.left + r.width / 2, r.top + r.height / 2);
+      }
+    });
+  })();
+
+  /* ---------- secret screen (five logo clicks) ---------- */
+  let secretOpen = false;
+  function secretScreen(ox, oy) {
+    if (secretOpen) return;
+    secretOpen = true;
+    const el = document.createElement('div');
+    el.className = 'secret';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-label', 'Secret screen');
+    el.style.setProperty('--ox', ox + 'px');
+    el.style.setProperty('--oy', oy + 'px');
+    el.innerHTML = `
+      <canvas aria-hidden="true"></canvas>`;
+    document.body.appendChild(el);
+
+    const cv = el.querySelector('canvas'), ctx = cv.getContext('2d');
+    const GOLD = '#F5C518';
+    let W = 0, H = 0, raf = 0, closed = false, t = 0;
+    let spin = 0, spinV = 0.006, pitch = 0.42, pitchT = 0.42;
+    let dragging = false, lastX = 0, lastY = 0, moved = 0;
+
+    function resize() {
+      const d = Math.min(window.devicePixelRatio || 1, 2);
+      W = el.clientWidth; H = el.clientHeight;
+      cv.width = W * d; cv.height = H * d;
+      ctx.setTransform(d, 0, 0, d, 0, 0);
+    }
+
+    const RINGS = 18, SEG = 96;
+    const wob = [];
+    for (let k = 0; k < 4; k++) wob.push({ f: 2 + k * 2 + Math.floor(Math.random() * 2), a: Math.random() * 6.28, m: 0.05 / (k + 1) });
+    function radiusAt(level, ang) {
+      let w = 0;
+      const rough = Math.pow(1 - level, 1.6);
+      for (const q of wob) w += q.m * Math.sin(q.f * ang + q.a + level * 3) * (0.4 + 1.6 * rough);
+      return Math.max(0.02, Math.pow(1 - level, 0.85)) * (1 + w);
+    }
+
+    function frame() {
+      t += 0.016;
+      if (!dragging) spinV += (0.006 - spinV) * 0.02;
+      spin += spinV;
+      pitch += (pitchT - pitch) * 0.1;
+      ctx.clearRect(0, 0, W, H);
+      const S = Math.min(W, H) * 0.4, cx = W / 2, cy = H * 0.66;
+      const peakH = S * 0.75;
+      const breathe = 1 + 0.03 * Math.sin(t * 1.3);
+      const cp = Math.cos(pitch), sp = Math.sin(pitch), cs = Math.cos(spin), ss = Math.sin(spin);
+      const project = (x, y, z) => {
+        const rx = x * cs - z * ss, rz = x * ss + z * cs;
+        return [cx + rx, cy - y * cp + rz * sp];
+      };
+
+      for (let g = 0; g < 3; g++) {
+        const scale = 1.35 + g * 0.3;
+        ctx.globalAlpha = 0.16 - g * 0.04;
+        ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 0; i <= SEG; i++) {
+          const a = (i / SEG) * Math.PI * 2, r = S * scale * radiusAt(0.02 * g, a + g);
+          const p = project(Math.cos(a) * r, 0, Math.sin(a) * r);
+          i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]);
+        }
+        ctx.stroke();
+      }
+
+      for (let k = 0; k < RINGS; k++) {
+        const level = k / RINGS;
+        const y = peakH * breathe * (1 - Math.pow(1 - level, 2.2));
+        ctx.globalAlpha = 0.45 + 0.55 * level;
+        ctx.lineWidth = k === 0 ? 2.2 : 1.4;
+        ctx.strokeStyle = GOLD;
+        ctx.beginPath();
+        for (let i = 0; i <= SEG; i++) {
+          const a = (i / SEG) * Math.PI * 2, r = S * radiusAt(level, a);
+          const p = project(Math.cos(a) * r, y, Math.sin(a) * r);
+          i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]);
+        }
+        ctx.stroke();
+      }
+
+      const top = project(0, peakH * breathe, 0);
+      const pinTop = Math.max(top[1] - S * 0.32, 110);
+      ctx.globalAlpha = 1; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(top[0], top[1] - 6); ctx.lineTo(top[0], pinTop); ctx.stroke();
+      ctx.fillStyle = GOLD;
+      ctx.beginPath(); ctx.arc(top[0], pinTop - 14, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.font = '600 15px "DM Sans", system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      const deg = ((spin * 180 / Math.PI) % 360 + 360) % 360;
+      ctx.fillText(deg.toFixed(0).padStart(3, '0') + '°', top[0], pinTop - 28);
+
+      if (!closed) raf = requestAnimationFrame(frame);
+    }
+
+    function close() {
+      if (closed) return;
+      closed = true;
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', resize);
+      el.classList.remove('on');
+      setTimeout(() => { cancelAnimationFrame(raf); el.remove(); secretOpen = false; }, reduceMotion ? 0 : 900);
+    }
+    const onKey = e => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('resize', resize);
+
+    el.addEventListener('pointerdown', e => { dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY; el.setPointerCapture(e.pointerId); });
+    el.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX, dy = e.clientY - lastY;
+      moved += Math.abs(dx) + Math.abs(dy);
+      spinV = dx * 0.004;
+      pitchT = Math.max(0.1, Math.min(1.25, pitchT + dy * 0.004));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    el.addEventListener('pointerup', () => { dragging = false; if (moved < 6) close(); });
+
+    resize();
+    if (reduceMotion) { spinV = 0; el.classList.add('on'); frame(); return; }
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('on')));
+    frame();
+  }
+
+  /* ---------- Cole-Cole playground ---------- */
+  (() => {
+    const $ = id => document.getElementById(id);
+    const NS = 'http://www.w3.org/2000/svg';
+    const X0 = 50, Y0 = 250, PW = 460, PH = 230;
+    const N = 20, FMIN = 1e3, FMAX = 1e5;
+    const freqs = Array.from({ length: N }, (_, k) => FMIN * Math.pow(FMAX / FMIN, k / (N - 1)));
+    const fmtHz = f => f >= 1000 ? (f / 1000).toFixed(f < 10000 ? 1 : 0) + ' kHz' : Math.round(f) + ' Hz';
+    const dots = [];
+    for (let k = 0; k < N; k++) {
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('r', 5); c.setAttribute('fill', '#2F5D8A'); c.setAttribute('class', 'pg-dot');
+      c.addEventListener('mouseenter', () => showPoint(k));
+      c.addEventListener('focus', () => showPoint(k));
+      c.setAttribute('tabindex', '0');
+      $('pg-dots').appendChild(c); dots.push(c);
+    }
+    let last = [];
+    function showPoint(k) {
+      const p = last[k];
+      $('pg-readout').textContent = `${fmtHz(freqs[k])}: R = ${Math.round(p.re)} Ω, −X = ${Math.round(p.im)} Ω, |Z| = ${Math.round(Math.hypot(p.re, p.im))} Ω`;
+    }
+    function niceMax(v) {
+      const p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p;
+      return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
+    }
+    function z(f, r0, rinf, fc, a) {
+      const x = Math.pow(f / fc, a), th = a * Math.PI / 2;
+      const dr = 1 + x * Math.cos(th), di = x * Math.sin(th), m = dr * dr + di * di;
+      return { re: rinf + (r0 - rinf) * dr / m, im: (r0 - rinf) * di / m };
+    }
+    function update() {
+      const r0 = +$('s-r0').value;
+      if (+$('s-rinf').value > r0 - 50) $('s-rinf').value = r0 - 50;
+      const rinf = +$('s-rinf').value;
+      const fc = 1e3 * Math.pow(10, +$('s-fc').value);
+      const a = +$('s-a').value;
+      $('o-r0').textContent = r0 + ' Ω';
+      $('o-rinf').textContent = rinf + ' Ω';
+      $('o-fc').textContent = fmtHz(fc);
+      $('o-a').textContent = a.toFixed(2);
+
+      const xmax = niceMax(r0 * 1.1), s = PW / xmax;
+      const ticks = $('pg-ticks'); ticks.innerHTML = '';
+      for (let k = 1; k <= 4; k++) {
+        const v = xmax * k / 4, tx = X0 + v * s;
+        const tk = document.createElementNS(NS, 'text');
+        tk.setAttribute('x', tx); tk.setAttribute('y', Y0 + 18); tk.setAttribute('text-anchor', 'middle');
+        tk.setAttribute('font-family', 'DM Sans, sans-serif'); tk.setAttribute('font-size', '12'); tk.setAttribute('fill', '#6B7785');
+        tk.textContent = Math.round(v); ticks.appendChild(tk);
+      }
+      let d = '';
+      for (let k = 0; k <= 120; k++) {
+        const f = 10 * Math.pow(1e7 / 10, k / 120), p = z(f, r0, rinf, fc, a);
+        d += (k ? 'L' : 'M') + (X0 + p.re * s).toFixed(1) + ' ' + Math.max(Y0 - p.im * s, Y0 - PH).toFixed(1);
+      }
+      $('pg-curve').setAttribute('d', d);
+      last = freqs.map(f => z(f, r0, rinf, fc, a));
+      last.forEach((p, k) => {
+        dots[k].setAttribute('cx', (X0 + p.re * s).toFixed(1));
+        dots[k].setAttribute('cy', (Y0 - p.im * s).toFixed(1));
+      });
+    }
+    ['s-r0', 's-rinf', 's-fc', 's-a'].forEach(id => $(id).addEventListener('input', update));
+    update();
+  })();
+
+  /* ---------- gentle scroll reveal ---------- */
+  (() => {
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+    const els = document.querySelectorAll('section.block h2, .prose, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .note, .person, .video-frame');
+    const io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => { el.classList.add('reveal'); io.observe(el); });
+  })();
 </script>
 </body>
 </html>
