@@ -548,7 +548,7 @@ section.block h2 { font-weight: 500; }
           <p class="tag">Project Description</p>
           <div class="prose">
         <p>Our system uses the FPGA on a PYNQ-Z2 board to generate sine waves at 20 or more frequencies between 1 kHz and 100 kHz. A 12-bit DAC turns each wave into a small AC signal, and a front-end circuit limits the current before it reaches the skin. Four electrodes are placed on the skin: the outer two inject the current and the inner two measure the resulting voltage.</p>
-        <p>The response is digitized and sent back to the FPGA, which uses I/Q demodulation to find how large the signal is and how far it is shifted in time. The ARM processor on the same chip turns those numbers into a complex impedance at each frequency, corrects for circuit effects, and fits the Cole-Cole tissue model. The resulting spectrum and four fitted parameters appear on a dashboard in the browser after every sweep.</p>
+        <p>The response is digitized and sent back to the FPGA, which uses I/Q demodulation to find how large the signal is and how far it is shifted in time. The ARM processor on the same chip turns those numbers into a complex impedance at each frequency, corrects for circuit effects, and fits the Cole-Cole tissue model. The resulting spectrum and four fitted parameters are plotted in a Jupyter notebook on the board after every sweep.</p>
         <p><a href="#/how">See the full walkthrough on How It Works &rsaquo;</a></p>
       </div>
         </div>
@@ -620,7 +620,7 @@ section.block h2 { font-weight: 500; }
         <div class="arrow" aria-hidden="true">&rsaquo;</div>
         <div class="stage" role="listitem"><b>FPGA</b>I/Q Demodulation</div>
         <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>ARM + dashboard</b>Computes impedance and fits the model</div>
+        <div class="stage" role="listitem"><b>ARM + Jupyter</b>Computes impedance, fits the model, plots it</div>
       </div>
       <div class="rail">
         <div class="rail-item"><div class="panel"><h3>1. Generate the signal</h3>
@@ -632,7 +632,7 @@ section.block h2 { font-weight: 500; }
         <div class="rail-item"><div class="panel"><h3>4. Compute impedance and fit the model</h3>
           <p>The ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model. The model reduces the whole spectrum to four numbers: low- and high-frequency resistance, a time constant, and a spread factor.</p></div></div>
         <div class="rail-item"><div class="panel"><h3>5. Show the results</h3>
-          <p>After each sweep, the board sends the spectrum and fitted parameters to a Flask dashboard in the browser.</p></div></div>
+          <p>After each sweep, Python in a Jupyter notebook on the board plots the spectrum and fitted parameters.</p></div></div>
       </div>
 
       <figure class="frame" style="max-width:760px;margin-top:3rem">
@@ -679,11 +679,11 @@ section.block h2 { font-weight: 500; }
           <p>A DDS sine generator sets each sweep frequency and streams samples to the Pmod DA2 over SPI. On the way back, it reads the Pmod AD1 and runs I/Q demodulation, multiplying the signals by reference sine and cosine waves to get magnitude and phase.</p></div>
         <div class="panel"><h3>ARM processing</h3>
           <p>Python on the PYNQ-Z2&rsquo;s ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model to the full spectrum.</p></div>
-        <div class="panel"><h3>Dashboard</h3>
-          <p>After each sweep, the board sends the spectrum and fitted parameters to a Flask dashboard in the browser, so results can be seen right away.</p></div>
+        <div class="panel"><h3>Jupyter dashboard</h3>
+          <p>The dashboard is built in Python inside a Jupyter notebook running on the board. After each sweep, it plots the spectrum and fitted parameters right in the notebook.</p></div>
       </div>
       <a class="pill" href="https://github.com/emilyseligson/senior-capstone" target="_blank" rel="noopener">View the code on GitHub &#8599;</a>
-      <figure class="frame" style="margin-top:1.5rem;max-width:760px"><img src="images/software.png" alt="Software block diagram" data-ph="Add: software block diagram or code structure (FPGA blocks, Python, Flask)" onerror="ph(this)"><figcaption>How the software pieces connect.</figcaption></figure>
+      <figure class="frame" style="margin-top:1.5rem;max-width:760px"><img src="images/software.png" alt="Software block diagram" data-ph="Add: software block diagram or code structure (FPGA blocks, Python, Jupyter)" onerror="ph(this)"><figcaption>How the software pieces connect.</figcaption></figure>
     </section>
     <section class="block">
       <h2>Safety</h2>
@@ -734,7 +734,7 @@ section.block h2 { font-weight: 500; }
           </ul>
         </div>
       </div>
-      <figure class="frame" style="margin-top:1.5rem"><img src="images/dashboard.png" alt="Screenshot of the Flask dashboard" data-ph="Add: screenshot of the live dashboard after a sweep" onerror="ph(this)"><figcaption>The dashboard after a sweep.</figcaption></figure>
+      <figure class="frame" style="margin-top:1.5rem"><img src="images/dashboard.png" alt="Screenshot of the Jupyter dashboard" data-ph="Add: screenshot of the Jupyter dashboard after a sweep" onerror="ph(this)"><figcaption>The dashboard after a sweep.</figcaption></figure>
     </section>
   </article>
 
@@ -750,7 +750,7 @@ section.block h2 { font-weight: 500; }
         <figure class="frame"><img src="images/g2.jpg" alt="Oscilloscope test" data-ph="Oscilloscope check on the 100 &#937; load" onerror="ph(this)"><figcaption>Checking current on the 100 &Omega; test load.</figcaption></figure>
         <figure class="frame"><img src="images/g3.jpg" alt="PYNQ-Z2 with Pmods" data-ph="PYNQ-Z2 with Pmod DAC and ADC" onerror="ph(this)"><figcaption>PYNQ-Z2 with the Pmod DAC and ADC.</figcaption></figure>
         <figure class="frame"><img src="images/g4.jpg" alt="Electrodes on forearm" data-ph="Electrodes on the forearm" onerror="ph(this)"><figcaption>Four-electrode measurement.</figcaption></figure>
-        <figure class="frame"><img src="images/g5.jpg" alt="Dashboard" data-ph="Dashboard in the browser" onerror="ph(this)"><figcaption>Live dashboard.</figcaption></figure>
+        <figure class="frame"><img src="images/g5.jpg" alt="Dashboard" data-ph="Jupyter dashboard" onerror="ph(this)"><figcaption>Jupyter dashboard.</figcaption></figure>
         <figure class="frame"><img src="images/g6.jpg" alt="Team at work" data-ph="Team at work / demo day" onerror="ph(this)"><figcaption>Demo day.</figcaption></figure>
       </div>
     </section>
@@ -829,7 +829,7 @@ section.block h2 { font-weight: 500; }
             <span class="plus" aria-hidden="true"></span>
           </button>
           <div class="person-body"><div>
-            <p>Builds the analog circuit, Cole-Cole analysis, and the Flask dashboard. Background in embedded systems and computational biology research.</p>
+            <p>Builds the analog circuit, Cole-Cole analysis, and the Jupyter dashboard. Background in embedded systems and computational biology research.</p>
             <p><a href="mailto:i.n.nix@wustl.edu">i.n.nix@wustl.edu</a></p>
           </div></div>
         </div>
