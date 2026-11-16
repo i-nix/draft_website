@@ -84,6 +84,12 @@ body.menu-open .drawer { transform: none; visibility: visible; transition: trans
 }
 .drawer li a:hover { background: var(--hl, var(--sky)); color: var(--ink); }
 .drawer li a.active { font-style: italic; }
+.drawer ul.sub { margin: 0.2rem 0 0.8rem 0.9rem; border-left: 1.5px solid rgba(244, 241, 234, 0.25); padding-left: 0.6rem; }
+.drawer ul.sub li a {
+  font-family: var(--mono); font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.35rem 0.9rem; margin: 0; color: #C9D6E3;
+}
+.drawer ul.sub li a:hover { background: var(--sky); color: var(--ink); }
 .drawer .gh { display: inline-block; margin-top: 2rem; }
 
 /* ---------- pages ---------- */
@@ -364,7 +370,7 @@ section.block h2 { font-weight: 500; }
 <div class="scrim"></div>
 <nav class="drawer" id="drawer" aria-label="Pages">
   <ul>
-    <li><a href="#/home" data-page="home" style="--hl:#CFE6F8">Home</a></li>
+    <li><a href="#/home" data-page="home" style="--hl:#CFE6F8">Home</a><ul class="sub"><li><a href="#/home?s=scope">Project Scope</a></li><li><a href="#/home?s=justification">Justification</a></li><li><a href="#/home?s=description">Project Description</a></li><li><a href="#/home?s=aims">Aims</a></li><li><a href="#/home?s=video">Interim Video Update</a></li></ul></li>
     <li><a href="#/how" data-page="how" style="--hl:#CFE6F8">How It Works</a></li>
     <li><a href="#/design" data-page="design" style="--hl:#CFE6F8">Design</a></li>
     <li><a href="#/results" data-page="results" style="--hl:#CFE6F8">Results</a></li>
@@ -891,8 +897,10 @@ section.block h2 { font-weight: 500; }
     const cur = pages.find(p => p.dataset.page === id);
     document.title = (id === 'home' ? '' : cur.dataset.title + ' | ') + 'FPGA-Based EIS for Skin Tissue | ESE 4970';
     if (id === 'home') { sig.resize(); sig.start(); } else sig.stop();
-    window.scrollTo({ top: 0, behavior: 'auto' });
-    heroInView = id === 'home';
+    const section = id === 'home' && query ? document.getElementById(new URLSearchParams(query).get('s')) : null;
+    if (section) setTimeout(() => section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }), 60);
+    else window.scrollTo({ top: 0, behavior: 'auto' });
+    heroInView = id === 'home' && !section;
     setDark(); closeMenu(); revealIn(cur);
     if (id === 'references' && query) {
       const li = document.getElementById('ref' + new URLSearchParams(query).get('r'));
@@ -920,6 +928,10 @@ section.block h2 { font-weight: 500; }
   function closeMenu() { document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded', 'false'); }
   menuBtn.addEventListener('click', () => document.body.classList.contains('menu-open') ? closeMenu() : openMenu());
   document.querySelector('.scrim').addEventListener('click', closeMenu);
+  // a section shortcut clicked twice in a row doesn't change the hash, so route by hand
+  document.querySelectorAll('.drawer ul.sub a').forEach(a => a.addEventListener('click', e => {
+    if (location.hash === a.getAttribute('href')) { e.preventDefault(); route(); }
+  }));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
   /* menu lines turn into sine waves on hover */
