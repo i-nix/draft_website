@@ -161,8 +161,8 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
 .foot-col b { color: var(--cream); font-weight: 500; }
 .foot-col a { color: #D6DEE7; }
 .foot-col a:hover { color: var(--sky); }
-.tiles { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.1fr; }
-.tiles.r2 { grid-template-columns: 1.1fr 1fr 1.3fr; }
+.tiles { display: grid; grid-template-columns: 1fr 1.2fr 1fr; }
+.tiles.r2 { grid-template-columns: 1fr 1.2fr 1fr; }
 .tile {
   display: grid; place-items: center; height: 190px; text-decoration: none; color: var(--cream); text-align: center;
   font-family: var(--serif); font-size: clamp(1.8rem, 3.2vw, 3.4rem); letter-spacing: -0.02em; padding: 0 1rem;
@@ -440,6 +440,57 @@ section.block h2 { font-weight: 500; }
   .page.current { animation: none; } html { scroll-behavior: auto; }
 }
 
+
+/* ---------- design page: accordion lists, plain figures, safety rows ---------- */
+.split { display: grid; grid-template-columns: 1fr 1.05fr; gap: 5vw; align-items: start; }
+.split h2 { margin-bottom: 1.5rem; }
+.side-lead { font-size: 1.2rem; color: var(--ink); max-width: 34ch; margin: 0; }
+.acc { border-top: 1.5px solid var(--ink); }
+.acc-row { border-bottom: 1.5px solid var(--ink); }
+.acc-head {
+  width: 100%; background: none; border: 0; cursor: pointer; text-align: left; color: var(--ink); font: inherit;
+  display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.4rem 0;
+}
+.acc-name { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(1.6rem, 2.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.01em; }
+.acc-tag { display: block; margin-top: 0.45rem; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.82rem; color: var(--muted); }
+.chev {
+  flex: 0 0 auto; width: 64px; height: 64px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center;
+  transition: background 0.3s, transform 0.4s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.chev svg { width: 26px; height: 26px; fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.acc-head:hover .chev { background: var(--sky); }
+.acc-head[aria-expanded="true"] .chev { transform: rotate(180deg); background: var(--sky); }
+.acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s ease; }
+.acc-body > div { overflow: hidden; }
+.acc-body p { margin: 0 0 1.6rem; max-width: 56ch; font-size: 1.08rem; color: var(--ink); }
+.acc-row.open .acc-body { grid-template-rows: 1fr; }
+.plain-fig img { width: 100%; border-radius: 14px; }
+.plain-fig figcaption { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.03em; color: var(--muted); margin-top: 0.8rem; }
+.photo-pair { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; align-items: start; }
+.photo-pair img { aspect-ratio: 4 / 3; object-fit: cover; }
+.safety { border-top: 1.5px solid var(--ink); }
+.s-row { display: grid; grid-template-columns: minmax(180px, 0.6fr) 1.4fr; gap: 2rem; align-items: baseline; padding: 1.6rem 0; border-bottom: 1.5px solid var(--ink); }
+.s-row strong { font-family: var(--serif); font-weight: 500; font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
+.s-row p { margin: 0; font-size: 1.12rem; color: var(--ink); max-width: 60ch; }
+@media (max-width: 900px) {
+  .split, .photo-pair { grid-template-columns: 1fr; gap: 2rem; }
+  .s-row { grid-template-columns: 1fr; gap: 0.6rem; }
+  .chev { width: 52px; height: 52px; }
+}
+.fig-grid.gallery { gap: 2.5rem 2rem; }
+
+/* ---------- aims: title + summary on the left, targets on the right ---------- */
+.aims { border-top: 1.5px solid var(--ink); }
+.aim { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; padding: 2.2rem 0; border-bottom: 1.5px solid var(--ink); align-items: start; }
+.aim h3 { margin: 0 0 0.5rem; font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1.1; color: var(--ink); }
+.aim p { margin: 0; font-size: 1.08rem; color: var(--ink); max-width: 44ch; }
+.aim ul { list-style: none; margin: 0; padding: 0; }
+.aim li { position: relative; padding: 0.55rem 0 0.55rem 1.6rem; font-size: 1.05rem; color: var(--ink); border-bottom: 1px solid rgba(28, 42, 57, 0.18); }
+.aim li:last-child { border-bottom: 0; }
+.aim li::before { content: ""; position: absolute; left: 0; top: 1.15rem; width: 0.7rem; height: 1.5px; background: var(--ink); }
+@media (max-width: 900px) { .aim { grid-template-columns: 1fr; gap: 1rem; } }
+.band .pipeline .stage { background: rgba(255, 255, 255, 0.7); }
+@media (max-width: 900px) { .aim { grid-template-columns: 1fr; gap: 1rem; } }
 </style>
 </head>
 <body class="on-dark">
@@ -469,7 +520,6 @@ section.block h2 { font-weight: 500; }
 <nav class="drawer" id="drawer" aria-label="Pages">
   <ul>
     <li class="has-sub"><a href="#/home" data-page="home" style="--hl:#CFE6F8">Home</a><ul class="sub"><li><a href="#/home?s=scope">Project Scope</a></li><li><a href="#/home?s=justification">Justification</a></li><li><a href="#/home?s=description">Project Description</a></li><li><a href="#/home?s=aims">Aims</a></li><li><a href="#/home?s=video">Interim Video Update</a></li></ul></li>
-    <li><a href="#/how" data-page="how" style="--hl:#CFE6F8">How It Works</a></li>
     <li><a href="#/design" data-page="design" style="--hl:#CFE6F8">Design</a></li>
     <li><a href="#/results" data-page="results" style="--hl:#CFE6F8">Results</a></li>
     <li><a href="#/gallery" data-page="gallery" style="--hl:#CFE6F8">Gallery</a></li>
@@ -552,9 +602,25 @@ section.block h2 { font-weight: 500; }
           <p class="tag">Project Description</p>
           <div class="prose">
         <p>Our system uses the FPGA on a PYNQ-Z2 board to generate sine waves at 20 or more frequencies between 1 kHz and 100 kHz. A 12-bit DAC turns each wave into a small AC signal, and a front-end circuit limits the current before it reaches the skin. Four electrodes are placed on the skin: the outer two inject the current and the inner two measure the resulting voltage.</p>
-        <p>The response is digitized and sent back to the FPGA, which uses I/Q demodulation to find how large the signal is and how far it is shifted in time. The ARM processor on the same chip turns those numbers into a complex impedance at each frequency, corrects for circuit effects, and fits the Cole-Cole tissue model. The resulting spectrum and four fitted parameters are plotted in a Jupyter notebook on the board after every sweep.</p>
-        <p><a href="#/how">See the full walkthrough on How It Works &rsaquo;</a></p>
+        <p>The response is digitized and captured by the FPGA. The ARM processor on the same chip fits each signal to a sine and cosine to find how large it is and how far it is shifted in time, turns those numbers into a complex impedance at each frequency, corrects for circuit effects, and fits the Cole-Cole tissue model. The resulting spectrum and four fitted parameters are plotted in a Jupyter notebook on the board after every sweep.</p>
       </div>
+        </div>
+      </div>
+      <div class="wide">
+        <div class="pipeline" role="list" aria-label="Signal path">
+          <div class="stage" role="listitem"><b>FPGA</b>Generates a digital sine wave</div>
+          <div class="arrow" aria-hidden="true">&rsaquo;</div>
+          <div class="stage" role="listitem"><b>DAC</b>Converts samples into an AC voltage</div>
+          <div class="arrow" aria-hidden="true">&rsaquo;</div>
+          <div class="stage" role="listitem"><b>Front end</b>Limits current and blocks DC</div>
+          <div class="arrow" aria-hidden="true">&rsaquo;</div>
+          <div class="stage" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
+          <div class="arrow" aria-hidden="true">&rsaquo;</div>
+          <div class="stage" role="listitem"><b>ADC</b>Converts back to digital</div>
+          <div class="arrow" aria-hidden="true">&rsaquo;</div>
+          <div class="stage" role="listitem"><b>FPGA</b>Captures the samples</div>
+          <div class="arrow" aria-hidden="true">&rsaquo;</div>
+          <div class="stage" role="listitem"><b>ARM + Jupyter</b>Computes impedance, fits the model, plots it</div>
         </div>
       </div>
     </section>
@@ -565,17 +631,24 @@ section.block h2 { font-weight: 500; }
         <h2 class="big">Aims</h2>
         <div>
           <p class="tag">Aims</p>
-          <p class="lead">What the finished system has to do, written as measurable targets.</p>
+          <p class="lead">Measurable targets for our finished system.</p>
         </div>
       </div>
       <div class="wide">
-        <div class="table-wrap">
-        <table class="specs">
-          <tr><th>Signal generation</th><td>The FPGA sends at least 20 frequencies from 1 kHz to 100 kHz to the test sample, each within 1% of its setpoint, and receives the response from the electrodes.</td></tr>
-          <tr><th>Impedance analysis</th><td>The ARM computes impedance, fits Cole-Cole parameters, and plots the results. Magnitude within 5% and phase within 3&deg; of a reference instrument for precision resistors and an RC tissue phantom; fitted phantom Cole-Cole parameters within 10% of the values predicted from its components.</td></tr>
-          <tr><th>Skin measurements</th><td>Repeated measurements at the same site agree within a 10% coefficient of variation, the spectrum shows the frequency dependence reported in the literature, and a full sweep and display update take at most 60 seconds.</td></tr>
-        </table>
-      </div>
+        <div class="aims">
+          <div class="aim">
+            <div><h3>Signal generation</h3><p>The FPGA sends sine waves to the test sample and receives the response from the electrodes.</p></div>
+            <ul><li>At least 20 frequencies from 1 kHz to 100 kHz</li><li>Each within 1% of its setpoint</li></ul>
+          </div>
+          <div class="aim">
+            <div><h3>Impedance analysis</h3><p>The ARM computes impedance, fits Cole-Cole parameters, and plots the results.</p></div>
+            <ul><li>Magnitude within 5% and phase within 3&deg; of a reference instrument, on precision resistors and an RC tissue phantom</li><li>Fitted phantom Cole-Cole parameters within 10% of the values predicted from its components</li></ul>
+          </div>
+          <div class="aim">
+            <div><h3>Skin measurements</h3><p>The full system measures skin across the sweep and compares the result to published data.</p></div>
+            <ul><li>Repeated measurements at the same site agree within a 10% coefficient of variation</li><li>The spectrum shows the frequency dependence reported in the literature</li><li>A full sweep and display update take at most 60 seconds</li></ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -584,7 +657,7 @@ section.block h2 { font-weight: 500; }
         <h2 class="big">Update</h2>
         <div>
           <p class="tag">Interim Video Update</p>
-          <p class="lead">A short walkthrough of where the project stands at the midpoint.</p>
+          <p class="lead">Where our project stood at the midpoint.</p>
         </div>
       </div>
       <div class="wide">
@@ -608,53 +681,6 @@ section.block h2 { font-weight: 500; }
     </section>
   </article>
 
-  <article class="page" data-page="how" data-title="How It Works">
-    <header class="page-head band sky">
-      
-      <h1 class="big">How it works</h1>
-      <p class="intro">From a digital sine wave on the FPGA to a fitted tissue model in the browser.</p>
-    </header>
-    <section class="block">
-      <div class="facts" style="margin:0 0 2.5rem">
-        <div class="fact"><strong>1&ndash;100 kHz</strong><span>Frequency range</span></div>
-        <div class="fact"><strong>&le; 100 &micro;A</strong><span>Maximum current</span></div>
-        <div class="fact"><strong>4 electrodes</strong><span>Two inject, two sense</span></div>
-      </div>
-      <div class="pipeline" role="list" aria-label="Signal path">
-        <div class="stage" role="listitem"><b>FPGA</b>Generates a digital sine wave</div>
-        <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>DAC</b>Convert samples into AC voltage</div>
-        <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>Front end</b>Filters and limits current</div>
-        <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>Skin</b>Four electrodes inject and sense</div>
-        <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>ADC</b>Convert to digital</div>
-        <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>FPGA</b>I/Q Demodulation</div>
-        <div class="arrow" aria-hidden="true">&rsaquo;</div>
-        <div class="stage" role="listitem"><b>ARM + Jupyter</b>Computes impedance, fits the model, plots it</div>
-      </div>
-      <div class="rail">
-        <div class="rail-item"><div class="panel"><h3>1. Generate the signal</h3>
-          <p>The FPGA generates a digital wave and the samples go to a 12-bit DAC. During early testing, a bench function generator is used so we can verify the circuit first.</p></div></div>
-        <div class="rail-item"><div class="panel"><h3>2. Apply it safely and measure the response</h3>
-          <p>A current-limiting resistor and a DC-blocking capacitor control the signal before it reaches the skin. Two electrodes inject current while the other two measure voltage. A precision reference resistor in the loop tells us how much current is flowing.</p></div></div>
-        <div class="rail-item"><div class="panel"><h3>3. Find magnitude and phase on the FPGA</h3>
-          <p>The FPGA multiplies the digitized voltage and current by reference sine and cosine waves (I/Q demodulation). This pulls out how large each signal is and how far it is shifted in time.</p></div></div>
-        <div class="rail-item"><div class="panel"><h3>4. Compute impedance and fit the model</h3>
-          <p>The ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model. The model reduces the whole spectrum to four numbers: low- and high-frequency resistance, a time constant, and a spread factor.</p></div></div>
-        <div class="rail-item"><div class="panel"><h3>5. Show the results</h3>
-          <p>After each sweep, Python in a Jupyter notebook on the board plots the spectrum and fitted parameters.</p></div></div>
-      </div>
-
-      <figure class="frame" style="max-width:760px;margin-top:3rem">
-        <img src="images/current-paths.png" alt="Diagram of current paths through skin" data-ph="Add a diagram: low-frequency current flows around cells, high-frequency current passes through cell membranes" onerror="ph(this)">
-        <figcaption>Why we sweep frequency: low-frequency current flows around cells, high-frequency current passes through them.</figcaption>
-      </figure>
-
-    </section>
-  </article>
 
   <article class="page" data-page="design" data-title="Design">
     <header class="page-head band peach">
@@ -662,46 +688,112 @@ section.block h2 { font-weight: 500; }
       <h1 class="big">Design</h1>
       <p class="intro">The whole system laid out: the hardware that touches the skin, the software that turns signals into numbers, and the limits that keep it safe.</p>
     </header>
-    <section class="block">
-      <h2>Hardware</h2>
-      <div class="two-col">
-        <figure class="frame">
+
+    <section class="block split">
+      <div>
+        <h2>Hardware</h2>
+        <figure class="plain-fig">
           <img src="images/schematic.png" alt="KiCad schematic of the full EIS front end: excitation and measurement, 1.65 V reference, ADC protection, and power" data-ph="Add: KiCad schematic" onerror="ph(this)">
           <figcaption>Full front-end schematic in KiCad: excitation and measurement, 1.65 V reference, ADC protection, and power.</figcaption>
         </figure>
-        <div class="panel">
-          <ul class="parts">
-            <li>PYNQ-Z2 board with a Zynq FPGA and ARM processor</li>
-            <li>Pmod DA2 12-bit DAC and Pmod AD1 12-bit, 1 MSPS ADC</li>
-            <li>Two INA128 instrumentation amplifiers, gain of about 10</li>
-            <li>OPA2134 buffering a 1.65 V midpoint so signals stay in the ADC range</li>
-            <li>BAT85 diodes clamping ADC inputs between 0 and 3.3 V</li>
-            <li>Two 9 V batteries for an isolated &plusmn;9 V supply</li>
-          </ul>
+      </div>
+      <div class="acc">
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">PYNQ-Z2</span><span class="acc-tag">Zynq-7020 &middot; FPGA + ARM</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>The board at the center of the system. Its Zynq chip combines programmable logic (the FPGA), which generates and captures the signals, with a dual-core ARM processor that runs Python and Jupyter.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">Pmod DA2</span><span class="acc-tag">12-bit DAC</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Turns the FPGA&rsquo;s digital sine samples into a 2 Vpp analog wave that drives the front end.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">Pmod AD1</span><span class="acc-tag">12-bit, 1 MSPS ADC</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Samples both measurement channels at the same time and sends them back to the FPGA.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">INA128 &times; 2</span><span class="acc-tag">Instrumentation amplifiers &middot; gain &asymp; 9.9</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>One measures the voltage across the inner sense electrodes; the other measures the current through a 1 k&Omega; reference resistor.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">OPA2134</span><span class="acc-tag">1.65 V reference buffer</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Holds both amplifier outputs at the middle of the ADC&rsquo;s 0&ndash;3.3 V range so the whole sine wave can be measured.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">BAT85 diodes</span><span class="acc-tag">ADC input protection</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Clamp the ADC inputs between 0 and 3.3 V so a fault can&rsquo;t damage the Pmod or the board.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">Two 9 V batteries</span><span class="acc-tag">Isolated &plusmn;9 V supply</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Power the analog front end without any connection to wall power.</p></div></div>
         </div>
       </div>
-      <div class="fig-grid" style="margin-top:1.5rem">
-        <figure class="frame"><img src="images/setup.jpg" alt="Full measurement setup" data-ph="Add: photo of the full setup (board, front end, electrodes) with labels" onerror="ph(this)"><figcaption>The full measurement setup.</figcaption></figure>
-        <figure class="frame"><img src="images/electrodes.jpg" alt="Four-electrode placement on the forearm" data-ph="Add: close-up of the four electrodes on skin" onerror="ph(this)"><figcaption>Four-electrode placement: outer pair injects, inner pair senses.</figcaption></figure>
-      </div>
     </section>
+
     <section class="block">
-      <h2>Software</h2>
-      <div class="trio">
-        <div class="panel"><h3>FPGA logic</h3>
-          <p>A DDS sine generator sets each sweep frequency and streams samples to the Pmod DA2 over SPI. On the way back, it reads the Pmod AD1 and runs I/Q demodulation, multiplying the signals by reference sine and cosine waves to get magnitude and phase.</p></div>
-        <div class="panel"><h3>ARM processing</h3>
-          <p>Python on the PYNQ-Z2&rsquo;s ARM processor computes the complex impedance at each frequency, corrects for circuit effects using a known resistor, and fits the Cole-Cole model to the full spectrum.</p></div>
-        <div class="panel"><h3>Jupyter dashboard</h3>
-          <p>The dashboard is built in Python inside a Jupyter notebook running on the board. After each sweep, it plots the spectrum and fitted parameters right in the notebook.</p></div>
+      <div class="photo-pair">
+        <figure class="plain-fig"><img src="images/g2_mock_skin_load_test.jpg" alt="PYNQ-Z2 with Pmods, breadboard front end, and two 9 V batteries" loading="lazy" onerror="ph(this)"><figcaption>The PYNQ-Z2 with both Pmods, the breadboarded front end, and the &plusmn;9 V batteries.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/g1_first_skin_test.jpg" alt="Four electrodes on a forearm" loading="lazy" onerror="ph(this)"><figcaption>Four electrodes on the forearm: the outer pair injects current, the inner pair senses voltage.</figcaption></figure>
       </div>
-      <a class="pill" href="https://github.com/emilyseligson/senior-capstone" target="_blank" rel="noopener">View the code on GitHub &#8599;</a>
-      <figure class="frame" style="margin-top:1.5rem;max-width:760px"><img src="images/software.png" alt="Software block diagram" data-ph="Add: software block diagram or code structure (FPGA blocks, Python, Jupyter)" onerror="ph(this)"><figcaption>How the software pieces connect.</figcaption></figure>
     </section>
+
+    <section class="block split">
+      <div>
+        <h2>Software</h2>
+        <p class="side-lead">The FPGA handles the fast, timing-critical signal work. The ARM processor on the same chip does the math and the plotting.</p>
+      </div>
+      <div class="acc">
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">FPGA logic</span><span class="acc-tag">Programmable logic &middot; Verilog</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>A DDS sine generator sets each sweep frequency and streams samples to the Pmod DA2 over SPI. On the way back, it reads the Pmod AD1 and captures both channels.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">ARM processing</span><span class="acc-tag">Processing system &middot; Python</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Fits each captured channel to a sine and cosine at the excitation frequency to get its in-phase and quadrature parts, computes the complex impedance, corrects it with a sweep on a known resistor, and fits the Cole-Cole model to the full spectrum.</p></div></div>
+        </div>
+        <div class="acc-row">
+          <button class="acc-head" aria-expanded="false">
+            <span><span class="acc-name">Jupyter dashboard</span><span class="acc-tag">Python &middot; matplotlib</span></span>
+            <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-body"><div><p>Runs in a notebook on the board. After each sweep it shows the waveforms, the impedance spectrum, and the Cole-Cole fit, and saves the results so measurements can be compared later.</p></div></div>
+        </div>
+      </div>
+    </section>
+
     <section class="block">
       <h2>Safety</h2>
-      <div class="note">
-        <p>Our current limits follow published skin-impedance work and sit at or below the IEC 60601-1 patient auxiliary current limits. Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact, and we test only on ourselves as healthy volunteers. The device is battery powered and is not a certified medical device.</p>
+      <div class="safety">
+        <div class="s-row"><strong>64 &micro;A</strong><p>Worst-case excitation current (rms), with the electrodes shorted. This is below the IEC 60601-1 patient auxiliary current limit of 100 &micro;A.</p></div>
+        <div class="s-row"><strong>100 &Omega;</strong><p>Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact.</p></div>
+        <div class="s-row"><strong>&plusmn;9 V</strong><p>The front end runs on two batteries, with no connection to wall power.</p></div>
+        <div class="s-row"><strong>Us only</strong><p>We test only on ourselves as healthy volunteers. The device is a prototype, not a certified medical device.</p></div>
       </div>
     </section>
   </article>
@@ -757,11 +849,11 @@ section.block h2 { font-weight: 500; }
       <h1 class="big">Gallery</h1>
       <p class="intro"></p>
     </header>    <section class="block">
-      <div class="fig-grid">
-        <figure class="frame"><img src="images/g1_first_skin_test.jpg" alt="Four electrodes on a forearm connected to the PYNQ-Z2 and breadboard" loading="lazy" onerror="ph(this)"><figcaption>First test on skin</figcaption></figure>
-        <figure class="frame"><img src="images/g2_mock_skin_load_test.jpg" alt="PYNQ-Z2 with Pmods, breadboard front end, and two 9 V batteries" loading="lazy" onerror="ph(this)"><figcaption>Mock skin load test</figcaption></figure>
-        <figure class="frame"><img src="images/g3_circuit_mock_load_dac.jpg" alt="Close-up of the breadboard circuit with the mock skin load and Pmod DA2" loading="lazy" onerror="ph(this)"><figcaption>Close-up of our circuit with the mock skin load and the DAC connected</figcaption></figure>
-        <figure class="frame"><img src="images/g4_passive_circuit_test.jpg" alt="Small passive breadboard circuit with function generator and oscilloscope probes" loading="lazy" onerror="ph(this)"><figcaption>Our first test with the passive circuit, using the function generator and the oscilloscope</figcaption></figure>
+      <div class="fig-grid gallery">
+        <figure class="plain-fig"><img src="images/g1_first_skin_test.jpg" alt="Four electrodes on a forearm connected to the PYNQ-Z2 and breadboard" loading="lazy" onerror="ph(this)"><figcaption>First test on skin</figcaption></figure>
+        <figure class="plain-fig"><img src="images/g2_mock_skin_load_test.jpg" alt="PYNQ-Z2 with Pmods, breadboard front end, and two 9 V batteries" loading="lazy" onerror="ph(this)"><figcaption>Mock skin load test</figcaption></figure>
+        <figure class="plain-fig"><img src="images/g3_circuit_mock_load_dac.jpg" alt="Close-up of the breadboard circuit with the mock skin load and Pmod DA2" loading="lazy" onerror="ph(this)"><figcaption>Close-up of our circuit with the mock skin load and the DAC connected</figcaption></figure>
+        <figure class="plain-fig"><img src="images/g4_passive_circuit_test.jpg" alt="Small passive breadboard circuit with function generator and oscilloscope probes" loading="lazy" onerror="ph(this)"><figcaption>Our first test with the passive circuit, using the function generator and the oscilloscope</figcaption></figure>
       </div>
     </section>
   </article>
@@ -786,32 +878,10 @@ section.block h2 { font-weight: 500; }
       </div>
       <div class="roadmap-scroll"><div class="roadmap" id="roadmap"></div></div>
       <div class="tl-next">
-        <p class="tag">Not yet scheduled</p>
-        <div class="chips">
-          <span class="chip">Frequency sweep and display the impedance spectrum <em>#35</em></span>
-          <span class="chip">Compare to published skin impedance data <em>#36</em></span>
-        </div>
         <a class="pill" href="https://github.com/users/emilyseligson/projects/2/views/1?layout=roadmap" target="_blank" rel="noopener">Full roadmap on GitHub &#8599;</a>
       </div>
     </section>
 
-    <section class="block">
-      <h2>Milestones</h2>
-      <div class="rail">
-        <div class="rail-item done"><div class="panel"><p class="when">September 2026 &middot; written proposal Sep 20, revision Oct 2</p><h3>Proposal, schematic, and parts</h3>
-          <p>Formal proposal submitted, front-end schematic completed in KiCad, and components ordered and delivered.</p></div></div>
-        <div class="rail-item done"><div class="panel"><p class="when">Late September to October 2026</p><h3>Breadboard and FPGA signal output</h3>
-          <p>Build and test the front end; verify current limits and FPGA signals with the DAC and oscilloscope, set up SPI to the Pmods, and generate sine waves with DDS.</p></div></div>
-        <div class="rail-item done"><div class="panel"><p class="when">October 16, 2026 &middot; peer review the following week</p><h3>Draft website and video update</h3>
-          <p>Draft project website and recorded week 8 video update submitted, then peer reviewed.</p></div></div>
-        <div class="rail-item"><div class="panel"><p class="when">Late October to mid November 2026</p><h3>Demodulation and software</h3>
-          <p>Capture ADC data and do demodulation on the FPGA, then build impedance calculation, Cole-Cole fitting, and the dashboard.</p></div></div>
-        <div class="rail-item now"><div class="panel"><p class="when">November 2026 &middot; in progress &middot; poster draft due Nov 30</p><h3>Integration and skin measurements</h3>
-          <p>Connect the full system, validate, then run tests on skin.</p></div></div>
-        <div class="rail-item"><div class="panel"><p class="when">December 2026 &middot; poster to printing Dec 1, demo Dec 4, website and report Dec 11</p><h3>Final report and demo</h3>
-          <p>Final report, completed website, and a demonstration.</p></div></div>
-      </div>
-    </section>
   </article>
 
   <article class="page" data-page="team" data-title="Team">
@@ -893,8 +963,7 @@ section.block h2 { font-weight: 500; }
     </div>
   </div>
   <div class="tiles">
-    <a class="tile " style="--hl:#CFE6F8" href="#/how">How It Works</a>
-    <a class="tile pillish" style="--hl:#CFE6F8" href="#/design">Design</a>
+    <a class="tile " style="--hl:#CFE6F8" href="#/design">Design</a>
     <a class="tile pillish" style="--hl:#CFE6F8" href="#/results">Results</a>
     <a class="tile " style="--hl:#CFE6F8" href="#/gallery">Gallery</a>
   </div>
@@ -1148,10 +1217,17 @@ section.block h2 { font-weight: 500; }
       }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
     : null;
   function revealIn(page) {
-    const els = page.querySelectorAll('.band-grid, .wide, .spectrum, section.block h2, .prose, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
+    const els = page.querySelectorAll('.aims, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
     if (!io) { els.forEach(el => el.classList.add('in')); return; }
     els.forEach(el => { if (!el.classList.contains('in')) { if (!el.classList.contains('spectrum')) el.classList.add('reveal'); io.observe(el); } });
   }
+
+  /* ---------- design page accordions ---------- */
+  document.querySelectorAll('.acc-head').forEach(btn => btn.addEventListener('click', () => {
+    const row = btn.closest('.acc-row'), open = !row.classList.contains('open');
+    row.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+  }));
 
   /* ---------- team accordion ---------- */
   document.querySelectorAll('.person-head').forEach(btn => btn.addEventListener('click', () => {
@@ -1200,6 +1276,11 @@ section.block h2 { font-weight: 500; }
         ['Draft project website', null, [10, 5], [10, 16], 1],
         ['Recorded video update (week 8)', null, [10, 12], [10, 16], 1],
         ['Peer review of website and video', null, [10, 19], [10, 23], 1]]],
+      ['Testing & validation', [
+        ['Frequency sweep and display the impedance spectrum', null, [11, 16], [11, 25], 0],
+        ['Validate on precision resistors and the RC phantom', null, [11, 16], [11, 25], 0],
+        ['Integrate the full system and test on skin', null, [11, 18], [11, 27], 0],
+        ['Compare to published skin impedance data', null, [11, 23], [11, 30], 0]]],
       ['Final deliverables', [
         ['Poster draft (progress report 14)', 24, [11, 11], [11, 30], 0],
         ['Demo day', null, [12, 4], null, 0],
