@@ -501,35 +501,33 @@ section.block h2 { font-weight: 500; }
 .ref-meta { margin: 0; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.02em; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
 .ref-meta a { color: var(--muted); }
 @media (max-width: 900px) { .ref { grid-template-columns: 3rem 1fr; } }
-/* ---------- results page: same row style as the aims and safety lists ---------- */
-.res-summary { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem 3rem; margin-bottom: 2.5rem; }
-.res-summary .tl-legend { margin: 0 0 0.6rem; }
-.results { border-top: 1.5px solid var(--ink); }
-.res { display: grid; grid-template-columns: 1fr 1.3fr minmax(170px, 0.6fr); gap: 2.5rem; padding: 2rem 0; border-bottom: 1.5px solid var(--ink); align-items: start; }
-.res-aim, .res-label { display: block; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.55rem; }
-.res-name { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(1.6rem, 2.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); }
-.res p { margin: 0; font-size: 1.08rem; color: var(--ink); max-width: 46ch; }
-.res-val { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1; color: var(--ink); margin-bottom: 0.8rem; }
-.status { display: inline-block; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; line-height: 1.4; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 999px; padding: 0.3rem 0.85rem; }
-.status.pending { border-style: dashed; border-color: var(--muted); color: var(--muted); }
-.status.met { background: var(--mint); }
-.status.missed { background: var(--rose); }
-.status-dot { display: inline-block; vertical-align: -2px; margin-right: 0.45rem; width: 22px; height: 12px; border-radius: 999px; border: 1.5px solid var(--ink); }
-.status-dot.met { background: var(--mint); }
-.status-dot.missed { background: var(--rose); }
-.status-dot.pending { border-style: dashed; border-color: var(--muted); }
-.fig-stack { display: grid; gap: 2.5rem; }
-.params { border-top: 1.5px solid var(--ink); }
-.param { display: grid; grid-template-columns: minmax(130px, 0.45fr) 1.4fr minmax(120px, auto); gap: 2rem; align-items: baseline; padding: 1.4rem 0; border-bottom: 1.5px solid var(--ink); }
-.param strong { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
-.param p { margin: 0; font-size: 1.08rem; color: var(--ink); }
-.param .pval { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; color: var(--ink); text-align: right; }
-.dash-fig { margin-top: 3.5rem; }
-@media (max-width: 900px) {
-  .res { grid-template-columns: 1fr; gap: 1rem; }
-  .param { grid-template-columns: auto 1fr; gap: 0.4rem 1.5rem; }
-  .param .pval { grid-column: 2; text-align: left; }
-}
+/* ---------- results page ---------- */
+.samples { border-top: 1.5px solid var(--ink); }
+.cite-inline { white-space: nowrap; }
+.test-tag { margin-bottom: 0.6rem; }
+.comp-list { list-style: none; margin: 1.8rem 0 0; padding: 0; border-top: 1.5px solid var(--ink); max-width: 34rem; }
+.comp-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(28, 42, 57, 0.18); color: var(--ink); }
+.comp-list li span { font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.comp-list li b { font-family: var(--serif); font-weight: 500; font-size: 1.25rem; }
+.sub-h { margin: 3rem 0 1rem !important; font-weight: 500; }
+.data { width: 100%; border-collapse: collapse; color: var(--ink); font-variant-numeric: tabular-nums; }
+.data th { font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.78rem; color: var(--muted); text-align: right; padding: 0.7rem 1rem; border-bottom: 1.5px solid var(--ink); white-space: nowrap; }
+.data td { text-align: right; padding: 0.85rem 1rem; border-bottom: 1px solid rgba(28, 42, 57, 0.18); font-size: 1.05rem; white-space: nowrap; }
+.data th:first-child, .data td:first-child { text-align: left; padding-left: 0; }
+.data td:first-child { font-family: var(--serif); font-size: 1.2rem; }
+.data td:first-child small { display: block; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+.data td.calc { font-weight: 500; }
+.data tr:last-child td { border-bottom: 1.5px solid var(--ink); }
+.data .hint { color: var(--muted); font-size: 0.95rem; }
+.acc.after-table { margin-top: 2.5rem; }
+.acc-body .table-wrap { margin: 0 0 1.8rem; }
+.acc-body .formula { font-family: var(--mono); font-size: 0.95rem; background: var(--soft); border-radius: 10px; padding: 0.9rem 1.1rem; margin: 0 0 1.6rem; max-width: 56ch; color: var(--ink); line-height: 1.8; }
+.code-note { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; margin-top: 2.5rem; }
+.code-note p { margin: 0; font-size: 1.1rem; color: var(--ink); max-width: 46ch; }
+.code-note .pill { margin-top: 0; padding: 0.8rem 1.35rem; font-family: var(--mono); font-size: 0.9rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; }
+.comp-list i { font-style: normal; }
+.results-page section.block:last-of-type { padding-bottom: 5rem; }
+@media (max-width: 900px) { .comp-list { max-width: none; } }
 </style>
 </head>
 <body class="on-dark">
@@ -805,93 +803,220 @@ section.block h2 { font-weight: 500; }
     </section>
   </article>
 
-  <article class="page" data-page="results" data-title="Results">
+  <article class="page results-page" data-page="results" data-title="Results">
     <header class="page-head band sky">
       
       <h1 class="big">Results</h1>
-      <p class="intro">How the finished system performed against each aim</p>
+      <p class="intro">We tested the system on three samples: a mock skin circuit with known values, a healthy banana, and a bruised banana.</p>
     </header>
 
     <section class="block">
-      <div class="res-summary">
-        <div class="tl-stat"><strong id="res-met">0</strong><span>of <b id="res-total">0</b> targets met</span></div>
-        <p class="tl-legend">
-          <span><i class="status-dot met"></i>Met</span>
-          <span><i class="status-dot missed"></i>Not met</span>
-          <span><i class="status-dot pending"></i>Pending</span>
-        </p>
-      </div>
-      <!-- To fill in a result: replace &mdash; with the number, and change
-           <span class="status pending">Pending</span> to
-           <span class="status met">Met</span>  or  <span class="status missed">Not met</span>.
-           The "targets met" count at the top updates by itself. -->
-      <div class="results">
-        <div class="res">
-          <div><span class="res-aim">Aim 1 &middot; Signal generation</span><span class="res-name">Frequency sweep</span></div>
-          <div><span class="res-label">Target</span><p>At least 20 frequencies from 1&ndash;100 kHz, each within 1% of its setpoint</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
-        <div class="res">
-          <div><span class="res-aim">Aim 2 &middot; Impedance analysis</span><span class="res-name">Magnitude accuracy</span></div>
-          <div><span class="res-label">Target</span><p>Within 5% of a reference instrument, on precision resistors and an RC tissue phantom</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
-        <div class="res">
-          <div><span class="res-aim">Aim 2 &middot; Impedance analysis</span><span class="res-name">Phase accuracy</span></div>
-          <div><span class="res-label">Target</span><p>Within 3&deg; of the reference instrument</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
-        <div class="res">
-          <div><span class="res-aim">Aim 2 &middot; Impedance analysis</span><span class="res-name">Phantom Cole&ndash;Cole fit</span></div>
-          <div><span class="res-label">Target</span><p>Fitted parameters within 10% of the values predicted from the phantom&rsquo;s components</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
-        <div class="res">
-          <div><span class="res-aim">Aim 3 &middot; Skin measurements</span><span class="res-name">Repeatability</span></div>
-          <div><span class="res-label">Target</span><p>Repeated measurements at the same site agree within a 10% coefficient of variation</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
-        <div class="res">
-          <div><span class="res-aim">Aim 3 &middot; Skin measurements</span><span class="res-name">Match to literature</span></div>
-          <div><span class="res-label">Target</span><p>The spectrum shows the frequency dependence reported in published skin data</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
-        <div class="res">
-          <div><span class="res-aim">Aim 3 &middot; Skin measurements</span><span class="res-name">Speed</span></div>
-          <div><span class="res-label">Target</span><p>A full sweep and display update take at most 60 s</p></div>
-          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
-        </div>
+      <h2>What we tested</h2>
+      <div class="safety samples">
+        <div class="s-row"><strong>Mock skin</strong><p>A resistor and capacitor circuit that behaves like skin. We know its exact values, so it shows how accurate the system is.</p></div>
+        <div class="s-row"><strong>Healthy banana</strong><p>Real biological tissue with intact cells.</p></div>
+        <div class="s-row"><strong>Bruised banana</strong><p>The same kind of tissue with damaged cells, standing in for unhealthy tissue.</p></div>
       </div>
     </section>
 
     <section class="block split">
       <div>
-        <h2>Validation on known loads</h2>
-        <p class="side-lead">Before measuring skin, we test the system on parts with a known impedance: precision resistors and an RC circuit that behaves like tissue.</p>
+        <h2>Why bananas instead of skin</h2>
+        <p class="side-lead">A banana lets us compare healthy and damaged tissue, which we can&rsquo;t safely do on a person.</p>
+      </div>
+      <div class="prose">
+        <p>We did try the system on our own forearm to check that it works on skin. We chose not to report those as official results, because our device is a prototype and not a certified medical device.</p>
+        <p>A banana makes a better experiment because we can damage it on purpose. Like skin, banana tissue is made of cells whose membranes separate conductive fluid inside and outside the cell. That structure is what makes tissue impedance change with frequency, and it is what the Cole&ndash;Cole model describes <a class="cite" href="#/references?r=6" aria-label="Reference 6">[6]</a>.</p>
+        <p>Bruising breaks cells, so low-frequency current can reach more of the tissue. The impedance drops and the Cole&ndash;Cole curve shrinks <a class="cite" href="#/references?r=7" aria-label="Reference 7">[7]</a>. Decaying banana tissue shows the same pattern: lower resistance and a higher characteristic frequency <a class="cite" href="#/references?r=8" aria-label="Reference 8">[8]</a>.</p>
+        <p>That makes a bruised banana a simple stand-in for unhealthy tissue. In skin, changes to the tissue from disease also change its impedance, which is how impedance measurements can help tell melanoma apart from harmless moles <a class="cite" href="#/references?r=9" aria-label="Reference 9">[9]</a>.</p>
+        <figure class="plain-fig"><img src="images/g1_first_skin_test.jpg" alt="Four electrodes on a forearm" data-ph="Add: photo of the forearm test" loading="lazy" onerror="ph(this)"><figcaption>Our early test on a forearm. We checked that the system works on skin but do not report these measurements.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="block split" id="mock">
+      <div>
+        <p class="tag test-tag">Test 1</p>
+        <h2>Mock skin circuit</h2>
+        <p class="side-lead">A resistor in series with a resistor and capacitor in parallel. This is a common simple model of skin: the series resistor stands for the deeper tissue and the parallel pair for the outer skin layer <a class="cite" href="#/references?r=5" aria-label="Reference 5">[5]</a>.</p>
+        <!-- Fill in your part values (numbers only). The expected values below are calculated from these. -->
+        <ul class="comp-list">
+          <li><span>R<sub>s</sub> &middot; series</span><b><i data-comp="rs">&mdash;</i> &Omega;</b></li>
+          <li><span>R<sub>p</sub> &middot; parallel</span><b><i data-comp="rp">&mdash;</i> &Omega;</b></li>
+          <li><span>C &middot; parallel</span><b><i data-comp="c">&mdash;</i> nF</b></li>
+        </ul>
       </div>
       <div class="fig-stack">
-        <figure class="plain-fig"><img src="images/resistor-validation.png" alt="Measured vs reference impedance on precision resistors" data-ph="Add: measured vs. reference |Z| and phase on precision resistors" onerror="ph(this)"><figcaption>Magnitude and phase error across the sweep on precision resistors.</figcaption></figure>
-        <figure class="plain-fig"><img src="images/phantom-fit.png" alt="Cole-Cole fit on the RC tissue phantom" data-ph="Add: Cole-Cole fit on the RC tissue phantom" onerror="ph(this)"><figcaption>Fitted vs. predicted Cole&ndash;Cole parameters for the RC phantom.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/g3_circuit_mock_load_dac.jpg" alt="Breadboard circuit with the mock skin load" data-ph="Add: photo of the mock skin circuit" loading="lazy" onerror="ph(this)"><figcaption>The mock skin circuit on the breadboard.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/mock-dashboard.png" alt="Jupyter dashboard after a sweep of the mock skin circuit" data-ph="Add: dashboard screenshot for the mock skin circuit" loading="lazy" onerror="ph(this)"><figcaption>Dashboard after a sweep: impedance spectrum and Cole&ndash;Cole fit.</figcaption></figure>
+      </div>
+    </section>
+    <section class="block">
+      <h3 class="sub-h">Expected vs. measured</h3>
+      <!-- Replace &mdash; in the Measured column with your numbers. Expected and Error fill in automatically. -->
+      <div class="table-wrap">
+        <table class="data" id="mock-table">
+          <thead><tr><th>Value</th><th>Expected</th><th>Measured</th><th>Error</th></tr></thead>
+          <tbody>
+                <tr data-exp="r0" data-kind="pct"><td>R<sub>0</sub> (&Omega;)<small>Low-frequency resistance</small></td><td class="exp">&mdash;</td><td class="meas">&mdash;</td><td class="err calc">&mdash;</td></tr>
+                <tr data-exp="rinf" data-kind="pct"><td>R<sub>&infin;</sub> (&Omega;)<small>High-frequency resistance</small></td><td class="exp">&mdash;</td><td class="meas">&mdash;</td><td class="err calc">&mdash;</td></tr>
+                <tr data-exp="fc" data-kind="pct"><td>f<sub>c</sub> (kHz)<small>Characteristic frequency</small></td><td class="exp">&mdash;</td><td class="meas">&mdash;</td><td class="err calc">&mdash;</td></tr>
+                <tr data-exp="alpha" data-kind="pct"><td>&alpha;<small>Spread (1 for a plain resistor and capacitor)</small></td><td class="exp">&mdash;</td><td class="meas">&mdash;</td><td class="err calc">&mdash;</td></tr>
+                <tr data-exp="z1k" data-kind="pct"><td>|Z| at 1 kHz (&Omega;)<small>Impedance magnitude</small></td><td class="exp">&mdash;</td><td class="meas">&mdash;</td><td class="err calc">&mdash;</td></tr>
+                <tr data-exp="z100k" data-kind="pct"><td>|Z| at 100 kHz (&Omega;)<small>Impedance magnitude</small></td><td class="exp">&mdash;</td><td class="meas">&mdash;</td><td class="err calc">&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="acc after-table">
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">Measurements at every frequency</span><span class="acc-tag">Mock skin circuit &middot; full sweep</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <!-- Fill in the Measured columns. Add a row per frequency if you like (copy a row and change data-f, in Hz). -->
+              <div class="table-wrap"><table class="data sweep" id="mock-sweep">
+                <thead><tr><th>Frequency</th><th>Expected |Z| (&Omega;)</th><th>Measured |Z| (&Omega;)</th><th>Error</th><th>Expected phase</th><th>Measured phase</th><th>Phase error</th></tr></thead>
+                <tbody>
+                  <tr data-f="1000"><td>1 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                  <tr data-f="2000"><td>2 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                  <tr data-f="5000"><td>5 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                  <tr data-f="10000"><td>10 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                  <tr data-f="20000"><td>20 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                  <tr data-f="50000"><td>50 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                  <tr data-f="100000"><td>100 kHz</td><td class="exp-mag">&mdash;</td><td class="meas-mag">&mdash;</td><td class="err-mag calc">&mdash;</td><td class="exp-ph">&mdash;</td><td class="meas-ph">&mdash;</td><td class="err-ph calc">&mdash;</td></tr>
+                </tbody>
+              </table></div>
+            </div></div>
+          </div>
+      </div>
+    </section>
+
+    <section class="block split" id="banana">
+      <div>
+        <p class="tag test-tag">Tests 2 &amp; 3</p>
+        <h2>Healthy vs. bruised banana</h2>
+        <p class="side-lead">There is no single correct value for a banana, so instead of error we show how much each value changed after bruising, and which way published studies say it should move <a class="cite" href="#/references?r=7" aria-label="Reference 7">[7]</a>, <a class="cite" href="#/references?r=8" aria-label="Reference 8">[8]</a>.</p>
+      </div>
+      <figure class="plain-fig"><img src="images/banana-cole-cole-compare.png" alt="Healthy and bruised banana Cole-Cole curves on the same axes" data-ph="Add: healthy and bruised Cole-Cole curves on one plot" loading="lazy" onerror="ph(this)"><figcaption>Healthy and bruised Cole&ndash;Cole curves on the same axes.</figcaption></figure>
+    </section>
+    <section class="block">
+      <div class="fig-grid">
+        <figure class="plain-fig"><img src="images/banana-healthy.jpg" alt="Electrodes on a healthy banana" data-ph="Add: photo of the healthy banana test" loading="lazy" onerror="ph(this)"><figcaption>Healthy banana.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/banana-bruised.jpg" alt="Electrodes on a bruised banana" data-ph="Add: photo of the bruised banana test" loading="lazy" onerror="ph(this)"><figcaption>Bruised banana.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/banana-healthy-dashboard.png" alt="Dashboard after a sweep of the healthy banana" data-ph="Add: dashboard screenshot, healthy banana" loading="lazy" onerror="ph(this)"><figcaption>Dashboard: healthy banana.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/banana-bruised-dashboard.png" alt="Dashboard after a sweep of the bruised banana" data-ph="Add: dashboard screenshot, bruised banana" loading="lazy" onerror="ph(this)"><figcaption>Dashboard: bruised banana.</figcaption></figure>
+      </div>
+      <h3 class="sub-h">Healthy vs. bruised</h3>
+      <!-- Replace &mdash; in the Healthy and Bruised columns. Difference fills in automatically. -->
+      <div class="table-wrap">
+        <table class="data" id="banana-table">
+          <thead><tr><th>Value</th><th>Expected change</th><th>Healthy</th><th>Bruised</th><th>Difference</th></tr></thead>
+          <tbody>
+                <tr><td>R<sub>0</sub> (&Omega;)<small>Low-frequency resistance</small></td><td class="hint">Lower</td><td class="h">&mdash;</td><td class="b">&mdash;</td><td class="diff calc">&mdash;</td></tr>
+                <tr><td>R<sub>&infin;</sub> (&Omega;)<small>High-frequency resistance</small></td><td class="hint">Lower</td><td class="h">&mdash;</td><td class="b">&mdash;</td><td class="diff calc">&mdash;</td></tr>
+                <tr><td>f<sub>c</sub> (kHz)<small>Characteristic frequency</small></td><td class="hint">Higher</td><td class="h">&mdash;</td><td class="b">&mdash;</td><td class="diff calc">&mdash;</td></tr>
+                <tr><td>&alpha;<small>Spread</small></td><td class="hint">&mdash;</td><td class="h">&mdash;</td><td class="b">&mdash;</td><td class="diff calc">&mdash;</td></tr>
+                <tr><td>|Z| at 1 kHz (&Omega;)<small>Impedance magnitude</small></td><td class="hint">Lower</td><td class="h">&mdash;</td><td class="b">&mdash;</td><td class="diff calc">&mdash;</td></tr>
+                <tr><td>|Z| at 100 kHz (&Omega;)<small>Impedance magnitude</small></td><td class="hint">Smaller change</td><td class="h">&mdash;</td><td class="b">&mdash;</td><td class="diff calc">&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="acc after-table">
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">Measurements at every frequency</span><span class="acc-tag">Both bananas &middot; full sweep</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <div class="table-wrap"><table class="data sweep">
+                <thead><tr><th>Frequency</th><th>Healthy |Z| (&Omega;)</th><th>Healthy phase</th><th>Bruised |Z| (&Omega;)</th><th>Bruised phase</th></tr></thead>
+                <tbody>
+                  <tr><td>1 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                  <tr><td>2 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                  <tr><td>5 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                  <tr><td>10 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                  <tr><td>20 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                  <tr><td>50 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                  <tr><td>100 kHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+                </tbody>
+              </table></div>
+            </div></div>
+          </div>
       </div>
     </section>
 
     <section class="block split">
       <div>
-        <h2>Measurements on skin</h2>
-        <p class="side-lead">Four electrodes on the forearm, swept from 1 kHz to 100 kHz, with the Cole&ndash;Cole model fit to the measured spectrum.</p>
+        <h2>How we get the numbers</h2>
+        <p class="side-lead">Open any step to see the math.</p>
       </div>
-      <figure class="plain-fig"><img src="images/skin-spectrum.png" alt="Measured skin impedance spectrum" data-ph="Add: measured skin spectrum with Cole-Cole fit" onerror="ph(this)"><figcaption>Impedance spectrum measured on the forearm, with the fitted Cole&ndash;Cole curve.</figcaption></figure>
-    </section>
-
-    <section class="block">
-      <h2>Fitted parameters</h2>
-      <div class="params">
-          <div class="param"><strong>R<sub>0</sub></strong><p>Low-frequency resistance</p><span class="pval">&mdash;</span></div>
-          <div class="param"><strong>R<sub>&infin;</sub></strong><p>High-frequency resistance</p><span class="pval">&mdash;</span></div>
-          <div class="param"><strong>f<sub>c</sub></strong><p>Characteristic frequency</p><span class="pval">&mdash;</span></div>
-          <div class="param"><strong>&alpha;</strong><p>Spread factor</p><span class="pval">&mdash;</span></div>
+      <div>
+        <div class="acc">
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">1. Sine fit</span><span class="acc-tag">Amplitude and phase of each signal</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <p>The FPGA captures the voltage on both channels. On the ARM, each channel is fit to a sine and a cosine at the excitation frequency (plus an offset and a slow drift) by least squares. The two fitted coefficients are the in-phase (I) and quadrature (Q) parts.</p>
+              <p class="formula">amplitude = &radic;(I&sup2; + Q&sup2;)<br>phase = atan2(Q, I)</p>
+            </div></div>
+          </div>
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">2. Impedance</span><span class="acc-tag">From the two measured channels</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <p>One amplifier measures the voltage across the inner electrodes. The other measures the voltage across a 1 k&Omega; resistor in series with the sample, which tells us the current. After dividing out the amplifier gain (&asymp; 9.9):</p>
+              <p class="formula">current = V<sub>R7</sub> / 1 k&Omega;<br>|Z| = V<sub>electrodes</sub> / current<br>phase of Z = phase<sub>electrodes</sub> &minus; phase<sub>current</sub></p>
+            </div></div>
+          </div>
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">3. Calibration</span><span class="acc-tag">Correcting for the circuit itself</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <p>The amplifiers and filters add a small gain and phase shift of their own that changes with frequency. We sweep a known resistor once, measure how far off each frequency is, and divide that out of every later measurement.</p>
+            </div></div>
+          </div>
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">4. Cole&ndash;Cole fit</span><span class="acc-tag">Four numbers that describe the curve</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <p>The Cole&ndash;Cole model describes tissue with four parameters. The fit adjusts them until the model curve matches the measured points as closely as possible (weighted complex least squares).</p>
+              <p class="formula">Z(f) = R<sub>&infin;</sub> + (R<sub>0</sub> &minus; R<sub>&infin;</sub>) / (1 + (j&middot;f/f<sub>c</sub>)<sup>&alpha;</sup>)</p>
+              <p>R<sub>0</sub> is the resistance at very low frequency, when current can only flow around the cells. R<sub>&infin;</sub> is the resistance at very high frequency, when current also passes through the cell membranes. f<sub>c</sub> is where the change between them is fastest, and &alpha; describes how spread out that change is.</p>
+            </div></div>
+          </div>
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">5. Expected values</span><span class="acc-tag">For the mock skin circuit</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <p>For a resistor R<sub>s</sub> in series with a resistor R<sub>p</sub> and capacitor C in parallel, the expected values follow directly from the parts. The page computes these automatically from the values listed under Test 1.</p>
+              <p class="formula">R<sub>0</sub> = R<sub>s</sub> + R<sub>p</sub><br>R<sub>&infin;</sub> = R<sub>s</sub><br>f<sub>c</sub> = 1 / (2&pi; &middot; R<sub>p</sub> &middot; C)<br>&alpha; = 1<br>Z(f) = R<sub>s</sub> + R<sub>p</sub> / (1 + j&middot;2&pi;f&middot;R<sub>p</sub>&middot;C)</p>
+            </div></div>
+          </div>
+          <div class="acc-row">
+            <button class="acc-head" aria-expanded="false">
+              <span><span class="acc-name">6. Error and difference</span><span class="acc-tag">How the comparison columns are computed</span></span>
+              <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            </button>
+            <div class="acc-body"><div>
+              <p class="formula">percent error = |measured &minus; expected| / expected &times; 100%<br>phase error = measured &minus; expected (degrees)<br>percent difference = (bruised &minus; healthy) / healthy &times; 100%</p>
+            </div></div>
+          </div>
+        </div>
+        <div class="code-note">
+          <p>All of our Python code and the Jupyter notebook used for these results are on GitHub.</p>
+          <a class="pill" href="https://github.com/emilyseligson/senior-capstone" target="_blank" rel="noopener">Code on GitHub &#8599;</a>
+        </div>
       </div>
-      <figure class="plain-fig dash-fig"><img src="images/dashboard.png" alt="Screenshot of the Jupyter dashboard" data-ph="Add: screenshot of the Jupyter dashboard after a sweep" onerror="ph(this)"><figcaption>The Jupyter dashboard after a sweep.</figcaption></figure>
     </section>
   </article>
 
@@ -1013,6 +1138,41 @@ section.block h2 { font-weight: 500; }
           <div class="ref-main">
             <p class="ref-title">The role of technology in melanoma screening and diagnosis</p>
             <p class="ref-meta">A. T. Young <i>et al.</i> &middot; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</p>
+          </div>
+        </li>
+        <li class="ref" id="ref5">
+          <span class="ref-n">[5]</span>
+          <div class="ref-main">
+            <p class="ref-title">Skin membrane electrical impedance properties under the influence of a varying water gradient</p>
+            <p class="ref-meta">S. Bj&ouml;rklund, T. Ruzgas, A. Nowacka, I. Dahi, D. Topgaard, E. Sparr, and J. Engblom &middot; <i>Biophysical Journal</i>, vol. 104, no. 12, pp. 2639&ndash;2650, 2013, doi: <a href="https://doi.org/10.1016/j.bpj.2013.05.008" target="_blank" rel="noopener">10.1016/j.bpj.2013.05.008</a>.</p>
+          </div>
+        </li>
+        <li class="ref" id="ref6">
+          <span class="ref-n">[6]</span>
+          <div class="ref-main">
+            <p class="ref-title">Electrical impedance analysis in plant tissues: the effect of freeze-thaw injury on the electrical properties of potato tuber and carrot root tissues</p>
+            <p class="ref-meta">M. I. N. Zhang and J. H. M. Willison &middot; <i>Canadian Journal of Plant Science</i>, vol. 72, pp. 545&ndash;553, 1992, doi: <a href="https://doi.org/10.4141/cjps92-068" target="_blank" rel="noopener">10.4141/cjps92-068</a>.</p>
+          </div>
+        </li>
+        <li class="ref" id="ref7">
+          <span class="ref-n">[7]</span>
+          <div class="ref-main">
+            <p class="ref-title">Apple bruise detection by electrical impedance measurement</p>
+            <p class="ref-meta">P. J. Jackson and F. R. Harker &middot; <i>HortScience</i>, vol. 35, no. 1, pp. 104&ndash;107, 2000. <a href="https://journals.ashs.org/downloadpdf/view/journals/hortsci/35/1/article-p104.pdf" target="_blank" rel="noopener">journals.ashs.org</a></p>
+          </div>
+        </li>
+        <li class="ref" id="ref8">
+          <span class="ref-n">[8]</span>
+          <div class="ref-main">
+            <p class="ref-title">Effect of localized electrode/pulp tissue conditions on bipolar measurements of banana samples electrical impedance</p>
+            <p class="ref-meta">J. Slay, R. Sotner, and T. J. Freeborn &middot; The University of Alabama and Brno University of Technology. <a href="https://par.nsf.gov/servlets/purl/10440410" target="_blank" rel="noopener">https://par.nsf.gov/servlets/purl/10440410</a></p>
+          </div>
+        </li>
+        <li class="ref" id="ref9">
+          <span class="ref-n">[9]</span>
+          <div class="ref-main">
+            <p class="ref-title">Skin cancer identification using multifrequency electrical impedance: a potential screening tool</p>
+            <p class="ref-meta">P. &Aring;berg, I. Nicander, J. Hansson, P. Geladi, U. Holmgren, and S. Ollmar &middot; <i>IEEE Transactions on Biomedical Engineering</i>, vol. 51, no. 12, pp. 2097&ndash;2102, 2004, doi: <a href="https://doi.org/10.1109/TBME.2004.836523" target="_blank" rel="noopener">10.1109/TBME.2004.836523</a>.</p>
           </div>
         </li>
       </ol>
@@ -1293,7 +1453,7 @@ section.block h2 { font-weight: 500; }
       }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
     : null;
   function revealIn(page) {
-    const els = page.querySelectorAll('.aims, .results, .res-summary, .params, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .refs-list, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
+    const els = page.querySelectorAll('.aims, .samples, .data, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .refs-list, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
     if (!io) { els.forEach(el => el.classList.add('in')); return; }
     els.forEach(el => { if (!el.classList.contains('in')) { if (!el.classList.contains('spectrum')) el.classList.add('reveal'); io.observe(el); } });
   }
@@ -1413,11 +1573,39 @@ section.block h2 { font-weight: 500; }
     root.addEventListener('pointerout', e => { if (e.target.closest('.rm-bar')) tip.classList.remove('show'); });
   })();
 
-  /* ---------- results summary: count the status labels ---------- */
+  /* ---------- results: expected values, errors and differences ----------
+     Type plain numbers into the HTML (e.g. 1520 or 1,520). Cells showing a dash are skipped. */
   (() => {
-    const all = document.querySelectorAll('.results .status');
-    document.getElementById('res-total').textContent = all.length;
-    document.getElementById('res-met').textContent = document.querySelectorAll('.results .status.met').length;
+    const num = el => el ? parseFloat(el.textContent.replace(/[^0-9.eE+-]/g, '')) : NaN;
+    const show = v => Number.isFinite(v) ? Number(v.toPrecision(4)).toLocaleString('en-US') : '—';
+    const pct = (v, signed) => Number.isFinite(v) ? (signed && v > 0 ? '+' : '') + v.toFixed(1).replace('-', '−') + '%' : '—';
+    const deg = v => Number.isFinite(v) ? (v > 0 ? '+' : '') + v.toFixed(1).replace('-', '−') + '°' : '—';
+    const comp = k => num(document.querySelector(`[data-comp="${k}"]`));
+    const rs = comp('rs'), rp = comp('rp'), C = comp('c') * 1e-9;
+    const ok = [rs, rp, C].every(Number.isFinite);
+    const Z = f => { const w = 2 * Math.PI * f, d = 1 + (w * rp * C) ** 2, re = rs + rp / d, im = -w * rp * rp * C / d;
+      return { mag: Math.hypot(re, im), ph: Math.atan2(im, re) * 180 / Math.PI }; };
+    const expected = { r0: () => rs + rp, rinf: () => rs, fc: () => 1 / (2 * Math.PI * rp * C) / 1000, alpha: () => 1,
+                       z1k: () => Z(1e3).mag, z100k: () => Z(1e5).mag };
+    document.querySelectorAll('#mock-table tr[data-exp]').forEach(tr => {
+      const e = ok ? expected[tr.dataset.exp]() : num(tr.querySelector('.exp'));
+      if (ok) tr.querySelector('.exp').textContent = show(e);
+      const m = num(tr.querySelector('.meas'));
+      tr.querySelector('.err').textContent = pct(Math.abs(m - e) / Math.abs(e) * 100);
+    });
+    document.querySelectorAll('#mock-sweep tr[data-f]').forEach(tr => {
+      if (!ok) return;
+      const z = Z(+tr.dataset.f);
+      tr.querySelector('.exp-mag').textContent = show(z.mag);
+      tr.querySelector('.exp-ph').textContent = z.ph.toFixed(1).replace('-', '−') + '°';
+      const m = num(tr.querySelector('.meas-mag')), p = num(tr.querySelector('.meas-ph'));
+      tr.querySelector('.err-mag').textContent = pct(Math.abs(m - z.mag) / z.mag * 100);
+      tr.querySelector('.err-ph').textContent = deg(p - z.ph);
+    });
+    document.querySelectorAll('#banana-table tbody tr').forEach(tr => {
+      const h = num(tr.querySelector('.h')), b = num(tr.querySelector('.b'));
+      tr.querySelector('.diff').textContent = pct((b - h) / Math.abs(h) * 100, true);
+    });
   })();
 
   route();
