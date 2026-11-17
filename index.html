@@ -491,6 +491,19 @@ section.block h2 { font-weight: 500; }
 @media (max-width: 900px) { .aim { grid-template-columns: 1fr; gap: 1rem; } }
 .band .pipeline .stage { background: rgba(255, 255, 255, 0.7); }
 @media (max-width: 900px) { .aim { grid-template-columns: 1fr; gap: 1rem; } }
+
+/* ---------- references list ---------- */
+.refs-list { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+.ref { display: grid; grid-template-columns: 5rem 1fr auto; gap: 2rem; align-items: center; padding: 1.8rem 0; border-bottom: 1.5px solid var(--ink); transition: background 0.6s; }
+.ref.hl { background: var(--sky); }
+.ref-n { font-family: var(--serif); font-weight: 500; font-size: 2.2rem; color: var(--ink); line-height: 1; }
+.ref-title { margin: 0 0 0.45rem; font-family: var(--serif); font-weight: 500; font-size: clamp(1.3rem, 1.9vw, 1.75rem); line-height: 1.2; color: var(--ink); }
+.ref-meta { margin: 0; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.02em; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
+.ref-meta a { color: var(--muted); }
+.ref-link { display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; color: var(--ink); font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.ref-link svg { width: 52px; height: 52px; padding: 13px; border: 1.5px solid var(--ink); border-radius: 50%; fill: none; stroke: var(--ink); stroke-width: 1.5; transition: background 0.3s; box-sizing: border-box; }
+.ref-link:hover svg { background: var(--sky); }
+@media (max-width: 900px) { .ref { grid-template-columns: 3rem 1fr; } .ref-link { grid-column: 2; } .ref-link span { display: none; } }
 </style>
 </head>
 <body class="on-dark">
@@ -600,7 +613,7 @@ section.block h2 { font-weight: 500; }
         <h2 class="big">Aims</h2>
         <div>
           <p class="tag">Aims</p>
-          <p class="lead">Measurable targets for our finished system.</p>
+          <p class="lead">Measurable targets for our finished system</p>
         </div>
       </div>
       <div class="wide">
@@ -626,7 +639,7 @@ section.block h2 { font-weight: 500; }
         <h2 class="big">Update</h2>
         <div>
           <p class="tag">Interim Video Update</p>
-          <p class="lead">Where our project stood at the midpoint.</p>
+          <p class="lead">Where our project stood at the midpoint</p>
         </div>
       </div>
       <div class="wide">
@@ -774,30 +787,28 @@ section.block h2 { font-weight: 500; }
       <p class="intro">How the finished system performed against each aim. Results will be added as testing is completed.</p>
     </header>
     <section class="block">
-      <h2>At a glance</h2>
       <div class="table-wrap">
         <table class="specs">
-          <thead><tr><th>Aim</th><th>Target</th><th>Measured</th><th>Status</th></tr></thead>
-          <tr><th>Signal generation</th><td>&ge; 20 frequencies, 1&ndash;100 kHz, within 1%</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
-          <tr><th>Magnitude accuracy</th><td>Within 5% of reference</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
-          <tr><th>Phase accuracy</th><td>Within 3&deg; of reference</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
-          <tr><th>Repeatability</th><td>Coefficient of variation &le; 10%</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
-          <tr><th>Speed</th><td>Sweep + display &le; 60 s</td><td>&mdash;</td><td><span class="pill pending">Pending</span></td></tr>
+          <thead><tr><th>Aim</th><th>Target</th><th>Measured</th></tr></thead>
+          <tr><th>Signal generation</th><td>&ge; 20 frequencies, 1&ndash;100 kHz, within 1%</td><td>&mdash;</td></tr>
+          <tr><th>Magnitude accuracy</th><td>Within 5% of reference</td><td>&mdash;</td></tr>
+          <tr><th>Phase accuracy</th><td>Within 3&deg; of reference</td><td>&mdash;</td></tr>
+          <tr><th>Repeatability</th><td>Coefficient of variation &le; 10%</td><td>&mdash;</td></tr>
+          <tr><th>Speed</th><td>Sweep + display &le; 60 s</td><td>&mdash;</td></tr>
         </table>
       </div>
-      <p class="legend" style="margin-top:0.8rem">Status labels: <span class="pill met">Met</span> <span class="pill partial">Partly met</span> <span class="pill pending">Pending</span></p>
     </section>
     <section class="block">
       <h2>Validation on known loads</h2>
       <div class="fig-grid">
-        <figure class="frame"><img src="images/resistor-validation.png" alt="Measured vs reference impedance on precision resistors" data-ph="Add: measured vs. reference |Z| and phase on precision resistors" onerror="ph(this)"><figcaption>Magnitude and phase error across the sweep on precision resistors.</figcaption></figure>
-        <figure class="frame"><img src="images/phantom-fit.png" alt="Cole-Cole fit on the RC tissue phantom" data-ph="Add: Cole-Cole fit on the RC tissue phantom" onerror="ph(this)"><figcaption>Fitted vs. predicted Cole-Cole parameters for the RC phantom.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/resistor-validation.png" alt="Measured vs reference impedance on precision resistors" data-ph="Add: measured vs. reference |Z| and phase on precision resistors" onerror="ph(this)"><figcaption>Magnitude and phase error across the sweep on precision resistors.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/phantom-fit.png" alt="Cole-Cole fit on the RC tissue phantom" data-ph="Add: Cole-Cole fit on the RC tissue phantom" onerror="ph(this)"><figcaption>Fitted vs. predicted Cole-Cole parameters for the RC phantom.</figcaption></figure>
       </div>
     </section>
     <section class="block">
       <h2>Measurements on skin</h2>
       <div class="two-col">
-        <figure class="frame"><img src="images/skin-spectrum.png" alt="Measured skin impedance spectrum" data-ph="Add: measured skin spectrum with Cole-Cole fit" onerror="ph(this)"><figcaption>Impedance spectrum measured on the forearm, with the fitted Cole-Cole curve.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/skin-spectrum.png" alt="Measured skin impedance spectrum" data-ph="Add: measured skin spectrum with Cole-Cole fit" onerror="ph(this)"><figcaption>Impedance spectrum measured on the forearm, with the fitted Cole-Cole curve.</figcaption></figure>
         <div class="panel">
           <h3>Fitted parameters</h3>
           <ul class="parts">
@@ -808,7 +819,7 @@ section.block h2 { font-weight: 500; }
           </ul>
         </div>
       </div>
-      <figure class="frame" style="margin-top:1.5rem"><img src="images/dashboard.png" alt="Screenshot of the Jupyter dashboard" data-ph="Add: screenshot of the Jupyter dashboard after a sweep" onerror="ph(this)"><figcaption>The dashboard after a sweep.</figcaption></figure>
+      <figure class="plain-fig" style="margin-top:1.5rem"><img src="images/dashboard.png" alt="Screenshot of the Jupyter dashboard" data-ph="Add: screenshot of the Jupyter dashboard after a sweep" onerror="ph(this)"><figcaption>The dashboard after a sweep.</figcaption></figure>
     </section>
   </article>
 
@@ -903,11 +914,39 @@ section.block h2 { font-weight: 500; }
       <h1 class="big">References</h1>
     </header>
     <section class="block">
-      <ol class="refs">
-        <li id="ref1">K. S. Sharma, P. Lim, and M. T. Brotherston, &ldquo;Excision versus incision biopsy in the management of malignant melanoma,&rdquo; <i>The Journal of Dermatological Treatment</i>, vol. 27, no. 1, pp. 88&ndash;90, 2016, doi: <a href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener">10.3109/09546634.2015.1034083</a>.</li>
-        <li id="ref2">C. Beard and G. J. Schmieder, &ldquo;Excisional Biopsy,&rdquo; <i>NIH.gov</i>, Nov. 23, 2018. <a href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK534835/</a> (accessed Sept. 15, 2026).</li>
-        <li id="ref3">&ldquo;Melanoma Cancer,&rdquo; <i>Cancer Research Institute</i>, Apr. 29, 2025. <a href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener">https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer</a> (accessed Sept. 15, 2026).</li>
-        <li id="ref4">A. T. Young <i>et al.</i>, &ldquo;The role of technology in melanoma screening and diagnosis,&rdquo; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</li>
+      <ol class="refs-list">
+        <li class="ref" id="ref1">
+          <span class="ref-n">[1]</span>
+          <div class="ref-main">
+            <p class="ref-title">Excision versus incision biopsy in the management of malignant melanoma</p>
+            <p class="ref-meta">K. S. Sharma, P. Lim, and M. T. Brotherston &middot; <i>The Journal of Dermatological Treatment</i>, vol. 27, no. 1, pp. 88&ndash;90, 2016, doi: <a href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener">10.3109/09546634.2015.1034083</a>.</p>
+          </div>
+          <a class="ref-link" href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener" aria-label="Open source"><span>doi.org</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+        </li>
+        <li class="ref" id="ref2">
+          <span class="ref-n">[2]</span>
+          <div class="ref-main">
+            <p class="ref-title">Excisional Biopsy</p>
+            <p class="ref-meta">C. Beard and G. J. Schmieder &middot; <i>NIH.gov</i>, Nov. 23, 2018. <a href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK534835/</a> (accessed Sept. 15, 2026).</p>
+          </div>
+          <a class="ref-link" href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener" aria-label="Open source"><span>ncbi.nlm.nih.gov</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+        </li>
+        <li class="ref" id="ref3">
+          <span class="ref-n">[3]</span>
+          <div class="ref-main">
+            <p class="ref-title">Melanoma Cancer</p>
+            <p class="ref-meta"><i>Cancer Research Institute</i>, Apr. 29, 2025. <a href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener">https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer</a> (accessed Sept. 15, 2026).</p>
+          </div>
+          <a class="ref-link" href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener" aria-label="Open source"><span>cancerresearch.org</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+        </li>
+        <li class="ref" id="ref4">
+          <span class="ref-n">[4]</span>
+          <div class="ref-main">
+            <p class="ref-title">The role of technology in melanoma screening and diagnosis</p>
+            <p class="ref-meta">A. T. Young <i>et al.</i> &middot; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</p>
+          </div>
+          <a class="ref-link" href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener" aria-label="Open source"><span>doi.org</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+        </li>
       </ol>
     </section>
   </article>
@@ -1070,7 +1109,7 @@ section.block h2 { font-weight: 500; }
     if (id === 'references' && query) {
       const li = document.getElementById('ref' + new URLSearchParams(query).get('r'));
       if (li) {
-        document.querySelectorAll('.refs li').forEach(x => x.classList.remove('hl'));
+        document.querySelectorAll('.ref').forEach(x => x.classList.remove('hl'));
         li.classList.add('hl');
         setTimeout(() => li.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }), 200);
       }
@@ -1186,7 +1225,7 @@ section.block h2 { font-weight: 500; }
       }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
     : null;
   function revealIn(page) {
-    const els = page.querySelectorAll('.aims, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
+    const els = page.querySelectorAll('.aims, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .refs-list, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
     if (!io) { els.forEach(el => el.classList.add('in')); return; }
     els.forEach(el => { if (!el.classList.contains('in')) { if (!el.classList.contains('spectrum')) el.classList.add('reveal'); io.observe(el); } });
   }
