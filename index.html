@@ -501,6 +501,35 @@ section.block h2 { font-weight: 500; }
 .ref-meta { margin: 0; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.02em; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
 .ref-meta a { color: var(--muted); }
 @media (max-width: 900px) { .ref { grid-template-columns: 3rem 1fr; } }
+/* ---------- results page: same row style as the aims and safety lists ---------- */
+.res-summary { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem 3rem; margin-bottom: 2.5rem; }
+.res-summary .tl-legend { margin: 0 0 0.6rem; }
+.results { border-top: 1.5px solid var(--ink); }
+.res { display: grid; grid-template-columns: 1fr 1.3fr minmax(170px, 0.6fr); gap: 2.5rem; padding: 2rem 0; border-bottom: 1.5px solid var(--ink); align-items: start; }
+.res-aim, .res-label { display: block; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.55rem; }
+.res-name { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(1.6rem, 2.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); }
+.res p { margin: 0; font-size: 1.08rem; color: var(--ink); max-width: 46ch; }
+.res-val { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1; color: var(--ink); margin-bottom: 0.8rem; }
+.status { display: inline-block; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; line-height: 1.4; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 999px; padding: 0.3rem 0.85rem; }
+.status.pending { border-style: dashed; border-color: var(--muted); color: var(--muted); }
+.status.met { background: var(--mint); }
+.status.missed { background: var(--rose); }
+.status-dot { display: inline-block; vertical-align: -2px; margin-right: 0.45rem; width: 22px; height: 12px; border-radius: 999px; border: 1.5px solid var(--ink); }
+.status-dot.met { background: var(--mint); }
+.status-dot.missed { background: var(--rose); }
+.status-dot.pending { border-style: dashed; border-color: var(--muted); }
+.fig-stack { display: grid; gap: 2.5rem; }
+.params { border-top: 1.5px solid var(--ink); }
+.param { display: grid; grid-template-columns: minmax(130px, 0.45fr) 1.4fr minmax(120px, auto); gap: 2rem; align-items: baseline; padding: 1.4rem 0; border-bottom: 1.5px solid var(--ink); }
+.param strong { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
+.param p { margin: 0; font-size: 1.08rem; color: var(--ink); }
+.param .pval { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; color: var(--ink); text-align: right; }
+.dash-fig { margin-top: 3.5rem; }
+@media (max-width: 900px) {
+  .res { grid-template-columns: 1fr; gap: 1rem; }
+  .param { grid-template-columns: auto 1fr; gap: 0.4rem 1.5rem; }
+  .param .pval { grid-column: 2; text-align: left; }
+}
 </style>
 </head>
 <body class="on-dark">
@@ -780,42 +809,89 @@ section.block h2 { font-weight: 500; }
     <header class="page-head band sky">
       
       <h1 class="big">Results</h1>
-      <p class="intro">How the finished system performed against each aim. Results will be added as testing is completed.</p>
+      <p class="intro">How the finished system performed against each aim</p>
     </header>
+
     <section class="block">
-      <div class="table-wrap">
-        <table class="specs">
-          <thead><tr><th>Aim</th><th>Target</th><th>Measured</th></tr></thead>
-          <tr><th>Signal generation</th><td>&ge; 20 frequencies, 1&ndash;100 kHz, within 1%</td><td>&mdash;</td></tr>
-          <tr><th>Magnitude accuracy</th><td>Within 5% of reference</td><td>&mdash;</td></tr>
-          <tr><th>Phase accuracy</th><td>Within 3&deg; of reference</td><td>&mdash;</td></tr>
-          <tr><th>Repeatability</th><td>Coefficient of variation &le; 10%</td><td>&mdash;</td></tr>
-          <tr><th>Speed</th><td>Sweep + display &le; 60 s</td><td>&mdash;</td></tr>
-        </table>
+      <div class="res-summary">
+        <div class="tl-stat"><strong id="res-met">0</strong><span>of <b id="res-total">0</b> targets met</span></div>
+        <p class="tl-legend">
+          <span><i class="status-dot met"></i>Met</span>
+          <span><i class="status-dot missed"></i>Not met</span>
+          <span><i class="status-dot pending"></i>Pending</span>
+        </p>
       </div>
-    </section>
-    <section class="block">
-      <h2>Validation on known loads</h2>
-      <div class="fig-grid">
-        <figure class="plain-fig"><img src="images/resistor-validation.png" alt="Measured vs reference impedance on precision resistors" data-ph="Add: measured vs. reference |Z| and phase on precision resistors" onerror="ph(this)"><figcaption>Magnitude and phase error across the sweep on precision resistors.</figcaption></figure>
-        <figure class="plain-fig"><img src="images/phantom-fit.png" alt="Cole-Cole fit on the RC tissue phantom" data-ph="Add: Cole-Cole fit on the RC tissue phantom" onerror="ph(this)"><figcaption>Fitted vs. predicted Cole-Cole parameters for the RC phantom.</figcaption></figure>
-      </div>
-    </section>
-    <section class="block">
-      <h2>Measurements on skin</h2>
-      <div class="two-col">
-        <figure class="plain-fig"><img src="images/skin-spectrum.png" alt="Measured skin impedance spectrum" data-ph="Add: measured skin spectrum with Cole-Cole fit" onerror="ph(this)"><figcaption>Impedance spectrum measured on the forearm, with the fitted Cole-Cole curve.</figcaption></figure>
-        <div class="panel">
-          <h3>Fitted parameters</h3>
-          <ul class="parts">
-            <li>R<sub>0</sub> (low-frequency resistance): &mdash;</li>
-            <li>R<sub>&infin;</sub> (high-frequency resistance): &mdash;</li>
-            <li>Characteristic frequency: &mdash;</li>
-            <li>&alpha; (spread factor): &mdash;</li>
-          </ul>
+      <!-- To fill in a result: replace &mdash; with the number, and change
+           <span class="status pending">Pending</span> to
+           <span class="status met">Met</span>  or  <span class="status missed">Not met</span>.
+           The "targets met" count at the top updates by itself. -->
+      <div class="results">
+        <div class="res">
+          <div><span class="res-aim">Aim 1 &middot; Signal generation</span><span class="res-name">Frequency sweep</span></div>
+          <div><span class="res-label">Target</span><p>At least 20 frequencies from 1&ndash;100 kHz, each within 1% of its setpoint</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
+        </div>
+        <div class="res">
+          <div><span class="res-aim">Aim 2 &middot; Impedance analysis</span><span class="res-name">Magnitude accuracy</span></div>
+          <div><span class="res-label">Target</span><p>Within 5% of a reference instrument, on precision resistors and an RC tissue phantom</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
+        </div>
+        <div class="res">
+          <div><span class="res-aim">Aim 2 &middot; Impedance analysis</span><span class="res-name">Phase accuracy</span></div>
+          <div><span class="res-label">Target</span><p>Within 3&deg; of the reference instrument</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
+        </div>
+        <div class="res">
+          <div><span class="res-aim">Aim 2 &middot; Impedance analysis</span><span class="res-name">Phantom Cole&ndash;Cole fit</span></div>
+          <div><span class="res-label">Target</span><p>Fitted parameters within 10% of the values predicted from the phantom&rsquo;s components</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
+        </div>
+        <div class="res">
+          <div><span class="res-aim">Aim 3 &middot; Skin measurements</span><span class="res-name">Repeatability</span></div>
+          <div><span class="res-label">Target</span><p>Repeated measurements at the same site agree within a 10% coefficient of variation</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
+        </div>
+        <div class="res">
+          <div><span class="res-aim">Aim 3 &middot; Skin measurements</span><span class="res-name">Match to literature</span></div>
+          <div><span class="res-label">Target</span><p>The spectrum shows the frequency dependence reported in published skin data</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
+        </div>
+        <div class="res">
+          <div><span class="res-aim">Aim 3 &middot; Skin measurements</span><span class="res-name">Speed</span></div>
+          <div><span class="res-label">Target</span><p>A full sweep and display update take at most 60 s</p></div>
+          <div><span class="res-label">Measured</span><span class="res-val">&mdash;</span><span class="status pending">Pending</span></div>
         </div>
       </div>
-      <figure class="plain-fig" style="margin-top:1.5rem"><img src="images/dashboard.png" alt="Screenshot of the Jupyter dashboard" data-ph="Add: screenshot of the Jupyter dashboard after a sweep" onerror="ph(this)"><figcaption>The dashboard after a sweep.</figcaption></figure>
+    </section>
+
+    <section class="block split">
+      <div>
+        <h2>Validation on known loads</h2>
+        <p class="side-lead">Before measuring skin, we test the system on parts with a known impedance: precision resistors and an RC circuit that behaves like tissue.</p>
+      </div>
+      <div class="fig-stack">
+        <figure class="plain-fig"><img src="images/resistor-validation.png" alt="Measured vs reference impedance on precision resistors" data-ph="Add: measured vs. reference |Z| and phase on precision resistors" onerror="ph(this)"><figcaption>Magnitude and phase error across the sweep on precision resistors.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/phantom-fit.png" alt="Cole-Cole fit on the RC tissue phantom" data-ph="Add: Cole-Cole fit on the RC tissue phantom" onerror="ph(this)"><figcaption>Fitted vs. predicted Cole&ndash;Cole parameters for the RC phantom.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="block split">
+      <div>
+        <h2>Measurements on skin</h2>
+        <p class="side-lead">Four electrodes on the forearm, swept from 1 kHz to 100 kHz, with the Cole&ndash;Cole model fit to the measured spectrum.</p>
+      </div>
+      <figure class="plain-fig"><img src="images/skin-spectrum.png" alt="Measured skin impedance spectrum" data-ph="Add: measured skin spectrum with Cole-Cole fit" onerror="ph(this)"><figcaption>Impedance spectrum measured on the forearm, with the fitted Cole&ndash;Cole curve.</figcaption></figure>
+    </section>
+
+    <section class="block">
+      <h2>Fitted parameters</h2>
+      <div class="params">
+          <div class="param"><strong>R<sub>0</sub></strong><p>Low-frequency resistance</p><span class="pval">&mdash;</span></div>
+          <div class="param"><strong>R<sub>&infin;</sub></strong><p>High-frequency resistance</p><span class="pval">&mdash;</span></div>
+          <div class="param"><strong>f<sub>c</sub></strong><p>Characteristic frequency</p><span class="pval">&mdash;</span></div>
+          <div class="param"><strong>&alpha;</strong><p>Spread factor</p><span class="pval">&mdash;</span></div>
+      </div>
+      <figure class="plain-fig dash-fig"><img src="images/dashboard.png" alt="Screenshot of the Jupyter dashboard" data-ph="Add: screenshot of the Jupyter dashboard after a sweep" onerror="ph(this)"><figcaption>The Jupyter dashboard after a sweep.</figcaption></figure>
     </section>
   </article>
 
@@ -1217,7 +1293,7 @@ section.block h2 { font-weight: 500; }
       }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
     : null;
   function revealIn(page) {
-    const els = page.querySelectorAll('.aims, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .refs-list, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
+    const els = page.querySelectorAll('.aims, .results, .res-summary, .params, .split, .photo-pair, .safety, .band-grid, .wide, .spectrum, section.block h2, .prose, .refs-list, .facts, .pipeline, .rail-item, .playground, .specs, .two-col, .trio, .fig-grid, .note, .person, .refs, .page-head .intro');
     if (!io) { els.forEach(el => el.classList.add('in')); return; }
     els.forEach(el => { if (!el.classList.contains('in')) { if (!el.classList.contains('spectrum')) el.classList.add('reveal'); io.observe(el); } });
   }
@@ -1335,6 +1411,13 @@ section.block h2 { font-weight: 500; }
     });
     root.addEventListener('pointermove', e => { tip.style.left = Math.min(e.clientX + 14, innerWidth - 300) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
     root.addEventListener('pointerout', e => { if (e.target.closest('.rm-bar')) tip.classList.remove('show'); });
+  })();
+
+  /* ---------- results summary: count the status labels ---------- */
+  (() => {
+    const all = document.querySelectorAll('.results .status');
+    document.getElementById('res-total').textContent = all.length;
+    document.getElementById('res-met').textContent = document.querySelectorAll('.results .status.met').length;
   })();
 
   route();
