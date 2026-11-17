@@ -494,16 +494,13 @@ section.block h2 { font-weight: 500; }
 
 /* ---------- references list ---------- */
 .refs-list { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
-.ref { display: grid; grid-template-columns: 5rem 1fr auto; gap: 2rem; align-items: center; padding: 1.8rem 0; border-bottom: 1.5px solid var(--ink); transition: background 0.6s; }
+.ref { display: grid; grid-template-columns: 5rem 1fr; gap: 2rem; align-items: center; padding: 1.8rem 0; border-bottom: 1.5px solid var(--ink); transition: background 0.6s; }
 .ref.hl { background: var(--sky); }
 .ref-n { font-family: var(--serif); font-weight: 500; font-size: 2.2rem; color: var(--ink); line-height: 1; }
 .ref-title { margin: 0 0 0.45rem; font-family: var(--serif); font-weight: 500; font-size: clamp(1.3rem, 1.9vw, 1.75rem); line-height: 1.2; color: var(--ink); }
 .ref-meta { margin: 0; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.02em; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
 .ref-meta a { color: var(--muted); }
-.ref-link { display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; color: var(--ink); font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
-.ref-link svg { width: 52px; height: 52px; padding: 13px; border: 1.5px solid var(--ink); border-radius: 50%; fill: none; stroke: var(--ink); stroke-width: 1.5; transition: background 0.3s; box-sizing: border-box; }
-.ref-link:hover svg { background: var(--sky); }
-@media (max-width: 900px) { .ref { grid-template-columns: 3rem 1fr; } .ref-link { grid-column: 2; } .ref-link span { display: none; } }
+@media (max-width: 900px) { .ref { grid-template-columns: 3rem 1fr; } }
 </style>
 </head>
 <body class="on-dark">
@@ -668,7 +665,7 @@ section.block h2 { font-weight: 500; }
     <header class="page-head band peach">
       
       <h1 class="big">Design</h1>
-      <p class="intro">The whole system laid out: the hardware that touches the skin, the software that turns signals into numbers, and the limits that keep it safe.</p>
+      <p class="intro"></p>
     </header>
 
     <section class="block split">
@@ -682,10 +679,10 @@ section.block h2 { font-weight: 500; }
       <div class="acc">
         <div class="acc-row">
           <button class="acc-head" aria-expanded="false">
-            <span><span class="acc-name">PYNQ-Z2</span><span class="acc-tag">Zynq-7020 &middot; FPGA + ARM</span></span>
+            <span><span class="acc-name">PYNQ-Z2</span><span class="acc-tag">Zynq-7020</span></span>
             <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
           </button>
-          <div class="acc-body"><div><p>The board at the center of the system. Its Zynq chip combines programmable logic (the FPGA), which generates and captures the signals, with a dual-core ARM processor that runs Python and Jupyter.</p></div></div>
+          <div class="acc-body"><div><p>The PYNQ-Z2's Zynq chip combines programmable logic (the FPGA), which generates and captures the signals, with a dual-core ARM processor that runs Python and Jupyter.</p></div></div>
         </div>
         <div class="acc-row">
           <button class="acc-head" aria-expanded="false">
@@ -742,26 +739,26 @@ section.block h2 { font-weight: 500; }
     <section class="block split">
       <div>
         <h2>Software</h2>
-        <p class="side-lead">The FPGA handles the fast, timing-critical signal work. The ARM processor on the same chip does the math and the plotting.</p>
+        <p class="side-lead">The FPGA generates the sine wave and captures the response. The ARM computes the impedance and plots the results.</p>
       </div>
       <div class="acc">
         <div class="acc-row">
           <button class="acc-head" aria-expanded="false">
-            <span><span class="acc-name">FPGA logic</span><span class="acc-tag">Programmable logic &middot; Verilog</span></span>
+            <span><span class="acc-name">FPGA logic</span><span class="acc-tag">Verilog</span></span>
             <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
           </button>
           <div class="acc-body"><div><p>A DDS sine generator sets each sweep frequency and streams samples to the Pmod DA2 over SPI. On the way back, it reads the Pmod AD1 and captures both channels.</p></div></div>
         </div>
         <div class="acc-row">
           <button class="acc-head" aria-expanded="false">
-            <span><span class="acc-name">ARM processing</span><span class="acc-tag">Processing system &middot; Python</span></span>
+            <span><span class="acc-name">ARM processing</span><span class="acc-tag">Python</span></span>
             <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
           </button>
           <div class="acc-body"><div><p>Fits each captured channel to a sine and cosine at the excitation frequency to get its in-phase and quadrature parts, computes the complex impedance, corrects it with a sweep on a known resistor, and fits the Cole-Cole model to the full spectrum.</p></div></div>
         </div>
         <div class="acc-row">
           <button class="acc-head" aria-expanded="false">
-            <span><span class="acc-name">Jupyter dashboard</span><span class="acc-tag">Python &middot; matplotlib</span></span>
+            <span><span class="acc-name">Jupyter dashboard</span><span class="acc-tag">matplotlib</span></span>
             <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
           </button>
           <div class="acc-body"><div><p>Runs in a notebook on the board. After each sweep it shows the waveforms, the impedance spectrum, and the Cole-Cole fit, and saves the results so measurements can be compared later.</p></div></div>
@@ -773,9 +770,8 @@ section.block h2 { font-weight: 500; }
       <h2>Safety</h2>
       <div class="safety">
         <div class="s-row"><strong>64 &micro;A</strong><p>Worst-case excitation current (rms), with the electrodes shorted. This is below the IEC 60601-1 patient auxiliary current limit of 100 &micro;A.</p></div>
-        <div class="s-row"><strong>100 &Omega;</strong><p>Every frequency is checked on a 100 &Omega; test load with an oscilloscope before any skin contact.</p></div>
-        <div class="s-row"><strong>&plusmn;9 V</strong><p>The front end runs on two batteries, with no connection to wall power.</p></div>
-        <div class="s-row"><strong>Us only</strong><p>We test only on ourselves as healthy volunteers. The device is a prototype, not a certified medical device.</p></div>
+        <div class="s-row"><strong>&plusmn;9 V</strong><p>The front end runs on two batteries so there is no connection to wall power.</p></div>
+        <div class="s-row"><strong>Testing</strong><p>We test only on ourselves as healthy volunteers. The device is a prototype and not a certified medical device.</p></div>
       </div>
     </section>
   </article>
@@ -842,7 +838,7 @@ section.block h2 { font-weight: 500; }
     <header class="page-head band sky">
       
       <h1 class="big">Timeline</h1>
-      <p class="intro">Our GitHub project roadmap, beginning from our proposal and ending at the final demo</p>
+      <p class="intro">Our GitHub project roadmap</p>
     </header>
     <section class="block">
       <div class="tl-summary">
@@ -921,7 +917,6 @@ section.block h2 { font-weight: 500; }
             <p class="ref-title">Excision versus incision biopsy in the management of malignant melanoma</p>
             <p class="ref-meta">K. S. Sharma, P. Lim, and M. T. Brotherston &middot; <i>The Journal of Dermatological Treatment</i>, vol. 27, no. 1, pp. 88&ndash;90, 2016, doi: <a href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener">10.3109/09546634.2015.1034083</a>.</p>
           </div>
-          <a class="ref-link" href="https://doi.org/10.3109/09546634.2015.1034083" target="_blank" rel="noopener" aria-label="Open source"><span>doi.org</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
         </li>
         <li class="ref" id="ref2">
           <span class="ref-n">[2]</span>
@@ -929,7 +924,6 @@ section.block h2 { font-weight: 500; }
             <p class="ref-title">Excisional Biopsy</p>
             <p class="ref-meta">C. Beard and G. J. Schmieder &middot; <i>NIH.gov</i>, Nov. 23, 2018. <a href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK534835/</a> (accessed Sept. 15, 2026).</p>
           </div>
-          <a class="ref-link" href="https://www.ncbi.nlm.nih.gov/books/NBK534835/" target="_blank" rel="noopener" aria-label="Open source"><span>ncbi.nlm.nih.gov</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
         </li>
         <li class="ref" id="ref3">
           <span class="ref-n">[3]</span>
@@ -937,7 +931,6 @@ section.block h2 { font-weight: 500; }
             <p class="ref-title">Melanoma Cancer</p>
             <p class="ref-meta"><i>Cancer Research Institute</i>, Apr. 29, 2025. <a href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener">https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer</a> (accessed Sept. 15, 2026).</p>
           </div>
-          <a class="ref-link" href="https://www.cancerresearch.org/immunotherapy-by-cancer-type/melanoma-cancer" target="_blank" rel="noopener" aria-label="Open source"><span>cancerresearch.org</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
         </li>
         <li class="ref" id="ref4">
           <span class="ref-n">[4]</span>
@@ -945,7 +938,6 @@ section.block h2 { font-weight: 500; }
             <p class="ref-title">The role of technology in melanoma screening and diagnosis</p>
             <p class="ref-meta">A. T. Young <i>et al.</i> &middot; <i>Pigment Cell &amp; Melanoma Research</i>, vol. 34, no. 2, pp. 288&ndash;300, Aug. 2020, doi: <a href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener">10.1111/pcmr.12907</a>.</p>
           </div>
-          <a class="ref-link" href="https://doi.org/10.1111/pcmr.12907" target="_blank" rel="noopener" aria-label="Open source"><span>doi.org</span><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
         </li>
       </ol>
     </section>
