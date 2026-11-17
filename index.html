@@ -782,13 +782,13 @@ section.block h2 { font-weight: 500; }
         <h2>Electrodes</h2>
         <p class="side-lead">We use four adhesive ECG electrode pads. The outer two send a small current through the tissue, and the inner two measure the voltage it creates.</p>
       </div>
-      <figure class="plain-fig"><div class="elec-diagram"><svg viewBox="0 0 640 480" role="img" aria-label="Four electrodes on tissue: the outer pair injects current, the inner pair senses voltage">
+      <figure class="plain-fig"><div class="elec-diagram"><svg viewBox="0 0 640 480" role="img" aria-label="Four electrodes on tissue: the FPGA and DAC send the sine wave into electrode 1, current returns from electrode 4 through a 1 kilohm resistor to the ADC, and electrodes 2 and 3 feed an amplifier whose voltage goes to the ADC">
             <g fill="none" stroke="#1C2A39" stroke-width="1.5">
-              <path d="M110 212 V75 H190 M450 75 H530 V212"/>
-              <path d="M250 212 V160 H300 M340 160 H390 V212"/>
-              <rect x="190" y="50" width="260" height="50" rx="10" fill="#FBFAF6"/>
+              <path d="M110 212 V106 M530 212 V106 M250 212 V190 M390 212 V190"/>
+              <rect x="30" y="50" width="200" height="56" rx="10" fill="#FBFAF6"/>
+              <rect x="410" y="50" width="200" height="56" rx="10" fill="#FBFAF6"/>
+              <rect x="220" y="140" width="200" height="50" rx="10" fill="#FBFAF6"/>
               <rect x="40" y="230" width="560" height="130" rx="18" fill="#FDE5D6"/>
-              <circle cx="320" cy="160" r="20" fill="#FBFAF6"/>
             </g>
             <path d="M110 248 C170 345 470 345 530 248" fill="none" stroke="#2F5D8A" stroke-width="1.8" stroke-dasharray="6 6"/>
             <path d="M312 313 L322 321 L312 329" fill="none" stroke="#2F5D8A" stroke-width="1.8"/>
@@ -798,17 +798,15 @@ section.block h2 { font-weight: 500; }
             </g>
             <g font-family="Playfair Display, Georgia, serif" font-size="18" fill="#1C2A39" text-anchor="middle" dominant-baseline="central">
               <text x="110" y="231">1</text><text x="250" y="231">2</text><text x="390" y="231">3</text><text x="530" y="231">4</text>
-              <text x="320" y="161" font-size="20">V</text>
-              <text x="320" y="70">Small AC current</text>
+              <text x="130" y="72">FPGA + DAC</text><text x="510" y="72">1 k&Omega; resistor</text><text x="320" y="159">Amplifier</text>
             </g>
             <g font-family="IBM Plex Mono, Menlo, monospace" font-size="11" letter-spacing="0.8" fill="#6B7785" text-anchor="middle">
-              <text x="320" y="90">SENT AND MEASURED BY THE CIRCUIT</text>
-              <text x="320" y="128">VOLTAGE MEASURED</text>
+              <text x="130" y="94">SENDS THE SINE WAVE</text><text x="510" y="94">CURRENT &rarr; ADC</text><text x="320" y="179">VOLTAGE &rarr; ADC</text>
               <text x="62" y="346" text-anchor="start">TISSUE</text>
               <text x="320" y="396">CURRENT FLOWS 1 &rarr; 4 THROUGH THE TISSUE</text>
             </g>
             <g font-family="IBM Plex Mono, Menlo, monospace" font-size="12" fill="#1C2A39" stroke="#1C2A39" stroke-width="1.5">
-              <circle cx="120" cy="440" r="8" fill="#CFE6F8"/><text x="136" y="444" stroke="none">Outer pair: injects current</text>
+              <circle cx="120" cy="440" r="8" fill="#CFE6F8"/><text x="136" y="444" stroke="none">Outer pair: carries current</text>
               <circle cx="380" cy="440" r="8" fill="#FBFAF6"/><text x="396" y="444" stroke="none">Inner pair: senses voltage</text>
             </g>
           </svg></div><figcaption>How the four electrodes are wired. Because the inner pair only measures voltage, the contact resistance of the current electrodes doesn&rsquo;t end up in the reading.</figcaption></figure>
