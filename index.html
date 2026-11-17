@@ -162,7 +162,8 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
 .foot-col a { color: #D6DEE7; }
 .foot-col a:hover { color: var(--sky); }
 .tiles { display: grid; grid-template-columns: 1fr 1.2fr 1fr; }
-.tiles.r2 { grid-template-columns: 1fr 1.2fr 1fr; }
+.tiles.r1 { grid-template-columns: 1fr 1.15fr 1.35fr; }   /* widths roughly follow word length */
+.tiles.r2 { grid-template-columns: 1fr 2fr; }
 .tile {
   display: grid; place-items: center; height: 190px; text-decoration: none; color: var(--cream); text-align: center;
   font-family: var(--serif); font-size: clamp(1.8rem, 3.2vw, 3.4rem); letter-spacing: -0.02em; padding: 0 1rem;
@@ -172,6 +173,8 @@ footer { background: var(--night); color: var(--cream); margin-top: 0; }
 .tile.pillish { border-radius: 999px; }
 .tile:hover { background: var(--hl); color: var(--ink); border-color: var(--hl); border-radius: 40px; }
 .tile.pillish:hover { border-radius: 0; }
+.tile.rounded { border-radius: 56px; }
+.tile.rounded:hover { border-radius: 0; }
 .tile .arrow-out { font-family: var(--mono); font-size: 0.5em; margin-left: 0.3em; }
 .foot-note { padding: 2.2rem 6vw; font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.04em; color: #B9C6D3; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .foot-note a { color: #DCE6F0; }
@@ -422,13 +425,16 @@ section.block h2 { font-weight: 500; }
 
 @media (max-width: 900px) {
   .band-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .tiles, .tiles.r2 { grid-template-columns: 1fr 1fr; }
+  .tiles.r1 { grid-template-columns: 1fr 1fr; }
+  .tiles.r1 .tile:last-child { grid-column: 1 / -1; }
+  .tiles.r2 { grid-template-columns: 1fr 1.6fr; }
   .tile { height: 130px; }
   .facts, .team, .cards, .trio, .fig-grid, .fig-grid.three { grid-template-columns: 1fr; }
   .pg-grid, .two-col, .paper-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .tiles, .tiles.r2 { grid-template-columns: 1fr; }
+  .tiles.r1, .tiles.r2 { grid-template-columns: 1fr; }
+  .tiles.r1 .tile:last-child { grid-column: auto; }
   .logo { width: 84px; height: 62px; } .logo svg { width: 64px; height: 42px; }
   .menu { width: 58px; height: 58px; }
   .band, .page-head { padding-left: 1.4rem; padding-right: 1.4rem; }
@@ -477,7 +483,6 @@ section.block h2 { font-weight: 500; }
   .s-row { grid-template-columns: 1fr; gap: 0.6rem; }
   .chev { width: 52px; height: 52px; }
 }
-.fig-grid.gallery { gap: 2.5rem 2rem; }
 
 /* ---------- aims: title + summary on the left, targets on the right ---------- */
 .aims { border-top: 1.5px solid var(--ink); }
@@ -559,7 +564,6 @@ section.block h2 { font-weight: 500; }
     <li class="has-sub"><a href="#/home" data-page="home" style="--hl:#CFE6F8">Home</a><ul class="sub"><li><a href="#/home?s=scope">Project Scope</a></li><li><a href="#/home?s=justification">Justification</a></li><li><a href="#/home?s=description">Project Description</a></li><li><a href="#/home?s=aims">Aims</a></li><li><a href="#/home?s=video">Interim Video Update</a></li></ul></li>
     <li><a href="#/design" data-page="design" style="--hl:#CFE6F8">Design</a></li>
     <li><a href="#/results" data-page="results" style="--hl:#CFE6F8">Results</a></li>
-    <li><a href="#/gallery" data-page="gallery" style="--hl:#CFE6F8">Gallery</a></li>
     <li><a href="#/timeline" data-page="timeline" style="--hl:#CFE6F8">Timeline</a></li>
     <li><a href="#/team" data-page="team" style="--hl:#CFE6F8">Team</a></li>
     <li><a href="#/references" data-page="references" style="--hl:#CFE6F8">References</a></li>
@@ -1020,21 +1024,6 @@ section.block h2 { font-weight: 500; }
     </section>
   </article>
 
-  <article class="page" data-page="gallery" data-title="Gallery">
-    <header class="page-head band peach">
-      
-      <h1 class="big">Gallery</h1>
-      <p class="intro"></p>
-    </header>    <section class="block">
-      <div class="fig-grid gallery">
-        <figure class="plain-fig"><img src="images/g1_first_skin_test.jpg" alt="Four electrodes on a forearm connected to the PYNQ-Z2 and breadboard" loading="lazy" onerror="ph(this)"><figcaption>First test on skin</figcaption></figure>
-        <figure class="plain-fig"><img src="images/g2_mock_skin_load_test.jpg" alt="PYNQ-Z2 with Pmods, breadboard front end, and two 9 V batteries" loading="lazy" onerror="ph(this)"><figcaption>Mock skin load test</figcaption></figure>
-        <figure class="plain-fig"><img src="images/g3_circuit_mock_load_dac.jpg" alt="Close-up of the breadboard circuit with the mock skin load and Pmod DA2" loading="lazy" onerror="ph(this)"><figcaption>Close-up of our circuit with the mock skin load and the DAC connected</figcaption></figure>
-        <figure class="plain-fig"><img src="images/g4_passive_circuit_test.jpg" alt="Small passive breadboard circuit with function generator and oscilloscope probes" loading="lazy" onerror="ph(this)"><figcaption>Our first test with the passive circuit, using the function generator and the oscilloscope</figcaption></figure>
-      </div>
-    </section>
-  </article>
-
   <article class="page" data-page="timeline" data-title="Timeline">
     <header class="page-head band sky">
       
@@ -1198,15 +1187,14 @@ section.block h2 { font-weight: 500; }
       <p>ESE 4970 Capstone Design<br><i>The Preston M. Green Department of Electrical &amp; Systems Engineering</i><br>Washington University in St. Louis</p>
     </div>
   </div>
-  <div class="tiles">
-    <a class="tile " style="--hl:#CFE6F8" href="#/design">Design</a>
+  <div class="tiles r1">
+    <a class="tile" style="--hl:#CFE6F8" href="#/design">Design</a>
     <a class="tile pillish" style="--hl:#CFE6F8" href="#/results">Results</a>
-    <a class="tile " style="--hl:#CFE6F8" href="#/gallery">Gallery</a>
+    <a class="tile rounded" style="--hl:#CFE6F8" href="#/timeline">Timeline</a>
   </div>
   <div class="tiles r2">
-    <a class="tile pillish" style="--hl:#CFE6F8" href="#/timeline">Timeline</a>
-    <a class="tile " style="--hl:#CFE6F8" href="#/team">Team</a>
-    <a class="tile pillish" style="--hl:#CFE6F8" href="#/references">References</a>
+    <a class="tile pillish" style="--hl:#CFE6F8" href="#/team">Team</a>
+    <a class="tile" style="--hl:#CFE6F8" href="#/references">References</a>
   </div>
 </footer>
 <a class="to-top" href="#top" aria-label="Back to top">&uarr;</a>
