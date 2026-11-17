@@ -474,6 +474,7 @@ section.block h2 { font-weight: 500; }
 .plain-fig figcaption { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.03em; color: var(--muted); margin-top: 0.8rem; }
 .photo-pair { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; align-items: start; }
 .photo-pair img { aspect-ratio: 4 / 3; object-fit: cover; }
+.photo-pair img.no-crop { aspect-ratio: auto; object-fit: initial; }   /* board photo shown in full */
 .elec-diagram { aspect-ratio: 4 / 3; background: var(--card); border: 1px solid var(--line); border-radius: 14px; display: grid; place-items: center; padding: 0.5rem; }
 .elec-diagram svg { width: 100%; height: 100%; }
 .safety { border-top: 1.5px solid var(--ink); }
@@ -764,7 +765,7 @@ section.block h2 { font-weight: 500; }
 
     <section class="block">
       <div class="photo-pair">
-        <figure class="plain-fig"><img src="images/pynq-board.jpg" alt="PYNQ-Z2 board with the Pmod DA2 and Pmod AD1 plugged in" data-ph="Add: pynq-board.jpg" loading="lazy" onerror="ph(this)"><figcaption>The PYNQ-Z2 with the Pmod DA2 (DAC) and Pmod AD1 (ADC).</figcaption></figure>
+        <figure class="plain-fig"><img class="no-crop" src="images/pynq-board.jpg" alt="PYNQ-Z2 board with the Pmod DA2 and Pmod AD1 plugged in" data-ph="Add: pynq-board.jpg" loading="lazy" onerror="ph(this)"><figcaption>The PYNQ-Z2 with the Pmod DA2 (DAC) and Pmod AD1 (ADC).</figcaption></figure>
         <figure class="plain-fig"><img src="images/breadboard.jpg" alt="Breadboarded analog front end with three amplifier chips, powered by a 9 V battery" data-ph="Add: breadboard.jpg" loading="lazy" onerror="ph(this)"><figcaption>The breadboarded analog front end.</figcaption></figure>
       </div>
     </section>
@@ -772,7 +773,7 @@ section.block h2 { font-weight: 500; }
     <section class="block">
       <div class="photo-pair">
         <figure class="plain-fig"><img src="images/g2_mock_skin_load_test.jpg" alt="PYNQ-Z2, breadboard front end and batteries measuring the mock skin load" loading="lazy" onerror="ph(this)"><figcaption>Mock skin setup: the system measuring the resistor-capacitor circuit that stands in for skin.</figcaption></figure>
-        <figure class="plain-fig"><img src="images/setup-banana.jpg" alt="Full system with four electrodes on a banana" data-ph="Add: setup-banana.jpg" loading="lazy" onerror="ph(this)"><figcaption>Banana setup: the full system with four electrodes on the banana peel.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/setup-banana.jpg" alt="Full system with four electrodes on a banana" data-ph="Add: setup-banana.jpg" loading="lazy" onerror="ph(this)"><figcaption>Banana setup: the full system with four electrodes on a whole banana.</figcaption></figure>
       </div>
     </section>
 
@@ -783,10 +784,9 @@ section.block h2 { font-weight: 500; }
       </div>
       <figure class="plain-fig"><div class="elec-diagram"><svg viewBox="0 0 640 480" role="img" aria-label="Four electrodes on tissue: the outer pair injects current, the inner pair senses voltage">
             <g fill="none" stroke="#1C2A39" stroke-width="1.5">
-              <path d="M110 212 V75 H170 M310 75 H370 M510 75 H530 V212"/>
+              <path d="M110 212 V75 H190 M450 75 H530 V212"/>
               <path d="M250 212 V160 H300 M340 160 H390 V212"/>
-              <rect x="170" y="50" width="140" height="50" rx="10" fill="#FBFAF6"/>
-              <rect x="370" y="50" width="140" height="50" rx="10" fill="#FBFAF6"/>
+              <rect x="190" y="50" width="260" height="50" rx="10" fill="#FBFAF6"/>
               <rect x="40" y="230" width="560" height="130" rx="18" fill="#FDE5D6"/>
               <circle cx="320" cy="160" r="20" fill="#FBFAF6"/>
             </g>
@@ -799,11 +799,11 @@ section.block h2 { font-weight: 500; }
             <g font-family="Playfair Display, Georgia, serif" font-size="18" fill="#1C2A39" text-anchor="middle" dominant-baseline="central">
               <text x="110" y="231">1</text><text x="250" y="231">2</text><text x="390" y="231">3</text><text x="530" y="231">4</text>
               <text x="320" y="161" font-size="20">V</text>
-              <text x="240" y="70">AC source</text><text x="440" y="70">1 k&Omega;</text>
+              <text x="320" y="70">Small AC current</text>
             </g>
             <g font-family="IBM Plex Mono, Menlo, monospace" font-size="11" letter-spacing="0.8" fill="#6B7785" text-anchor="middle">
-              <text x="240" y="90">DAC + 10 k&Omega;</text><text x="440" y="90">MEASURES CURRENT</text>
-              <text x="320" y="128">VOLTAGE SENSED</text>
+              <text x="320" y="90">SENT AND MEASURED BY THE CIRCUIT</text>
+              <text x="320" y="128">VOLTAGE MEASURED</text>
               <text x="62" y="346" text-anchor="start">TISSUE</text>
               <text x="320" y="396">CURRENT FLOWS 1 &rarr; 4 THROUGH THE TISSUE</text>
             </g>
@@ -880,7 +880,7 @@ section.block h2 { font-weight: 500; }
         <p>A banana makes a better experiment because we can damage it on purpose. Like skin, banana tissue is made of cells whose membranes separate conductive fluid inside and outside the cell. That structure is what makes tissue impedance change with frequency, and it is what the Cole&ndash;Cole model describes <a class="cite" href="#/references?r=6" aria-label="Reference 6">[6]</a>.</p>
         <p>Bruising breaks cells, so low-frequency current can reach more of the tissue. The impedance drops and the Cole&ndash;Cole curve shrinks <a class="cite" href="#/references?r=7" aria-label="Reference 7">[7]</a>. Decaying banana tissue shows the same pattern: lower resistance and a higher characteristic frequency <a class="cite" href="#/references?r=8" aria-label="Reference 8">[8]</a>.</p>
         <p>That makes a bruised banana a simple stand-in for unhealthy tissue. In skin, changes to the tissue from disease also change its impedance, which is how impedance measurements can help tell melanoma apart from harmless moles <a class="cite" href="#/references?r=9" aria-label="Reference 9">[9]</a>.</p>
-        <figure class="plain-fig"><img src="images/banana-electrodes.jpg" alt="Four electrodes stuck to a banana peel and clipped to the leads" data-ph="Add: photo of the electrodes on the banana" loading="lazy" onerror="ph(this)"><figcaption>The same four-electrode setup on a banana peel.</figcaption></figure>
+        <figure class="plain-fig"><img src="images/banana-electrodes.jpg" alt="Four electrodes stuck to a whole banana and clipped to the leads" data-ph="Add: photo of the electrodes on the banana" loading="lazy" onerror="ph(this)"><figcaption>The same four-electrode setup on a whole banana.</figcaption></figure>
       </div>
     </section>
 
